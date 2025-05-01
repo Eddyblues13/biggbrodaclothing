@@ -1,0 +1,129 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Http\Request;
+use Cloudinary\Cloudinary;
+
+class ProductController extends Controller
+{
+    protected $cloudinary;
+
+    public function __construct()
+    {
+        $this->cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                'api_key' => env('CLOUDINARY_API_KEY'),
+                'api_secret' => env('CLOUDINARY_API_SECRET'),
+            ],
+            'url' => [
+                'secure' => true
+            ]
+        ]);
+    }
+
+    /**
+     * Display a listing of products.
+     */
+    public function index(Request $request)
+    {
+        $query = Product::with('category')
+            ->active()
+            ->with(['galleries' => fn($q) => $q->ordered()]);
+
+        // Filter by category if specified
+        if ($request->has('category')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('slug', $request->category);
+            });
+        }
+
+        // Filter by search term
+        if ($request->has('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('description', 'like', '%' . $request->search . '%')
+                    ->orWhere('brand', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Sorting
+        $sortOptions = [
+            'newest' => ['created_at', 'desc'],
+            'price_asc' => ['price', 'asc'],
+            'price_desc' => ['price', 'desc'],
+            'popular' => ['is_bestseller', 'desc']
+        ];
+
+        $sort = $request->get('sort', 'newest');
+        [$sortField, $sortDirection] = $sortOptions[$sort] ?? $sortOptions['newest'];
+
+        $products = $query->orderBy($sortField, $sortDirection)
+            ->paginate(12)
+            ->appends($request->query());
+
+        return view('products.index', [
+            'products' => $products,
+            'categories' => Category::active()->get(),
+            'selectedCategory' => $request->category,
+            'sort' => $sort
+        ]);
+    }
+
+    /**
+     * Display the specified product.
+     */
+    public function show(Product $product)
+    {
+        if ($product->status !== 'active') {
+            abort(404);
+        }
+
+        // Get related products from the same category
+        $relatedProducts = Product::with('category')
+            ->where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->active()
+            ->inRandomOrder()
+            ->limit(4)
+            ->get();
+
+        return view('products.show', [
+            'product' => $product,
+            'relatedProducts' => $relatedProducts
+        ]);
+    }
+
+    /**
+     * Display featured products (for homepage).
+     */
+    public function featured()
+    {
+        $featuredProducts = Product::with('category')
+            ->active()
+            ->featured()
+            ->inRandomOrder()
+            ->limit(8)
+            ->get();
+
+        return response()->json($featuredProducts);
+    }
+
+    /**
+     * Display bestseller products.
+     */
+    public function bestsellers()
+    {
+        $bestsellers = Product::with('category')
+            ->active()
+            ->bestsellers()
+            ->inRandomOrder()
+            ->limit(8)
+            ->get();
+
+        return response()->json($bestsellers);
+    }
+}
