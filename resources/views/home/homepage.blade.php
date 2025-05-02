@@ -10,7 +10,7 @@
                 <div class="hero-content">
                     <h6>asoss</h6>
                     <h2>New Collection</h2>
-                    <a href="#" class="btn essence-btn">view collection</a>
+                    <a href="/shop" class="btn essence-btn">view collection</a>
                 </div>
             </div>
         </div>
@@ -80,15 +80,15 @@
                     <div class="single-product-wrapper">
                         <!-- Product Image -->
                         <div class="product-img">
-                            {{-- <img src="{{ $product->image_url }}" alt="{{ $product->name }}">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}">
                             <!-- Hover Thumb -->
                             @if(count($product->gallery_urls) > 0)
                             <img class="hover-img" src="{{ $product->gallery_urls[0] }}" alt="{{ $product->name }}">
-                            @endif --}}
+                            @endif
 
-                            <img src="assets/img/product-img/product-3.jpg" alt="">
+                            {{-- <img src="assets/img/product-img/product-3.jpg" alt="">
                             <!-- Hover Thumb -->
-                            <img class="hover-img" src="assets/img/product-img/product-4.jpg" alt="">
+                            <img class="hover-img" src="assets/img/product-img/product-4.jpg" alt=""> --}}
 
 
                             <!-- Product Badge -->
@@ -177,7 +177,7 @@
 @include("home.footer")
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Initialize toastr
         toastr.options = {
             "closeButton": true,
@@ -191,12 +191,12 @@
         };
 
         // Add to cart functionality
-        $(document).on('click', '.add-to-cart', function(e) {
+        $(document).on('click', '.add-to-cart', function (e) {
             e.preventDefault();
-            
+
             var productId = $(this).data('product-id');
             var button = $(this);
-            
+
             $.ajax({
                 url: '{{ route("cart.add") }}',
                 method: 'POST',
@@ -205,36 +205,34 @@
                     quantity: 1,
                     _token: '{{ csrf_token() }}'
                 },
-                beforeSend: function() {
+                beforeSend: function () {
                     button.html('<i class="fa fa-spinner fa-spin"></i> Adding...');
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.success) {
                         toastr.success(response.message);
-                        // Reload the page to update all cart data
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1000);
+                        refreshCartSidebar();
+                        $('.cart-count').text(response.cart_count);
                     } else {
                         toastr.error(response.message);
                     }
                 },
-                error: function(xhr) {
+                error: function () {
                     toastr.error('An error occurred. Please try again.');
                 },
-                complete: function() {
+                complete: function () {
                     button.html('Add to Cart');
                 }
             });
         });
 
         // Add to favorite functionality
-        $(document).on('click', '.favme', function(e) {
+        $(document).on('click', '.favme', function (e) {
             e.preventDefault();
-            
+
             var productId = $(this).data('product-id');
             var heartIcon = $(this);
-            
+
             $.ajax({
                 url: '{{ route("favorites.toggle") }}',
                 method: 'POST',
@@ -242,28 +240,26 @@
                     product_id: productId,
                     _token: '{{ csrf_token() }}'
                 },
-                beforeSend: function() {
+                beforeSend: function () {
                     heartIcon.html('<i class="fa fa-spinner fa-spin"></i>');
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.success) {
                         if (response.action === 'added') {
                             toastr.success('Added to favorites');
                         } else {
                             toastr.success('Removed from favorites');
                         }
-                        // Reload the page to update all data
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1000);
+                        refreshCartSidebar();
+                        $('.cart-count').text(response.cart_count);
                     } else {
                         toastr.error(response.message);
                     }
                 },
-                error: function(xhr) {
+                error: function () {
                     toastr.error('An error occurred. Please try again.');
                 },
-                complete: function() {
+                complete: function () {
                     heartIcon.html('<i class="fa fa-heart"></i>');
                 }
             });
@@ -271,13 +267,16 @@
 
         // Function to refresh cart sidebar
         function refreshCartSidebar() {
-            $.get('{{ route("cart.data") }}', function(response) {
+            $.get('{{ route("cart.data") }}', function (response) {
                 if (response.success) {
                     var cartItemsContainer = $('#cartItemsContainer');
-                    
+
+                    // Update cart count
+                    $('.cart-count').text(response.cart_count);
+
                     if (response.cart_count > 0) {
                         var itemsHtml = '';
-                        $.each(response.cart_items, function(id, item) {
+                        $.each(response.cart_items, function (id, item) {
                             itemsHtml += `
                                 <div class="single-cart-item" id="cart-item-${id}">
                                     <a href="/products/${item.slug}" class="product-image">
@@ -308,7 +307,7 @@
                         cartItemsContainer.html('<div class="empty-cart-message"><p>Your cart is empty</p></div>');
                         $('.checkout-btn a').addClass('disabled');
                     }
-                    
+
                     // Update summary
                     $('#cart-subtotal').text('$' + response.subtotal.toFixed(2));
                     $('#cart-discount').text('-$' + response.discount.toFixed(2));
@@ -319,51 +318,47 @@
 
         // Initialize cart sidebar on page load
         refreshCartSidebar();
+
+        // Global functions for cart operations
+        window.updateQuantity = function (productId, change) {
+            $.ajax({
+                url: '{{ route("cart.update") }}',
+                method: 'POST',
+                data: {
+                    product_id: productId,
+                    change: change,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.message);
+                        refreshCartSidebar();
+                        $('.cart-count').text(response.cart_count);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        }
+
+        window.removeFromCart = function (productId) {
+            $.ajax({
+                url: '{{ route("cart.remove") }}',
+                method: 'POST',
+                data: {
+                    product_id: productId,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.message);
+                        refreshCartSidebar();
+                        $('.cart-count').text(response.cart_count);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        }
     });
-
-    // Global functions for cart operations
-    function updateQuantity(productId, change) {
-        $.ajax({
-            url: '{{ route("cart.update") }}',
-            method: 'POST',
-            data: {
-                product_id: productId,
-                change: change,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                if(response.success) {
-                    toastr.success(response.message);
-                    // Reload the page to update all data
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1000);
-                } else {
-                    toastr.error(response.message);
-                }
-            }
-        });
-    }
-
-    function removeFromCart(productId) {
-        $.ajax({
-            url: '{{ route("cart.remove") }}',
-            method: 'POST',
-            data: {
-                product_id: productId,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                if(response.success) {
-                    toastr.success(response.message);
-                    // Reload the page to update all data
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1000);
-                } else {
-                    toastr.error(response.message);
-                }
-            }
-        });
-    }
 </script>

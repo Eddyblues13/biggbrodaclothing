@@ -52,26 +52,14 @@ class Product extends Model
 
     protected $appends = [
         'image_url',
+        'thumbnail_url',
         'gallery_urls',
         'is_on_sale',
         'current_price',
-        'discount_percentage'
+        'discount_percentage',
+        'available_sizes',
+        'available_colors'
     ];
-
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->cloudinary = new Cloudinary([
-            'cloud' => [
-                'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-                'api_key' => env('CLOUDINARY_API_KEY'),
-                'api_secret' => env('CLOUDINARY_API_SECRET'),
-            ],
-            'url' => [
-                'secure' => true
-            ]
-        ]);
-    }
 
     public function category(): BelongsTo
     {
@@ -83,6 +71,88 @@ class Product extends Model
         return $this->hasMany(ProductGallery::class)->orderBy('position');
     }
 
+    // Helper method to initialize Cloudinary (avoids constructor issues)
+    protected function getCloudinaryInstance(): Cloudinary
+    {
+        return new Cloudinary([
+            'cloud' => [
+                'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                'api_key'    => env('CLOUDINARY_API_KEY'),
+                'api_secret' => env('CLOUDINARY_API_SECRET'),
+            ],
+            'url' => ['secure' => true]
+        ]);
+    }
+
+    // Accessors
+    public function getImageUrlAttribute(): string
+    {
+        if (!$this->image_public_id) {
+            return asset('images/default-product.jpg');
+        }
+
+        return $this->getCloudinaryInstance()
+            ->image($this->image_public_id)
+            ->resize(Resize::fill()->width(800)->height(1000))
+            ->toUrl();
+    }
+
+    public function getThumbnailUrlAttribute(): string
+    {
+        if (!$this->image_public_id) {
+            return asset('images/default-product-thumb.jpg');
+        }
+
+        return $this->getCloudinaryInstance()
+            ->image($this->image_public_id)
+            ->resize(Resize::fill()->width(400)->height(500))
+            ->toUrl();
+    }
+
+    public function getGalleryUrlsAttribute(): array
+    {
+        if (empty($this->gallery)) {
+            return [];
+        }
+
+        $cloudinary = $this->getCloudinaryInstance();
+        return array_map(
+            fn($publicId) => $cloudinary->image($publicId)
+                ->resize(Resize::fill()->width(800)->height(1000))
+                ->toUrl(),
+            $this->gallery
+        );
+    }
+
+    public function getIsOnSaleAttribute(): bool
+    {
+        return $this->discount_price > 0
+            && $this->discount_price < $this->price;
+    }
+
+    public function getCurrentPriceAttribute(): float
+    {
+        return $this->is_on_sale ? $this->discount_price : $this->price;
+    }
+
+    public function getDiscountPercentageAttribute(): int
+    {
+        return $this->is_on_sale
+            ? (int) round(100 - ($this->discount_price / $this->price * 100))
+            : 0;
+    }
+
+    public function getAvailableSizesAttribute(): array
+    {
+        return $this->size ? explode(',', $this->size) : [];
+    }
+
+    public function getAvailableColorsAttribute(): array
+    {
+        return $this->color ? explode(',', $this->color) : [];
+    }
+
+    // Scopes
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
@@ -103,101 +173,39 @@ class Product extends Model
         return $query->where('is_new', true);
     }
 
-    public function getImageUrlAttribute()
-    {
-        if ($this->image_public_id) {
-            return $this->cloudinary->image($this->image_public_id)
-                ->resize(Resize::fill()->width(800)->height(1000))
-                ->toUrl();
-        }
-        return asset('images/default-product.jpg');
-    }
-
-    public function getThumbnailUrlAttribute()
-    {
-        if ($this->image_public_id) {
-            return $this->cloudinary->image($this->image_public_id)
-                ->resize(Resize::fill()->width(400)->height(500))
-                ->toUrl();
-        }
-        return asset('images/default-product-thumb.jpg');
-    }
-
-    public function getGalleryUrlsAttribute()
-    {
-        if (empty($this->gallery)) {
-            return [];
-        }
-
-        return array_map(function ($publicId) {
-            return $this->cloudinary->image($publicId)
-                ->resize(Resize::fill()->width(800)->height(1000))
-                ->toUrl();
-        }, $this->gallery);
-    }
-
-    public function getIsOnSaleAttribute(): bool
-    {
-        return !is_null($this->discount_price)
-            && $this->discount_price > 0
-            && $this->discount_price < $this->price;
-    }
-
-    public function getCurrentPriceAttribute()
-    {
-        return $this->is_on_sale ? $this->discount_price : $this->price;
-    }
-
-    public function getDiscountPercentageAttribute(): int
-    {
-        if (!$this->is_on_sale) {
-            return 0;
-        }
-        return (int) round(100 - ($this->discount_price / $this->price * 100));
-    }
-
-    public function getAvailableSizesAttribute(): array
-    {
-        return $this->size ? explode(',', $this->size) : [];
-    }
-
-    public function getAvailableColorsAttribute(): array
-    {
-        return $this->color ? explode(',', $this->color) : [];
-    }
-
-
-
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
-    // In your Product model (app/Models/Product.php)
     public function scopeVisible($query)
     {
-        return $query->where('status', 'active');
+        return $this->scopeActive($query);
     }
 
     public function scopeWithMainImage($query)
     {
-        return $query->with(['galleries' => function ($q) {
-            $q->where('is_default', true)->orWhere('position', 0);
-        }]);
+        return $query->with([
+            'galleries' => fn($q) => $q
+                ->where('is_default', true)
+                ->orWhere('position', 0)
+        ]);
     }
 
     public function scopeBestsellerOrFeatured($query)
     {
-        return $query->where(function ($q) {
-            $q->where('is_bestseller', true)
-                ->orWhere('is_featured', true);
-        });
+        return $query->where(
+            fn($q) => $q
+                ->where('is_bestseller', true)
+                ->orWhere('is_featured', true)
+        );
     }
 
     public function scopeOrderByPopularity($query)
     {
-        return $query->orderBy('is_bestseller', 'desc')
+        return $query
+            ->orderBy('is_bestseller', 'desc')
             ->orderBy('is_featured', 'desc')
             ->orderBy('created_at', 'desc');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }
