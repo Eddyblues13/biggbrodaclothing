@@ -13,7 +13,7 @@
     <title>Essence - Fashion Ecommerce Template</title>
 
     <!-- Favicon  -->
-    <link rel="icon" href="{{ asset('assets/img/core-img/favicon.ico') }}">
+    <link rel="icon" href="{{ asset('assets/img/core-img/favicon.png') }}">
 
     <!-- Core Style CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/core-style.css') }}">
@@ -35,7 +35,10 @@
             <!-- Classy Menu -->
             <nav class="classy-navbar" id="essenceNav">
                 <!-- Logo -->
-                <a class="nav-brand" href="index.html"><img src="assets/img/core-img/logo.png" alt=""></a>
+                <a class="nav-brand" href="index.html">
+                    <img src="assets/img/core-img/logo.png" alt="" style="width: 100px; height: auto;">
+                </a>
+
                 <!-- Navbar Toggler -->
                 <div class="classy-navbar-toggler">
                     <span class="navbarToggler"><span></span><span></span><span></span></span>

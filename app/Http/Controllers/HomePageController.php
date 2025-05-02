@@ -103,4 +103,9 @@ class HomePageController extends Controller
     {
         return count(session('favorites', []));
     }
+
+    public function collections()
+    {
+        return view('home.collections',);
+    }
 }
