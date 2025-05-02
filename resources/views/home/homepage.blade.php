@@ -80,15 +80,15 @@
                     <div class="single-product-wrapper">
                         <!-- Product Image -->
                         <div class="product-img">
-                            {{-- <img src="{{ $product->image_url }}" alt="{{ $product->name }}">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}">
                             <!-- Hover Thumb -->
                             @if(count($product->gallery_urls) > 0)
                             <img class="hover-img" src="{{ $product->gallery_urls[0] }}" alt="{{ $product->name }}">
-                            @endif --}}
+                            @endif
 
-                            <img src="assets/img/product-img/product-3.jpg" alt="">
+                            {{-- <img src="assets/img/product-img/product-3.jpg" alt="">
                             <!-- Hover Thumb -->
-                            <img class="hover-img" src="assets/img/product-img/product-4.jpg" alt="">
+                            <img class="hover-img" src="assets/img/product-img/product-4.jpg" alt=""> --}}
 
 
                             <!-- Product Badge -->

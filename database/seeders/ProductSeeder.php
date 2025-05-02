@@ -29,9 +29,7 @@ class ProductSeeder extends Seeder
 
     public function run()
     {
-        // Sample product data with image URLs
         $products = [
-            // Men's Apparel
             [
                 'category_name' => "Men's Apparel",
                 'name' => 'Slim Fit Oxford Shirt',
@@ -51,7 +49,6 @@ class ProductSeeder extends Seeder
                 'is_bestseller' => true,
                 'status' => 'active'
             ],
-            // Women's Fashion
             [
                 'category_name' => "Women's Fashion",
                 'name' => 'Floral Wrap Dress',
@@ -69,21 +66,18 @@ class ProductSeeder extends Seeder
                 'is_featured' => true,
                 'status' => 'active'
             ],
-            // Add more products as needed...
         ];
 
         foreach ($products as $productData) {
-            // Find category
             $category = Category::where('name', $productData['category_name'])->first();
 
             if (!$category) {
+                $this->command->warn("Category '{$productData['category_name']}' not found. Skipping product '{$productData['name']}'.");
                 continue;
             }
 
-            // Upload main image to Cloudinary
             $mainImage = $this->uploadToCloudinary($productData['image_url'], 'biggbrodaclothing');
 
-            // Upload gallery images
             $galleryImages = [];
             foreach ($productData['gallery_urls'] ?? [] as $galleryUrl) {
                 $uploaded = $this->uploadToCloudinary($galleryUrl, 'biggbrodaclothing/gallery');
@@ -92,19 +86,18 @@ class ProductSeeder extends Seeder
                 }
             }
 
-            // Create the product
             $product = Product::create([
                 'category_id' => $category->id,
                 'name' => $productData['name'],
                 'slug' => Str::slug($productData['name']),
                 'description' => $productData['description'],
-                'short_description' => substr($productData['description'], 0, 100) . '...',
+                'short_description' => Str::limit($productData['description'], 100, '...'),
                 'brand' => $productData['brand'],
                 'price' => $productData['price'],
                 'discount_price' => $productData['discount_price'] ?? null,
-                'size' => implode(',', $productData['sizes']),
-                'color' => implode(',', $productData['colors']),
-                'stock' => $productData['stock'],
+                'size' => implode(',', $productData['sizes'] ?? []),
+                'color' => implode(',', $productData['colors'] ?? []),
+                'stock' => $productData['stock'] ?? 0,
                 'min_stock' => 10,
                 'image' => $mainImage['secure_url'] ?? null,
                 'image_public_id' => $mainImage['public_id'] ?? null,
@@ -122,7 +115,6 @@ class ProductSeeder extends Seeder
                 ]),
             ]);
 
-            // Create gallery entries if using separate table
             if (class_exists(ProductGallery::class)) {
                 $this->createGalleryEntries($product, $galleryImages);
             }
