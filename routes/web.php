@@ -35,6 +35,7 @@ Route::prefix('products')->group(function () {
     Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
 
     // Individual product page
+    Route::get('/{product}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
     // Route to show all products in a category
     Route::get('/category/{category:slug}', [App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
 
