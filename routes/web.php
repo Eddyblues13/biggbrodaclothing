@@ -15,6 +15,9 @@ Route::get('/login', function () {
 Route::get('/about', function () {
     return view('home.about');
 });
+Route::get('/shop', function () {
+    return view('home.shop');
+});
 
 
 Route::get('/login', [App\Http\Controllers\HomePageController::class, 'login'])->name('lofin');

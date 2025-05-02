@@ -10,7 +10,7 @@
                 <div class="hero-content">
                     <h6>asoss</h6>
                     <h2>New Collection</h2>
-                    <a href="#" class="btn essence-btn">view collection</a>
+                    <a href="/shop" class="btn essence-btn">view collection</a>
                 </div>
             </div>
         </div>
