@@ -57,9 +57,17 @@ class AppServiceProvider extends ServiceProvider
                     ->get();
             });
 
-            // Session values
-            $cartCount = session('cart') ? count(session('cart')) : 0;
-            $cartSubtotal = session('cart') ? collect(session('cart'))->sum('subtotal') : 0;
+            // Cart calculations
+            $cart = session('cart', []);
+            $cartCount = collect($cart)->sum('quantity');
+            $cartSubtotal = collect($cart)->sum(function ($item) {
+                return $item['price'] * $item['quantity'];
+            });
+            $cartShipping = $cartSubtotal > 100 ? 0 : 10;
+            $cartTax = $cartSubtotal * 0.05;
+            $cartTotal = $cartSubtotal + $cartShipping + $cartTax;
+
+            // Favorites
             $favorites = session('favorites', []);
             $favoritesCount = count($favorites);
 
@@ -104,8 +112,12 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'categories' => $categories,
                 'popularProducts' => $popularProducts,
+                'cart' => $cart,
                 'cartCount' => $cartCount,
                 'cartSubtotal' => $cartSubtotal,
+                'cartShipping' => $cartShipping,
+                'cartTax' => $cartTax,
+                'cartTotal' => $cartTotal,
                 'favorites' => $favorites,
                 'favoritesCount' => $favoritesCount,
                 'minPrice' => $minPrice,

@@ -18,6 +18,9 @@ Route::get('/about', function () {
 Route::get('/shop', function () {
     return view('home.shop');
 });
+Route::get('/cart', function () {
+    return view('home.cart');
+});
 
 
 Route::get('/login', [App\Http\Controllers\HomePageController::class, 'login'])->name('lofin');
@@ -68,6 +71,7 @@ Route::post('/cart/add', [App\Http\Controllers\CartController::class, 'addToCart
 Route::post('/cart/update', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove', [App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
 Route::get('/cart/data', [App\Http\Controllers\CartController::class, 'getCartData'])->name('cart.data');
+Route::get('/view-cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
 
 // Favorites routes
 Route::post('/favorites/toggle', [App\Http\Controllers\FavoriteController::class, 'toggleFavorite'])->name('favorites.toggle');
