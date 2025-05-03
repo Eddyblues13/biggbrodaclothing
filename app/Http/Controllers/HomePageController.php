@@ -104,8 +104,174 @@ class HomePageController extends Controller
         return count(session('favorites', []));
     }
 
-    public function collections()
+    public function filterByColor($color)
     {
-        return view('home.collections',);
+        $products = Product::active()
+            ->get()
+            ->filter(function ($product) use ($color) {
+                return in_array(strtolower($color), array_map('strtolower', $product->available_colors));
+            });
+
+        return view('home.collections', compact('products', 'color'));
+    }
+
+
+
+    public function collections(Request $request)
+    {
+        $query = Product::active()->withMainImage();
+
+        // Apply filters from request
+        if ($request->category) {
+            $query->where('category_id', $request->category);
+        }
+
+        if ($request->brand) {
+            $query->whereIn('brand', (array)$request->brand);
+        }
+
+        if ($request->color) {
+            $query->where(function ($q) use ($request) {
+                foreach ((array)$request->color as $color) {
+                    $q->orWhere('color', 'like', "%{$color}%");
+                }
+            });
+        }
+
+        if ($request->min_price && $request->max_price) {
+            $query->whereBetween('price', [
+                $request->min_price,
+                $request->max_price
+            ]);
+        }
+
+        // Sorting
+        switch ($request->get('sort', 'newest')) {
+            case 'price_asc':
+                $query->orderBy('price');
+                break;
+            case 'price_desc':
+                $query->orderByDesc('price');
+                break;
+            case 'bestsellers':
+                $query->bestsellers();
+                break;
+            case 'featured':
+                $query->featured();
+                break;
+            case 'newest':
+            default:
+                $query->latest();
+                break;
+        }
+
+        $products = $query->paginate(12);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('home.collections', compact('products'))->render(),
+                'count' => $products->total(),
+                'pagination' => $products->links()->toHtml()
+            ]);
+        }
+
+        return view('home.collections', compact('products'));
+    }
+
+    public function filterByBrand($brand)
+    {
+        $products = Product::where('brand', $brand)->visible()->get();
+        return view('home.collections', compact('products', 'brand'));
+    }
+
+
+    // ProductController.php
+    public function filter(Request $request)
+    {
+        $query = Product::active()->withMainImage();
+
+        // Apply filters
+        if ($request->category) {
+            $query->where('category_id', $request->category);
+        }
+
+        if ($request->min_price && $request->max_price) {
+            $query->whereBetween('price', [$request->min_price, $request->max_price]);
+        }
+
+        if ($request->colors) {
+            $query->where(function ($q) use ($request) {
+                foreach ($request->colors as $color) {
+                    $q->orWhere('color', 'like', "%{$color}%");
+                }
+            });
+        }
+
+        if ($request->brands) {
+            $query->whereIn('brand', $request->brands);
+        }
+
+        // Apply sorting
+        switch ($request->get('sort', 'newest')) {
+            case 'price_asc':
+                $query->orderBy('price');
+                break;
+            case 'price_desc':
+                $query->orderByDesc('price');
+                break;
+            case 'bestsellers':
+                $query->bestsellers();
+                break;
+            case 'featured':
+                $query->featured();
+                break;
+            case 'newest':
+            default:
+                $query->latest();
+                break;
+        }
+
+        $products = $query->paginate(12);
+
+        $html = '';
+        foreach ($products as $product) {
+            $html .= '
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="single-product-wrapper">
+                    <div class="product-img">
+                        <img src="' . $product->thumbnail_url . '" alt="' . $product->name . '">' .
+                ($product->gallery_urls ? '<img class="hover-img" src="' . ($product->gallery_urls[0] ?? $product->image_url) . '" alt="">' : '') .
+                ($product->is_on_sale ? '<div class="product-badge offer-badge"><span>-' . $product->discount_percentage . '%</span></div>' : '') .
+                ($product->is_new ? '<div class="product-badge new-badge"><span>New</span></div>' : '') . '
+                        <div class="product-favourite">
+                            <a href="#" class="favme fa fa-heart"></a>
+                        </div>
+                    </div>
+    
+                    <div class="product-description">
+                        <span>' . $product->brand . '</span>
+                        <a href="' . route('products.show', $product->slug) . '">
+                            <h6>' . $product->name . '</h6>
+                        </a>
+                        <p class="product-price">' .
+                ($product->is_on_sale ? '<span class="old-price">$' . number_format($product->price, 2) . '</span>' : '') . '
+                            $' . number_format($product->current_price, 2) . '
+                        </p>
+    
+                        <div class="hover-content">
+                            <div class="add-to-cart-btn">
+                                <a href="#" class="btn essence-btn add-to-cart" data-product-id="' . $product->id . '">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>';
+        }
+
+        return response()->json([
+            'html' => $html,
+            'count' => $products->total(),
+            'pagination' => $products->links()->toHtml()
+        ]);
     }
 }

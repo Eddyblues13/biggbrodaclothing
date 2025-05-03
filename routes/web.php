@@ -33,6 +33,12 @@ Route::get('/categories/{slug}', [App\Http\Controllers\CategoryController::class
 Route::prefix('products')->group(function () {
     // Product listings with filters
     Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/color/{color}', [App\Http\Controllers\ProductController::class, 'filterByColor'])->name('products.byColor');
+    Route::get('/brand/{brand}', [App\Http\Controllers\ProductController::class, 'filterByBrand'])->name('shop.brand');
+    // routes/web.php
+    Route::get('/products/filter', [App\Http\Controllers\ProductController::class, 'filter']);
+
+
 
     // Individual product page
     Route::get('/{product}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');

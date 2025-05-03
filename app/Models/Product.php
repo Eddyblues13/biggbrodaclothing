@@ -208,4 +208,27 @@ class Product extends Model
     {
         return 'slug';
     }
+
+    // In App\Models\Product
+    public static function getAvailableColors()
+    {
+        return self::active()
+            ->get()
+            ->pluck('available_colors')
+            ->flatten()
+            ->unique()
+            ->values()
+            ->filter()
+            ->toArray();
+    }
+
+    public static function getAvailableBrands()
+    {
+        return self::active()
+            ->whereNotNull('brand')
+            ->where('brand', '!=', '')
+            ->distinct()
+            ->pluck('brand')
+            ->toArray();
+    }
 }
