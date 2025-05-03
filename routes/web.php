@@ -18,11 +18,15 @@ Route::get('/about', function () {
 Route::get('/shop', function () {
     return view('home.shop');
 });
+Route::get('/cart', function () {
+    return view('home.cart');
+});
 
 
 Route::get('/login', [App\Http\Controllers\HomePageController::class, 'login'])->name('lofin');
 
 Route::get('/', [App\Http\Controllers\HomePageController::class, 'index'])->name('homepage');
+Route::get('/collections', [App\Http\Controllers\HomePageController::class, 'collections'])->name('collections');
 
 
 Route::get('/categories/{slug}', [App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
@@ -35,7 +39,11 @@ Route::prefix('products')->group(function () {
 
     // Individual product page
     Route::get('/{product}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
+    // Route to show all products in a category
+    Route::get('/category/{category:slug}', [App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
 
+    // Route to show a single product
+    Route::get('/product/{product:slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
     // API endpoints for components
     Route::get('/featured', [App\Http\Controllers\ProductController::class, 'featured'])->name('products.featured');
     Route::get('/bestsellers', [App\Http\Controllers\ProductController::class, 'bestsellers'])->name('products.bestsellers');
