@@ -7,7 +7,7 @@
               <div class="single_widget_area d-flex mb-30">
                   <!-- Logo -->
                   <div class="footer-logo mr-50">
-                      <a href="#"><img src="assets/img/core-img/logo2.png" alt=""></a>
+                      <a href="{{ url("/") }}"><img src="assets/img/core-img/logo.png" alt="" style="width: 100px; height: auto;"></a>
                   </div>
                   <!-- Footer Menu -->
                   <div class="footer_menu">
@@ -67,7 +67,8 @@
           <div class="col-md-12 text-center">
               <p>
                   <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>, distributed by <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
+{{-- <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>, distributed by <a href="https://themewagon.com/" target="_blank"></a> --}}
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
               </p>
           </div>
