@@ -21,6 +21,9 @@ Route::get('/shop', function () {
 Route::get('/cart', function () {
     return view('home.cart');
 });
+Route::get('/check-out', function () {
+    return view('home.checkout');
+});
 
 
 Route::get('/login', [App\Http\Controllers\HomePageController::class, 'login'])->name('lofin');
