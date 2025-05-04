@@ -1,86 +1,12 @@
 @include("home.header")
-<!-- ##### Right Side Cart Area ##### -->
+
+<!-- Right Side Cart Area -->
 <div class="cart-bg-overlay"></div>
-
 <div class="right-side-cart-area">
-
-    <!-- Cart Button -->
-    <div class="cart-button">
-        <a href="#" id="rightSideCart"><img src="assets/img/core-img/bag.svg" alt=""> <span>3</span></a>
-    </div>
-
-    <div class="cart-content d-flex">
-
-        <!-- Cart List Area -->
-        <div class="cart-list">
-            <!-- Single Cart Item -->
-            <div class="single-cart-item">
-                <a href="#" class="product-image">
-                    <img src="assets/img/product-img/product-1.jpg" class="cart-thumb" alt="">
-                    <!-- Cart Item Desc -->
-                    <div class="cart-item-desc">
-                        <span class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></span>
-                        <span class="badge">Mango</span>
-                        <h6>Button Through Strap Mini Dress</h6>
-                        <p class="size">Size: S</p>
-                        <p class="color">Color: Red</p>
-                        <p class="price">$45.00</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Single Cart Item -->
-            <div class="single-cart-item">
-                <a href="#" class="product-image">
-                    <img src="assets/img/product-img/product-2.jpg" class="cart-thumb" alt="">
-                    <!-- Cart Item Desc -->
-                    <div class="cart-item-desc">
-                        <span class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></span>
-                        <span class="badge">Mango</span>
-                        <h6>Button Through Strap Mini Dress</h6>
-                        <p class="size">Size: S</p>
-                        <p class="color">Color: Red</p>
-                        <p class="price">$45.00</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Single Cart Item -->
-            <div class="single-cart-item">
-                <a href="#" class="product-image">
-                    <img src="assets/img/product-img/product-3.jpg" class="cart-thumb" alt="">
-                    <!-- Cart Item Desc -->
-                    <div class="cart-item-desc">
-                        <span class="product-remove"><i class="fa fa-close" aria-hidden="true"></i></span>
-                        <span class="badge">Mango</span>
-                        <h6>Button Through Strap Mini Dress</h6>
-                        <p class="size">Size: S</p>
-                        <p class="color">Color: Red</p>
-                        <p class="price">$45.00</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Cart Summary -->
-        <div class="cart-amount-summary">
-
-            <h2>Summary</h2>
-            <ul class="summary-table">
-                <li><span>subtotal:</span> <span>$274.00</span></li>
-                <li><span>delivery:</span> <span>Free</span></li>
-                <li><span>discount:</span> <span>-15%</span></li>
-                <li><span>total:</span> <span>$232.00</span></li>
-            </ul>
-            <div class="checkout-btn mt-100">
-                <a href="checkout.html" class="btn essence-btn">check out</a>
-            </div>
-        </div>
-    </div>
+    <!-- Your cart content here -->
 </div>
-<!-- ##### Right Side Cart End ##### -->
 
-<!-- ##### Breadcumb Area Start ##### -->
+<!-- Breadcumb Area -->
 <div class="breadcumb_area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
     <div class="container h-100">
         <div class="row h-100 align-items-center">
@@ -92,30 +18,29 @@
         </div>
     </div>
 </div>
-<!-- ##### Breadcumb Area End ##### -->
 
-<!-- ##### Shop Grid Area Start ##### -->
+<!-- Shop Grid Area -->
 <section class="shop_grid_area section-padding-80">
     <div class="container">
         <div class="row">
+            <!-- Sidebar Filters -->
             <div class="col-12 col-md-4 col-lg-3">
                 <div class="shop_sidebar_area">
-
-                    <!-- ##### Single Widget ##### -->
+                    <!-- Categories Widget -->
                     <div class="widget catagory mb-50">
-                        <!-- Widget Title -->
                         <h6 class="widget-title mb-30">Categories</h6>
-
-                        <!-- Categories -->
                         <div class="catagories-menu">
                             <ul id="menu-content2" class="menu-content collapse show">
                                 @foreach ($categories as $index => $category)
                                 <li data-toggle="collapse" data-target="#category-{{ $index }}"
                                     class="{{ $index === 0 ? '' : 'collapsed' }}">
-                                    <a href="#">{{ ucfirst($category->name) }}</a>
+                                    <a href="#" class="category-filter" data-category-id="{{ $category->id }}">
+                                        {{ ucfirst($category->name) }}
+                                    </a>
                                     <ul class="sub-menu collapse {{ $index === 0 ? 'show' : '' }}"
                                         id="category-{{ $index }}">
-                                        <li><a href="{{ route('category.show', $category->slug) }}">All</a></li>
+                                        <li><a href="#" class="category-filter"
+                                                data-category-id="{{ $category->id }}">All</a></li>
                                         @foreach ($category->products->take(10) as $product)
                                         <li><a href="{{ route('product.show', $product->slug) }}">{{ $product->name
                                                 }}</a></li>
@@ -127,435 +52,313 @@
                         </div>
                     </div>
 
-
-                    <!-- ##### Single Widget ##### -->
+                    <!-- Price Widget -->
                     <div class="widget price mb-50">
-                        <!-- Widget Title -->
                         <h6 class="widget-title mb-30">Filter by</h6>
-                        <!-- Widget Title 2 -->
                         <p class="widget-title2 mb-30">Price</p>
-
                         <div class="widget-desc">
                             <div class="slider-range">
-                                <div data-min="49" data-max="360" data-unit="$"
-                                    class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                                    data-value-min="49" data-value-max="360" data-label-result="Range:">
-                                    <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
-                                    <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
-                                    <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
+                                <div id="price-range-slider" data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}"
+                                    data-unit="$" class="slider-range-price"></div>
+                                <div class="range-price">
+                                    Range: $<span id="min-price-value">{{ number_format($minPrice, 2) }}</span> -
+                                    $<span id="max-price-value">{{ number_format($maxPrice, 2) }}</span>
                                 </div>
-                                <div class="range-price">Range: $49.00 - $360.00</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- ##### Single Widget ##### -->
+                    <!-- Color Widget -->
                     <div class="widget color mb-50">
-                        <!-- Widget Title 2 -->
                         <p class="widget-title2 mb-30">Color</p>
                         <div class="widget-desc">
-                            <ul class="d-flex">
-                                <li><a href="#" class="color1"></a></li>
-                                <li><a href="#" class="color2"></a></li>
-                                <li><a href="#" class="color3"></a></li>
-                                <li><a href="#" class="color4"></a></li>
-                                <li><a href="#" class="color5"></a></li>
-                                <li><a href="#" class="color6"></a></li>
-                                <li><a href="#" class="color7"></a></li>
-                                <li><a href="#" class="color8"></a></li>
-                                <li><a href="#" class="color9"></a></li>
-                                <li><a href="#" class="color10"></a></li>
+                            <ul class="d-flex flex-wrap">
+                                @foreach ($colors as $color)
+                                <li>
+                                    <a href="#" class="color-filter" data-color="{{ strtolower($color) }}"
+                                        style="background-color: {{ strtolower($color) }};"
+                                        title="{{ ucfirst($color) }}"></a>
+                                </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
 
-                    <!-- ##### Single Widget ##### -->
+                    <!-- Brand Widget -->
                     <div class="widget brands mb-50">
-                        <!-- Widget Title 2 -->
                         <p class="widget-title2 mb-30">Brands</p>
                         <div class="widget-desc">
                             <ul>
-                                <li><a href="#">Asos</a></li>
-                                <li><a href="#">Mango</a></li>
-                                <li><a href="#">River Island</a></li>
-                                <li><a href="#">Topshop</a></li>
-                                <li><a href="#">Zara</a></li>
+                                @foreach($brands as $brand)
+                                <li>
+                                    <a href="#" class="brand-filter" data-brand="{{ $brand }}">
+                                        {{ $brand }}
+                                    </a>
+                                </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
+
+                    <button id="clear-filters" class="btn essence-btn btn-sm">Clear All Filters</button>
                 </div>
             </div>
 
+            <!-- Main Content Area -->
             <div class="col-12 col-md-8 col-lg-9">
                 <div class="shop_grid_product_area">
                     <div class="row">
                         <div class="col-12">
                             <div class="product-topbar d-flex align-items-center justify-content-between">
-                                <!-- Total Products -->
                                 <div class="total-products">
-                                    <p><span>186</span> products found</p>
+                                    <p><span id="productCount">{{ $products->total() }}</span> products found</p>
                                 </div>
-                                <!-- Sorting -->
                                 <div class="product-sorting d-flex">
                                     <p>Sort by:</p>
-                                    <form action="#" method="get">
-                                        <select name="select" id="sortByselect">
-                                            <option value="value">Highest Rated</option>
-                                            <option value="value">Newest</option>
-                                            <option value="value">Price: $$ - $</option>
-                                            <option value="value">Price: $ - $$</option>
-                                        </select>
-                                        <input type="submit" class="d-none" value="">
-                                    </form>
+                                    <select id="sortSelect" class="form-control">
+                                        <option value="newest">Newest</option>
+                                        <option value="price_asc">Price: Low to High</option>
+                                        <option value="price_desc">Price: High to Low</option>
+                                        <option value="bestsellers">Bestsellers</option>
+                                        <option value="featured">Featured</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row">
-
-                        <!-- Single Product -->
+                    <div class="row" id="productsContainer">
+                        @foreach($products as $product)
                         <div class="col-12 col-sm-6 col-lg-4">
                             <div class="single-product-wrapper">
-                                <!-- Product Image -->
                                 <div class="product-img">
-                                    <img src="assets/img/product-img/product-1.jpg" alt="">
-                                    <!-- Hover Thumb -->
-                                    <img class="hover-img" src="assets/img/product-img/product-2.jpg" alt="">
+                                    <img src="{{ $product->thumbnail_url }}" alt="{{ $product->name }}">
+                                    @if($product->gallery_urls)
+                                    <img class="hover-img" src="{{ $product->gallery_urls[0] ?? $product->image_url }}"
+                                        alt="">
+                                    @endif
 
-                                    <!-- Product Badge -->
+                                    @if($product->is_on_sale)
                                     <div class="product-badge offer-badge">
-                                        <span>-30%</span>
+                                        <span>-{{ $product->discount_percentage }}%</span>
                                     </div>
-                                    <!-- Favourite -->
-                                    <div class="product-favourite">
-                                        <a href="#" class="favme fa fa-heart"></a>
-                                    </div>
-                                </div>
+                                    @endif
 
-                                <!-- Product Description -->
-                                <div class="product-description">
-                                    <span>topshop</span>
-                                    <a href="single-product-details.html">
-                                        <h6>Knot Front Mini Dress</h6>
-                                    </a>
-                                    <p class="product-price"><span class="old-price">$75.00</span> $55.00</p>
-
-                                    <!-- Hover Content -->
-                                    <div class="hover-content">
-                                        <!-- Add to Cart -->
-                                        <div class="add-to-cart-btn">
-                                            <a href="#" class="btn essence-btn">Add to Cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Single Product -->
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <div class="single-product-wrapper">
-                                <!-- Product Image -->
-                                <div class="product-img">
-                                    <img src="assets/img/product-img/product-2.jpg" alt="">
-                                    <!-- Hover Thumb -->
-                                    <img class="hover-img" src="assets/img/product-img/product-3.jpg" alt="">
-
-                                    <!-- Favourite -->
-                                    <div class="product-favourite">
-                                        <a href="#" class="favme fa fa-heart"></a>
-                                    </div>
-                                </div>
-
-                                <!-- Product Description -->
-                                <div class="product-description">
-                                    <span>topshop</span>
-                                    <a href="single-product-details.html">
-                                        <h6>Knot Front Mini Dress</h6>
-                                    </a>
-                                    <p class="product-price">$80.00</p>
-
-                                    <!-- Hover Content -->
-                                    <div class="hover-content">
-                                        <!-- Add to Cart -->
-                                        <div class="add-to-cart-btn">
-                                            <a href="#" class="btn essence-btn">Add to Cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Single Product -->
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <div class="single-product-wrapper">
-                                <!-- Product Image -->
-                                <div class="product-img">
-                                    <img src="assets/img/product-img/product-3.jpg" alt="">
-                                    <!-- Hover Thumb -->
-                                    <img class="hover-img" src="assets/img/product-img/product-4.jpg" alt="">
-
-                                    <!-- Product Badge -->
+                                    @if($product->is_new)
                                     <div class="product-badge new-badge">
                                         <span>New</span>
                                     </div>
+                                    @endif
 
-                                    <!-- Favourite -->
                                     <div class="product-favourite">
                                         <a href="#" class="favme fa fa-heart"></a>
                                     </div>
                                 </div>
 
-                                <!-- Product Description -->
                                 <div class="product-description">
-                                    <span>topshop</span>
-                                    <a href="single-product-details.html">
-                                        <h6>Knot Front Mini Dress</h6>
+                                    <span>{{ $product->brand }}</span>
+                                    <a href="{{ route('products.show', $product->slug) }}">
+                                        <h6>{{ $product->name }}</h6>
                                     </a>
-                                    <p class="product-price">$80.00</p>
+                                    <p class="product-price">
+                                        @if($product->is_on_sale)
+                                        <span class="old-price">${{ number_format($product->price, 2) }}</span>
+                                        @endif
+                                        ${{ number_format($product->current_price, 2) }}
+                                    </p>
 
-                                    <!-- Hover Content -->
                                     <div class="hover-content">
-                                        <!-- Add to Cart -->
                                         <div class="add-to-cart-btn">
-                                            <a href="#" class="btn essence-btn">Add to Cart</a>
+                                            <a href="#" class="btn essence-btn add-to-cart"
+                                                data-product-id="{{ $product->id }}">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Single Product -->
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <div class="single-product-wrapper">
-                                <!-- Product Image -->
-                                <div class="product-img">
-                                    <img src="assets/img/product-img/product-4.jpg" alt="">
-                                    <!-- Hover Thumb -->
-                                    <img class="hover-img" src="assets/img/product-img/product-5.jpg" alt="">
-
-                                    <!-- Favourite -->
-                                    <div class="product-favourite">
-                                        <a href="#" class="favme fa fa-heart"></a>
-                                    </div>
-                                </div>
-
-                                <!-- Product Description -->
-                                <div class="product-description">
-                                    <span>topshop</span>
-                                    <a href="single-product-details.html">
-                                        <h6>Knot Front Mini Dress</h6>
-                                    </a>
-                                    <p class="product-price">$80.00</p>
-
-                                    <!-- Hover Content -->
-                                    <div class="hover-content">
-                                        <!-- Add to Cart -->
-                                        <div class="add-to-cart-btn">
-                                            <a href="#" class="btn essence-btn">Add to Cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Single Product -->
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <div class="single-product-wrapper">
-                                <!-- Product Image -->
-                                <div class="product-img">
-                                    <img src="assets/img/product-img/product-5.jpg" alt="">
-                                    <!-- Hover Thumb -->
-                                    <img class="hover-img" src="assets/img/product-img/product-6.jpg" alt="">
-
-                                    <!-- Product Badge -->
-                                    <div class="product-badge offer-badge">
-                                        <span>-30%</span>
-                                    </div>
-
-                                    <!-- Favourite -->
-                                    <div class="product-favourite">
-                                        <a href="#" class="favme fa fa-heart"></a>
-                                    </div>
-                                </div>
-
-                                <!-- Product Description -->
-                                <div class="product-description">
-                                    <span>topshop</span>
-                                    <a href="single-product-details.html">
-                                        <h6>Knot Front Mini Dress</h6>
-                                    </a>
-                                    <p class="product-price"><span class="old-price">$75.00</span> $55.00</p>
-
-                                    <!-- Hover Content -->
-                                    <div class="hover-content">
-                                        <!-- Add to Cart -->
-                                        <div class="add-to-cart-btn">
-                                            <a href="#" class="btn essence-btn">Add to Cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Single Product -->
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <div class="single-product-wrapper">
-                                <!-- Product Image -->
-                                <div class="product-img">
-                                    <img src="assets/img/product-img/product-6.jpg" alt="">
-                                    <!-- Hover Thumb -->
-                                    <img class="hover-img" src="assets/img/product-img/product-7.jpg" alt="">
-
-                                    <!-- Favourite -->
-                                    <div class="product-favourite">
-                                        <a href="#" class="favme fa fa-heart"></a>
-                                    </div>
-                                </div>
-
-                                <!-- Product Description -->
-                                <div class="product-description">
-                                    <span>topshop</span>
-                                    <a href="single-product-details.html">
-                                        <h6>Knot Front Mini Dress</h6>
-                                    </a>
-                                    <p class="product-price">$80.00</p>
-
-                                    <!-- Hover Content -->
-                                    <div class="hover-content">
-                                        <!-- Add to Cart -->
-                                        <div class="add-to-cart-btn">
-                                            <a href="#" class="btn essence-btn">Add to Cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Single Product -->
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <div class="single-product-wrapper">
-                                <!-- Product Image -->
-                                <div class="product-img">
-                                    <img src="assets/img/product-img/product-7.jpg" alt="">
-                                    <!-- Hover Thumb -->
-                                    <img class="hover-img" src="assets/img/product-img/product-8.jpg" alt="">
-
-                                    <!-- Product Badge -->
-                                    <div class="product-badge new-badge">
-                                        <span>New</span>
-                                    </div>
-
-                                    <!-- Favourite -->
-                                    <div class="product-favourite">
-                                        <a href="#" class="favme fa fa-heart"></a>
-                                    </div>
-                                </div>
-
-                                <!-- Product Description -->
-                                <div class="product-description">
-                                    <span>topshop</span>
-                                    <a href="single-product-details.html">
-                                        <h6>Knot Front Mini Dress</h6>
-                                    </a>
-                                    <p class="product-price">$80.00</p>
-
-                                    <!-- Hover Content -->
-                                    <div class="hover-content">
-                                        <!-- Add to Cart -->
-                                        <div class="add-to-cart-btn">
-                                            <a href="#" class="btn essence-btn">Add to Cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Single Product -->
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <div class="single-product-wrapper">
-                                <!-- Product Image -->
-                                <div class="product-img">
-                                    <img src="assets/img/product-img/product-8.jpg" alt="">
-                                    <!-- Hover Thumb -->
-                                    <img class="hover-img" src="assets/img/product-img/product-9.jpg" alt="">
-
-                                    <!-- Favourite -->
-                                    <div class="product-favourite">
-                                        <a href="#" class="favme fa fa-heart"></a>
-                                    </div>
-                                </div>
-
-                                <!-- Product Description -->
-                                <div class="product-description">
-                                    <span>topshop</span>
-                                    <a href="single-product-details.html">
-                                        <h6>Knot Front Mini Dress</h6>
-                                    </a>
-                                    <p class="product-price">$80.00</p>
-
-                                    <!-- Hover Content -->
-                                    <div class="hover-content">
-                                        <!-- Add to Cart -->
-                                        <div class="add-to-cart-btn">
-                                            <a href="#" class="btn essence-btn">Add to Cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Single Product -->
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <div class="single-product-wrapper">
-                                <!-- Product Image -->
-                                <div class="product-img">
-                                    <img src="assets/img/product-img/product-9.jpg" alt="">
-                                    <!-- Hover Thumb -->
-                                    <img class="hover-img" src="assets/img/product-img/product-1.jpg" alt="">
-
-                                    <!-- Favourite -->
-                                    <div class="product-favourite">
-                                        <a href="#" class="favme fa fa-heart"></a>
-                                    </div>
-                                </div>
-
-                                <!-- Product Description -->
-                                <div class="product-description">
-                                    <span>topshop</span>
-                                    <a href="single-product-details.html">
-                                        <h6>Knot Front Mini Dress</h6>
-                                    </a>
-                                    <p class="product-price">$80.00</p>
-
-                                    <!-- Hover Content -->
-                                    <div class="hover-content">
-                                        <!-- Add to Cart -->
-                                        <div class="add-to-cart-btn">
-                                            <a href="#" class="btn essence-btn">Add to Cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                        @endforeach
                     </div>
+
+                    <nav aria-label="navigation">
+                        <div id="paginationLinks">
+                            {{ $products->links() }}
+                        </div>
+                    </nav>
                 </div>
-                <!-- Pagination -->
-                <nav aria-label="navigation">
-                    <ul class="pagination mt-50 mb-70">
-                        <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-left"></i></a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">21</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>
-                    </ul>
-                </nav>
             </div>
         </div>
     </div>
 </section>
-<!-- ##### Shop Grid Area End ##### -->
+
 @include("home.footer")
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/nouislider@15.5.1/dist/nouislider.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.5.1/dist/nouislider.min.css">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const filters = {
+        category: null,
+        minPrice: {{ $minPrice }},
+        maxPrice: {{ $maxPrice }},
+        colors: [],
+        brands: [],
+        sort: 'newest',
+        page: 1
+    };
+
+    // Initialize price slider
+    const priceSlider = document.getElementById('price-range-slider');
+    if (priceSlider) {
+        noUiSlider.create(priceSlider, {
+            start: [filters.minPrice, filters.maxPrice],
+            connect: true,
+            range: {
+                'min': parseInt(priceSlider.dataset.min),
+                'max': parseInt(priceSlider.dataset.max)
+            },
+            step: 1
+        });
+
+        priceSlider.noUiSlider.on('update', function(values, handle) {
+            const value = Math.round(values[handle]);
+            if (handle) {
+                document.getElementById('max-price-value').textContent = value.toFixed(2);
+                filters.maxPrice = value;
+            } else {
+                document.getElementById('min-price-value').textContent = value.toFixed(2);
+                filters.minPrice = value;
+            }
+            applyFilters();
+        });
+    }
+
+    // Category filter
+    document.querySelectorAll('.category-filter').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            filters.category = this.dataset.categoryId;
+            document.querySelectorAll('.category-filter').forEach(el => el.classList.remove('active'));
+            this.classList.add('active');
+            applyFilters();
+        });
+    });
+
+    // Color filter
+    document.querySelectorAll('.color-filter').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const color = this.dataset.color;
+            const index = filters.colors.indexOf(color);
+            
+            if (index > -1) {
+                filters.colors.splice(index, 1);
+                this.classList.remove('active');
+            } else {
+                filters.colors.push(color);
+                this.classList.add('active');
+            }
+            applyFilters();
+        });
+    });
+
+    // Brand filter
+    document.querySelectorAll('.brand-filter').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const brand = this.dataset.brand;
+            const index = filters.brands.indexOf(brand);
+            
+            if (index > -1) {
+                filters.brands.splice(index, 1);
+                this.classList.remove('active');
+            } else {
+                filters.brands.push(brand);
+                this.classList.add('active');
+            }
+            applyFilters();
+        });
+    });
+
+    // Sort select
+    document.getElementById('sortSelect').addEventListener('change', function(e) {
+        filters.sort = e.target.value;
+        applyFilters();
+    });
+
+    // Clear all filters
+    document.getElementById('clear-filters').addEventListener('click', function() {
+        filters.category = null;
+        filters.minPrice = {{ $minPrice }};
+        filters.maxPrice = {{ $maxPrice }};
+        filters.colors = [];
+        filters.brands = [];
+        filters.sort = 'newest';
+        
+        priceSlider.noUiSlider.set([filters.minPrice, filters.maxPrice]);
+        document.getElementById('sortSelect').value = 'newest';
+        document.querySelectorAll('.category-filter, .color-filter, .brand-filter').forEach(el => {
+            el.classList.remove('active');
+        });
+        
+        applyFilters();
+    });
+
+    // Handle pagination clicks
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.pagination a')) {
+            e.preventDefault();
+            const url = new URL(e.target.href);
+            filters.page = url.searchParams.get('page');
+            applyFilters();
+        }
+    });
+
+    // Main filter function
+    function applyFilters() {
+        const productsContainer = document.getElementById('productsContainer');
+        productsContainer.innerHTML = '<div class="text-center py-5">Loading products...</div>';
+        
+        const params = new URLSearchParams();
+        
+        if (filters.category) params.append('category', filters.category);
+        if (filters.minPrice) params.append('min_price', filters.minPrice);
+        if (filters.maxPrice) params.append('max_price', filters.maxPrice);
+        filters.colors.forEach(color => params.append('colors[]', color));
+        filters.brands.forEach(brand => params.append('brands[]', brand));
+        params.append('sort', filters.sort);
+        params.append('page', filters.page);
+        
+        fetch(`/products/filter?${params.toString()}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('productsContainer').innerHTML = data.html;
+            document.getElementById('productCount').textContent = data.count;
+            document.getElementById('paginationLinks').innerHTML = data.pagination;
+            
+            window.scrollTo({
+                top: document.getElementById('productsContainer').offsetTop - 100,
+                behavior: 'smooth'
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            productsContainer.innerHTML = `
+                <div class="text-center py-5 text-danger">
+                    Error loading products<br>
+                    <small>${error.message}</small>
+                </div>
+            `;
+        });
+    }
+});
+</script>
+@endpush

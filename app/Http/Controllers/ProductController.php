@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Cloudinary\Cloudinary;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -91,7 +92,7 @@ class ProductController extends Controller
             ->limit(4)
             ->get();
 
-        return view('products.show', [
+        return view('home.view_product', [
             'product' => $product,
             'relatedProducts' => $relatedProducts
         ]);
@@ -125,5 +126,79 @@ class ProductController extends Controller
             ->get();
 
         return response()->json($bestsellers);
+    }
+
+    public function filter(Request $request)
+    {
+        try {
+            $query = Product::active()->withMainImage();
+
+            // Apply filters
+            if ($request->category) {
+                $query->where('category_id', $request->category);
+            }
+
+            if ($request->min_price && $request->max_price) {
+                $query->whereBetween('price', [
+                    floatval($request->min_price),
+                    floatval($request->max_price)
+                ]);
+            }
+
+            if ($request->colors) {
+                $colors = is_array($request->colors) ? $request->colors : explode(',', $request->colors);
+                $query->where(function ($q) use ($colors) {
+                    foreach ($colors as $color) {
+                        $q->orWhere('color', 'like', "%{$color}%");
+                    }
+                });
+            }
+
+            if ($request->brands) {
+                $brands = is_array($request->brands) ? $request->brands : explode(',', $request->brands);
+                $query->whereIn('brand', $brands);
+            }
+
+            // Apply sorting
+            switch ($request->get('sort', 'newest')) {
+                case 'price_asc':
+                    $query->orderBy('price');
+                    break;
+                case 'price_desc':
+                    $query->orderByDesc('price');
+                    break;
+                case 'bestsellers':
+                    $query->bestsellers();
+                    break;
+                case 'featured':
+                    $query->featured();
+                    break;
+                case 'newest':
+                default:
+                    $query->latest();
+                    break;
+            }
+
+            $products = $query->paginate(12);
+
+            $html = '';
+            foreach ($products as $product) {
+                $html .= view('products.partials.product', ['product' => $product])->render();
+            }
+
+            return response()->json([
+                'success' => true,
+                'html' => $html,
+                'count' => $products->total(),
+                'pagination' => $products->links()->toHtml()
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Filter error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error loading products',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

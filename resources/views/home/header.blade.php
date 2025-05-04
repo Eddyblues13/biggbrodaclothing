@@ -129,7 +129,8 @@
                 </div>
                 <!-- Cart Area -->
                 <div class="cart-area">
-                    <a href="#" id="essenceCartBtn"><img src="{{ asset('assets/img/core-img/bag.svg') }}" alt="">
+                    <a href="{{ route('cart.index') }}" id="essenceCartBtn">
+                        <img src="{{ asset('assets/img/core-img/bag.svg') }}" alt="">
                         <span class="cart-count">{{ $cartCount ?? 0 }}</span>
                     </a>
                 </div>
