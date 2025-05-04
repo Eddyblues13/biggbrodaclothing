@@ -116,8 +116,8 @@
                 <!-- Logo Header -->
 
                 <div class="logo-header" data-background-color="blue">
-                    <a href="{{route('admin.home')}}" class="logo" style="font-size: 27px; color:#fff;">
-                        EGTB
+                    <a href="{{route('admin.home')}}" class="logo" style="font-size: 19px; color:#fff;">
+                        BIGBRODDA
                     </a>
                     <button class="ml-auto navbar-toggler sidenav-toggler" type="button" data-toggle="collapse"
                         data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -228,6 +228,15 @@
                                     <p>Dashboard</p>
                                 </a>
                             </li>
+                           
+
+                            <li class="nav-item">
+                                <a href="{{route('admin.users.index')}}">
+                                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                    <p>Manage Users</p>
+                                </a>
+                            </li>
+
                             <li class="nav-item ">
                                 <a href="{{route('admin.home')}}">
                                     <i class="fas fa-cubes " aria-hidden="true"></i>
@@ -235,49 +244,21 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item    ">
-                                <a href="{{route('admin.users.index')}}">
-                                    <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                    <p>Manage Users</p>
+                            <li class="nav-item">
+                                <a href="">
+                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                    <p>Manage Products</p>
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="{{route('admin.exhibitions.index')}}">
+                                <a href="">
                                     <i class="fa fa-download" aria-hidden="true"></i>
-                                    <p>Manage Exhibitions</p>
+                                    <p>Manage Categories</p>
                                 </a>
                             </li>
 
-                            <li class="nav-item">
-                                <a href="{{route('admin.future-exhibitions.index')}}">
-                                    <i class="fa fa-download" aria-hidden="true"></i>
-                                    <p>Manage Future Exhibitions</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{route('admin.current-exhibitions.index')}}">
-                                    <i class="fa fa-download" aria-hidden="true"></i>
-                                    <p>Manage Current Exhibitions</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{route('admin.home')}}">
-                                    <i class="fa fa-download" aria-hidden="true"></i>
-                                    <p>Manage Deposits</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{route('admin.home')}}">
-                                    <i class="fa fa-download" aria-hidden="true"></i>
-                                    <p>Manage Withdrawal</p>
-                                </a>
-                            </li>
-
-
-
+                           
 
                             <li class="nav-item">
                                 <a href="{{route('admin.home')}}">

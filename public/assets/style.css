@@ -10,11 +10,20 @@
     --danger-color: #e02b27;
 }
 
-/* body {
-    font-family: 'Roboto', sans-serif;
-    background-color: var(--background-light);
-    color: var(--text-color);
-} */
+ body {
+    font-family: Georgia, serif !important;
+    /* background-color: var(--background-light);
+    color: var(--text-color); */
+} 
+
+@font-face {
+    font-family: 'Kiona';
+    src: url('fonts/Kiona-Regular.ttf') format('truetype');
+  }
+  
+  h1, h2 {
+    font-family: 'Kiona', sans-serif !important;
+  }
 
 .page-title {
     font-size: 24px;

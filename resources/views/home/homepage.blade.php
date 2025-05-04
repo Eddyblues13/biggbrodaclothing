@@ -76,41 +76,39 @@
             <div class="col-12">
                 <div class="popular-products-slides owl-carousel">
                     @foreach($popularProducts as $product)
+
                     <!-- Single Product -->
                     <div class="single-product-wrapper">
                         <!-- Product Image -->
-                        <div class="product-img">
-                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}">
-                            <!-- Hover Thumb -->
-                            @if(count($product->gallery_urls) > 0)
-                            <img class="hover-img" src="{{ $product->gallery_urls[0] }}" alt="{{ $product->name }}">
-                            @endif
+                        <a href="{{ route('products.show', $product->slug) }}">
+                            <div class="product-img">
+                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}">
+                                <!-- Hover Thumb -->
+                                @if(count($product->gallery_urls) > 0)
+                                <img class="hover-img" src="{{ $product->gallery_urls[0] }}" alt="{{ $product->name }}">
+                                @endif
 
-                            {{-- <img src="assets/img/product-img/product-3.jpg" alt="">
-                            <!-- Hover Thumb -->
-                            <img class="hover-img" src="assets/img/product-img/product-4.jpg" alt=""> --}}
+                                <!-- Product Badge -->
+                                @if($product->is_new)
+                                <div class="product-badge new-badge">
+                                    <span>New</span>
+                                </div>
+                                @endif
 
+                                @if($product->isOnSale)
+                                <div class="product-badge offer-badge">
+                                    <span>-{{ $product->discount_percentage }}%</span>
+                                </div>
+                                @endif
 
-                            <!-- Product Badge -->
-                            @if($product->is_new)
-                            <div class="product-badge new-badge">
-                                <span>New</span>
+                                <!-- Favourite -->
+                                <div class="product-favourite">
+                                    <a href="#"
+                                        class="favme fa fa-heart {{ in_array($product->id, $favorites) ? 'active' : '' }}"
+                                        data-product-id="{{ $product->id }}"></a>
+                                </div>
                             </div>
-                            @endif
-
-                            @if($product->isOnSale)
-                            <div class="product-badge offer-badge">
-                                <span>-{{ $product->discount_percentage }}%</span>
-                            </div>
-                            @endif
-
-                            <!-- Favourite -->
-                            <div class="product-favourite">
-                                <a href="#"
-                                    class="favme fa fa-heart {{ in_array($product->id, $favorites) ? 'active' : '' }}"
-                                    data-product-id="{{ $product->id }}"></a>
-                            </div>
-                        </div>
+                        </a>
                         <!-- Product Description -->
                         <div class="product-description">
                             <span>{{ $product->brand }}</span>
@@ -137,6 +135,7 @@
                             </div>
                         </div>
                     </div>
+
                     @endforeach
                 </div>
             </div>
@@ -175,190 +174,3 @@
 <!-- ##### Brands Area End ##### -->
 
 @include("home.footer")
-
-<script>
-    $(document).ready(function () {
-        // Initialize toastr
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000"
-        };
-
-        // Add to cart functionality
-        $(document).on('click', '.add-to-cart', function (e) {
-            e.preventDefault();
-
-            var productId = $(this).data('product-id');
-            var button = $(this);
-
-            $.ajax({
-                url: '{{ route("cart.add") }}',
-                method: 'POST',
-                data: {
-                    product_id: productId,
-                    quantity: 1,
-                    _token: '{{ csrf_token() }}'
-                },
-                beforeSend: function () {
-                    button.html('<i class="fa fa-spinner fa-spin"></i> Adding...');
-                },
-                success: function (response) {
-                    if (response.success) {
-                        toastr.success(response.message);
-                        refreshCartSidebar();
-                        $('.cart-count').text(response.cart_count);
-                    } else {
-                        toastr.error(response.message);
-                    }
-                },
-                error: function () {
-                    toastr.error('An error occurred. Please try again.');
-                },
-                complete: function () {
-                    button.html('Add to Cart');
-                }
-            });
-        });
-
-        // Add to favorite functionality
-        $(document).on('click', '.favme', function (e) {
-            e.preventDefault();
-
-            var productId = $(this).data('product-id');
-            var heartIcon = $(this);
-
-            $.ajax({
-                url: '{{ route("favorites.toggle") }}',
-                method: 'POST',
-                data: {
-                    product_id: productId,
-                    _token: '{{ csrf_token() }}'
-                },
-                beforeSend: function () {
-                    heartIcon.html('<i class="fa fa-spinner fa-spin"></i>');
-                },
-                success: function (response) {
-                    if (response.success) {
-                        if (response.action === 'added') {
-                            toastr.success('Added to favorites');
-                        } else {
-                            toastr.success('Removed from favorites');
-                        }
-                        refreshCartSidebar();
-                        $('.cart-count').text(response.cart_count);
-                    } else {
-                        toastr.error(response.message);
-                    }
-                },
-                error: function () {
-                    toastr.error('An error occurred. Please try again.');
-                },
-                complete: function () {
-                    heartIcon.html('<i class="fa fa-heart"></i>');
-                }
-            });
-        });
-
-        // Function to refresh cart sidebar
-        function refreshCartSidebar() {
-            $.get('{{ route("cart.data") }}', function (response) {
-                if (response.success) {
-                    var cartItemsContainer = $('#cartItemsContainer');
-
-                    // Update cart count
-                    $('.cart-count').text(response.cart_count);
-
-                    if (response.cart_count > 0) {
-                        var itemsHtml = '';
-                        $.each(response.cart_items, function (id, item) {
-                            itemsHtml += `
-                                <div class="single-cart-item" id="cart-item-${id}">
-                                    <a href="/products/${item.slug}" class="product-image">
-                                        <img src="${item.image}" class="cart-thumb" alt="${item.name}">
-                                        <div class="cart-item-desc">
-                                            <span class="product-remove" onclick="removeFromCart(${id})">
-                                                <i class="fa fa-close" aria-hidden="true"></i>
-                                            </span>
-                                            <span class="badge">${item.brand}</span>
-                                            <h6>${item.name}</h6>
-                                            <div class="cart-item-meta">
-                                                <p class="price">$${item.price.toFixed(2)}</p>
-                                                <div class="cart-item-quantity">
-                                                    <button class="qty-minus" onclick="updateQuantity(${id}, -1)">-</button>
-                                                    <input type="text" class="qty-text" value="${item.quantity}" readonly>
-                                                    <button class="qty-plus" onclick="updateQuantity(${id}, 1)">+</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            `;
-                        });
-                        cartItemsContainer.html(itemsHtml);
-                        $('.empty-cart-message').remove();
-                        $('.checkout-btn a').removeClass('disabled');
-                    } else {
-                        cartItemsContainer.html('<div class="empty-cart-message"><p>Your cart is empty</p></div>');
-                        $('.checkout-btn a').addClass('disabled');
-                    }
-
-                    // Update summary
-                    $('#cart-subtotal').text('$' + response.subtotal.toFixed(2));
-                    $('#cart-discount').text('-$' + response.discount.toFixed(2));
-                    $('#cart-total').text('$' + response.total.toFixed(2));
-                }
-            });
-        }
-
-        // Initialize cart sidebar on page load
-        refreshCartSidebar();
-
-        // Global functions for cart operations
-        window.updateQuantity = function (productId, change) {
-            $.ajax({
-                url: '{{ route("cart.update") }}',
-                method: 'POST',
-                data: {
-                    product_id: productId,
-                    change: change,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function (response) {
-                    if (response.success) {
-                        toastr.success(response.message);
-                        refreshCartSidebar();
-                        $('.cart-count').text(response.cart_count);
-                    } else {
-                        toastr.error(response.message);
-                    }
-                }
-            });
-        }
-
-        window.removeFromCart = function (productId) {
-            $.ajax({
-                url: '{{ route("cart.remove") }}',
-                method: 'POST',
-                data: {
-                    product_id: productId,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function (response) {
-                    if (response.success) {
-                        toastr.success(response.message);
-                        refreshCartSidebar();
-                        $('.cart-count').text(response.cart_count);
-                    } else {
-                        toastr.error(response.message);
-                    }
-                }
-            });
-        }
-    });
-</script>
