@@ -7,6 +7,8 @@ use App\Models\Category;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\AdminMiddleware;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -70,5 +72,7 @@ class AppServiceProvider extends ServiceProvider
                 'favoritesCount' => $favoritesCount,
             ]);
         });
+
+        Route::aliasMiddleware('admin', AdminMiddleware::class);
     }
 }

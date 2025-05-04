@@ -88,8 +88,8 @@
                                 </div>
                                 <div class="col-7 col-stats">
                                     <div class="numbers">
-                                        <p class="card-category">New Exhibitions</p>
-                                        <h4 class="card-title">{{ $newExhibitionsCount }}</h4>
+                                        <p class="card-category">Total Categories</p>
+                                        <h4 class="card-title">7</h4>
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
                                 <div class="col-7 col-stats">
                                     <div class="numbers">
                                         <p class="card-category">Total Exhibitions</p>
-                                        <h4 class="card-title">{{ $totalExhibitionsCount }}</h4>
+                                        <h4 class="card-title">5</h4>
                                     </div>
                                 </div>
                             </div>
@@ -159,20 +159,20 @@
                                     </a>
                                 </div>
                                 <div class="col-sm-6 col-md-3 mb-3">
-                                    <a href="{{ route('admin.exhibitions.index') }}"
+                                    <a href=""
                                         class="btn btn-info btn-block square-btn">
                                         <div class="d-flex flex-column align-items-center">
                                             <i class="fas fa-paint-brush fa-2x mb-2"></i>
-                                            <span class="btn-label">Manage Exhibitions</span>
+                                            <span class="btn-label">Manage Products</span>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-sm-6 col-md-3 mb-3">
-                                    <a href="{{ route('admin.withdrawals.index') }}"
+                                    <a href=""
                                         class="btn btn-warning btn-block square-btn">
                                         <div class="d-flex flex-column align-items-center">
                                             <i class="fas fa-money-bill-wave fa-2x mb-2"></i>
-                                            <span class="btn-label">Withdrawal Requests</span>
+                                            <span class="btn-label">Manage Categories</span>
                                         </div>
                                     </a>
                                 </div>
@@ -289,12 +289,12 @@
                             <div class="card-head-row">
                                 <h4 class="card-title text-dark">Recent Withdrawals</h4>
                                 <div class="card-tools">
-                                    <a href="{{ route('admin.withdrawals.index') }}" class="btn btn-sm btn-warning">View
+                                    <a href="" class="btn btn-sm btn-warning">View
                                         All</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        {{-- <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -328,10 +328,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 
-<script>
+{{-- <script>
     $(document).ready(function() {
     // User Analytics Chart
     const userCtx = document.getElementById('userAnalyticsChart').getContext('2d');
@@ -413,6 +413,6 @@
         });
     });
 });
-</script>
+</script> --}}
 
 @include('admin.footer')
