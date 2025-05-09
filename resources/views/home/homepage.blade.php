@@ -8,7 +8,7 @@
         <div class="row h-100 align-items-center">
             <div class="col-12">
                 <div class="hero-content">
-                    <h6>asoss</h6>
+                    <h6>Bigbrodda de for you</h6>
                     <h2>Shop with us</h2>
                     <a href="{{route('collections')}}" class="btn essence-btn">view collection</a>
                 </div>

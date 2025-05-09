@@ -11,7 +11,7 @@
 @endif
 <div class="footer w3-white">
 	<div class="w3-bar w3-white">
-		<center>
+		<!-- <center>
 			<table>
 				<tr>
 					<td style="font-size:9pt;text-align:center;">
@@ -42,7 +42,7 @@
 
 				</tr>
 			</table>
-		</center>
+		</center> -->
 
 
 	</div>

@@ -10,7 +10,7 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title  -->
-    <title>Essence - Fashion Ecommerce Template</title>
+    <title>Bigbrodda - Fashion Ecommerce store</title>
 
     <!-- Favicon  -->
     <link rel="icon" href="{{ asset('assets/img/core-img/favicon.png') }}">
@@ -35,7 +35,7 @@
             <!-- Classy Menu -->
             <nav class="classy-navbar" id="essenceNav">
                 <!-- Logo -->
-                <a class="nav-brand" href="index.html">
+                <a class="nav-brand" href="/">
                     <img src="assets/img/core-img/logo.png" alt="" style="width: 100px; height: auto;">
                 </a>
 

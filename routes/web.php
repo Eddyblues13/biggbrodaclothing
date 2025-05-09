@@ -109,6 +109,48 @@ Route::prefix('admin')->group(function () {
             return view('admin.settings');
         })->name('admin.settings');
 
+
+        // Admin User Routes
+        Route::prefix('users')->group(function () {
+            // manage user CRUD routes
+            Route::get('/', [App\Http\Controllers\Admin\ManageUserController::class, 'index'])->name('admin.users.index');
+            Route::get('/users/create', [App\Http\Controllers\Admin\ManageUserController::class, 'create'])->name('admin.users.create');
+            Route::post('/users', [App\Http\Controllers\Admin\ManageUserController::class, 'store'])->name('admin.users.store');
+            Route::get('/users/{user}', [App\Http\Controllers\Admin\ManageUserController::class, 'show'])->name('admin.user.view');
+
+            // AJAX Routes
+            Route::get('/getusers', [App\Http\Controllers\Admin\ManageUserController::class, 'getUsers'])->name('admin.getusers');
+            Route::post('/users/toggle-status', [App\Http\Controllers\Admin\ManageUserController::class, 'toggleUserStatus'])->name('admin.user.toggleUserStatus');
+            Route::post('/users/toggle-email-status', [App\Http\Controllers\Admin\ManageUserController::class, 'toggleEmailStatus'])->name('admin.user.toggleEmailStatus');
+            Route::post('/users/send-mass-email', [App\Http\Controllers\Admin\ManageUserController::class, 'sendMassEmail'])->name('admin.users.sendMassEmail');
+        });
+
+
+
+        Route::prefix('products')->group(function () {
+            // manage user CRUD routes
+            Route::get('/', [App\Http\Controllers\Admin\ManageProductController::class, 'index'])->name('admin.products');
+            Route::get('/users/create', [App\Http\Controllers\Admin\ManageProductController::class, 'create'])->name('admin.users.create');
+            Route::post('/users', [App\Http\Controllers\Admin\ManageProductController::class, 'store'])->name('admin.users.store');
+            Route::get('/users/{user}', [App\Http\Controllers\Admin\ManageProductController::class, 'show'])->name('admin.user.view');
+            Route::get('/create-products', [App\Http\Controllers\Admin\ManageProductController::class, 'CreateProducts'])->name('create.products');
+            Route::delete('/products/{product}', [App\Http\Controllers\Admin\ManageProductController::class, 'destroy'])->name('products.destroy');
+
+        });
+       
+
+        Route::prefix('category')->group(function () {
+            // manage user CRUD routes
+            Route::get('/', [App\Http\Controllers\Admin\ManageCategoryController::class, 'index'])->name('admin.category');
+            Route::get('/users/create', [App\Http\Controllers\Admin\ManageCategoryController::class, 'create'])->name('admin.users.create');
+            Route::post('/users', [App\Http\Controllers\Admin\ManageCategoryController::class, 'store'])->name('admin.users.store');
+            Route::get('/users/{user}', [App\Http\Controllers\Admin\ManageCategoryController::class, 'show'])->name('admin.user.view');
+            Route::get('/create-category', [App\Http\Controllers\Admin\ManageCategoryController::class, 'CreateCategory'])->name('create.category');
+
+        });
+       
+
+
        
 
         Route::get('/change/user/password/page/{id}', [App\Http\Controllers\Admin\AdminController::class, 'showResetPasswordForm'])->name('admin.change.user.password.page');
@@ -121,6 +163,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/leave-impersonate',  [App\Http\Controllers\Admin\AdminController::class, 'leaveImpersonate'])->name('users.leave-impersonate');
         Route::get('/delete-user/{user}',  [App\Http\Controllers\Admin\AdminController::class, 'deleteUser'])->name('delete.user');
 
-
     });
+
+   
 });

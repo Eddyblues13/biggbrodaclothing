@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="ialsmxvxbFVMvehWybzdppDZtGxGJ4kODeqmi07p">
-    <title>Laystack | User Dashboard</title>
+    <title>Biggbroda | Admin Dashboard</title>
     <link rel="icon" href="{{asset('user/account/storage/app/public/photos/uPYDzhfavicon.png1677339254')}}"
         type="image/png" />
     <link rel="icon" href="{{ asset('account/cloud/uploads/favicon.png')}}" type="image/png" />
@@ -237,27 +237,26 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item ">
-                                <a href="{{route('admin.home')}}">
-                                    <i class="fas fa-cubes " aria-hidden="true"></i>
-                                    <p>Manage Transactions</p>
-                                </a>
-                            </li>
 
                             <li class="nav-item">
-                                <a href="">
+                                <a href="{{route('admin.products')}}">
                                     <i class="fa fa-download" aria-hidden="true"></i>
                                     <p>Manage Products</p>
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="">
+                                <a href="{{route('admin.category')}}">
                                     <i class="fa fa-download" aria-hidden="true"></i>
                                     <p>Manage Categories</p>
                                 </a>
                             </li>
-
+                            <li class="nav-item ">
+                                <a href="{{route('admin.home')}}">
+                                    <i class="fas fa-cubes " aria-hidden="true"></i>
+                                    <p>Manage Transactions</p>
+                                </a>
+                            </li>
                            
 
                             <li class="nav-item">
