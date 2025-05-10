@@ -36,7 +36,7 @@
             <nav class="classy-navbar" id="essenceNav">
                 <!-- Logo -->
                 <a class="nav-brand" href="/">
-                    <img src="assets/img/core-img/logo.png" alt="" style="width: 100px; height: auto;">
+                    <img src="assets/img/core-img/logo.png" alt="" style="width: 200px; height: auto;">
                 </a>
 
                 <!-- Navbar Toggler -->

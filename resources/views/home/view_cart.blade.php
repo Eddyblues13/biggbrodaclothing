@@ -164,7 +164,7 @@
                         <span id="cart-total">₦{{ number_format($cartTotal, 2) }}</span>
                     </div>
 
-                    <a href="" class="checkout-btn">
+                    <a href="{{ route('checkout') }}" class="checkout-btn">
                         PROCEED TO CHECKOUT
                         <i class="bi bi-chevron-right ms-2"></i>
                     </a>

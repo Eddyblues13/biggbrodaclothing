@@ -78,6 +78,22 @@ Route::post('/favorites/toggle', [App\Http\Controllers\FavoriteController::class
 Route::get('/favorites', [App\Http\Controllers\FavoriteController::class, 'listFavorites'])->name('favorites.list');
 Route::get('/favorites/count', [App\Http\Controllers\FavoriteController::class, 'getFavoritesCount'])->name('favorites.count');
 
+// Authentication routes
+Route::get('/login', [App\Http\Controllers\AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+
+// Registration routes
+Route::get('/register', [App\Http\Controllers\AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [App\Http\Controllers\AuthController::class, 'register'])->name('register.post');
+
+// Checkout route with auth middleware
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout/process', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
+});
+
+
 
 
 
@@ -102,7 +118,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/users', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.users.index');
         // ... other user routes
 
-       
+
 
         // Settings Route
         Route::get('/settings', function () {
@@ -135,9 +151,8 @@ Route::prefix('admin')->group(function () {
             Route::get('/users/{user}', [App\Http\Controllers\Admin\ManageProductController::class, 'show'])->name('admin.user.view');
             Route::get('/create-products', [App\Http\Controllers\Admin\ManageProductController::class, 'CreateProducts'])->name('create.products');
             Route::delete('/products/{product}', [App\Http\Controllers\Admin\ManageProductController::class, 'destroy'])->name('products.destroy');
-
         });
-       
+
 
         Route::prefix('category')->group(function () {
             // manage user CRUD routes
@@ -146,12 +161,11 @@ Route::prefix('admin')->group(function () {
             Route::post('/users', [App\Http\Controllers\Admin\ManageCategoryController::class, 'store'])->name('admin.users.store');
             Route::get('/users/{user}', [App\Http\Controllers\Admin\ManageCategoryController::class, 'show'])->name('admin.user.view');
             Route::get('/create-category', [App\Http\Controllers\Admin\ManageCategoryController::class, 'CreateCategory'])->name('create.category');
-
         });
-       
 
 
-       
+
+
 
         Route::get('/change/user/password/page/{id}', [App\Http\Controllers\Admin\AdminController::class, 'showResetPasswordForm'])->name('admin.change.user.password.page');
         Route::post('/user-password-reset', [App\Http\Controllers\Admin\AdminController::class, 'resetPassword'])->name('admin.user.password_reset');
@@ -162,8 +176,5 @@ Route::prefix('admin')->group(function () {
         Route::get('/{user}/impersonate',  [App\Http\Controllers\Admin\AdminController::class, 'impersonate'])->name('users.impersonate');
         Route::get('/leave-impersonate',  [App\Http\Controllers\Admin\AdminController::class, 'leaveImpersonate'])->name('users.leave-impersonate');
         Route::get('/delete-user/{user}',  [App\Http\Controllers\Admin\AdminController::class, 'deleteUser'])->name('delete.user');
-
     });
-
-   
 });

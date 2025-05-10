@@ -5,7 +5,7 @@
     <!-- Single Product Thumb -->
     <div class="single_product_thumb clearfix">
         <div class="product_thumbnail_slides owl-carousel">
-            <img src="{{ $product->image_url }}" alt="{{ $product->name }}">
+            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}">
             @foreach($product->gallery_urls as $galleryImage)
             <img src="{{ $galleryImage }}" alt="{{ $product->name }}">
             @endforeach
