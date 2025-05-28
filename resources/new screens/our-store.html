@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biggbroda Clothing</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <div class="search-header">
+                <h2 class="search-title">Search Products</h2>
+                <button class="search-close" id="searchClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-input-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="What are you looking for?" autocomplete="off">
+                <button class="search-submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-suggestions">
+                <div class="suggestion-category">
+                    <h3>Popular Searches</h3>
+                    <div class="suggestion-tags">
+                        <span class="suggestion-tag">Hoodies</span>
+                        <span class="suggestion-tag">Jerseys</span>
+                        <span class="suggestion-tag">Shorts</span>
+                        <span class="suggestion-tag">New Collection</span>
+                        <span class="suggestion-tag">Sale Items</span>
+                    </div>
+                </div>
+                <div class="suggestion-category">
+                    <h3>Categories</h3>
+                    <div class="suggestion-links">
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-tshirt"></i>
+                            <span>Clothing</span>
+                        </a>
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-running"></i>
+                            <span>Sportswear</span>
+                        </a>
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-star"></i>
+                            <span>New Arrivals</span>
+                        </a>
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-fire"></i>
+                            <span>Trending</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <!-- Mobile Layout -->
+            <div class="d-lg-none d-flex justify-content-between align-items-center w-100 mobile-navbar">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <div class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+                
+                <a class="navbar-brand" href="#">
+                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
+                </a>
+                
+                <div class="mobile-icons">
+                    <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-bag"></i></a>
+                </div>
+            </div>
+
+            <!-- Desktop Layout -->
+            <div class="d-none d-lg-flex justify-content-between align-items-center w-100 desktop-navbar">
+                <div class="navbar-nav nav-left">
+                    <a class="nav-link" href="#">SHOP</a>
+                    <a class="nav-link" href="#">ABOUT</a>
+                    <a class="nav-link" href="#">OUR STORE</a>
+                </div>
+                
+                <a class="navbar-brand mx-auto" href="#">
+                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
+                </a>
+                
+                <div class="navbar-nav nav-right">
+                    <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
+                    <a class="nav-link" href="#">NGN</a>
+                    <a class="nav-link" href="#">LOGIN</a>
+                    <a class="nav-link" href="#">WISHLIST</a>
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-bag"></i></a>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Collapse -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mobile-nav">
+                    <li class="nav-item"><a class="nav-link" href="#">SHOP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">OUR STORE</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">LOGIN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">WISHLIST</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">NGN</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="store-hero" style="margin-top: 100px; background: linear-gradient(135deg, rgba(16, 19, 32, 0.8), rgba(204, 162, 100, 0.3)), url('img/hero-img.jpg'); background-size: cover; background-position: center; height: 60vh; display: flex; align-items: center; justify-content: center; color: white; text-align: center;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 mb-4" style="font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">VISIT OUR FLAGSHIP STORE</h1>
+                    <p class="lead mb-4">Experience the full BIGGBRODA collection in our premium retail space located in the heart of Lagos.</p>
+                    <a href="#store-info" class="btn btn-outline-light">EXPLORE STORE</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Store Information -->
+    <section class="store-info py-5" id="store-info">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="store-details p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08); height: 100%;">
+                        <h2 class="section-title mb-4">STORE DETAILS</h2>
+                        
+                        <div class="store-detail-item mb-4">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-map-marker-alt me-3 mt-1" style="color: #cca264; font-size: 1.2rem;"></i>
+                                <div>
+                                    <h5 style="color: #101320; font-weight: 600;">ADDRESS</h5>
+                                    <p class="mb-0" style="color: #666;">
+                                        123 Victoria Island Boulevard<br>
+                                        Lekki Phase 1, Lagos<br>
+                                        Nigeria
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="store-detail-item mb-4">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-phone me-3 mt-1" style="color: #cca264; font-size: 1.2rem;"></i>
+                                <div>
+                                    <h5 style="color: #101320; font-weight: 600;">PHONE</h5>
+                                    <p class="mb-0" style="color: #666;">
+                                        <a href="tel:+2341234567890" style="color: #666; text-decoration: none;">+234 123 456 7890</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="store-detail-item mb-4">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-envelope me-3 mt-1" style="color: #cca264; font-size: 1.2rem;"></i>
+                                <div>
+                                    <h5 style="color: #101320; font-weight: 600;">EMAIL</h5>
+                                    <p class="mb-0" style="color: #666;">
+                                        <a href="mailto:store@biggbroda.com" style="color: #666; text-decoration: none;">store@biggbroda.com</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="store-detail-item">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-parking me-3 mt-1" style="color: #cca264; font-size: 1.2rem;"></i>
+                                <div>
+                                    <h5 style="color: #101320; font-weight: 600;">PARKING</h5>
+                                    <p class="mb-0" style="color: #666;">Free valet parking available for all customers</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="store-hours p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08); height: 100%;">
+                        <h2 class="section-title mb-4">OPENING HOURS</h2>
+                        
+                        <div class="hours-list">
+                            <div class="hour-item d-flex justify-content-between align-items-center mb-3 pb-3" style="border-bottom: 1px solid #e0e0e0;">
+                                <span style="color: #101320; font-weight: 500;">Monday - Friday</span>
+                                <span style="color: #cca264; font-weight: 600;">10:00 AM - 9:00 PM</span>
+                            </div>
+                            <div class="hour-item d-flex justify-content-between align-items-center mb-3 pb-3" style="border-bottom: 1px solid #e0e0e0;">
+                                <span style="color: #101320; font-weight: 500;">Saturday</span>
+                                <span style="color: #cca264; font-weight: 600;">10:00 AM - 10:00 PM</span>
+                            </div>
+                            <div class="hour-item d-flex justify-content-between align-items-center mb-3 pb-3" style="border-bottom: 1px solid #e0e0e0;">
+                                <span style="color: #101320; font-weight: 500;">Sunday</span>
+                                <span style="color: #cca264; font-weight: 600;">12:00 PM - 8:00 PM</span>
+                            </div>
+                            <div class="hour-item d-flex justify-content-between align-items-center">
+                                <span style="color: #101320; font-weight: 500;">Public Holidays</span>
+                                <span style="color: #666;">Closed</span>
+                            </div>
+                        </div>
+
+                        <div class="current-status mt-4 p-3" style="background: #f0f8f0; border-radius: 8px; border-left: 4px solid #28a745;">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-clock me-2" style="color: #28a745;"></i>
+                                <span style="color: #28a745; font-weight: 600;" id="storeStatus">Open Now</span>
+                            </div>
+                            <small class="text-muted" id="nextChange">Closes at 9:00 PM today</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Store Services -->
+    <section class="store-services py-5" style="background: #f9f9f9;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title">STORE SERVICES</h2>
+                    <p class="lead" style="color: #666;">Discover the exclusive services available at our flagship store</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="service-card text-center p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08); height: 100%;">
+                        <div class="service-icon mb-3">
+                            <i class="fas fa-user-tie" style="font-size: 3rem; color: #cca264;"></i>
+                        </div>
+                        <h4 style="color: #101320; font-weight: 600; margin-bottom: 1rem;">PERSONAL STYLING</h4>
+                        <p style="color: #666;">Get personalized styling advice from our expert fashion consultants to create the perfect look.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="service-card text-center p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08); height: 100%;">
+                        <div class="service-icon mb-3">
+                            <i class="fas fa-cut" style="font-size: 3rem; color: #cca264;"></i>
+                        </div>
+                        <h4 style="color: #101320; font-weight: 600; margin-bottom: 1rem;">CUSTOM TAILORING</h4>
+                        <p style="color: #666;">Professional alteration services to ensure your BIGGBRODA pieces fit perfectly.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="service-card text-center p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08); height: 100%;">
+                        <div class="service-icon mb-3">
+                            <i class="fas fa-star" style="font-size: 3rem; color: #cca264;"></i>
+                        </div>
+                        <h4 style="color: #101320; font-weight: 600; margin-bottom: 1rem;">VIP EXPERIENCE</h4>
+                        <p style="color: #666;">Enjoy exclusive access to limited collections and priority customer service.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="service-card text-center p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08); height: 100%;">
+                        <div class="service-icon mb-3">
+                            <i class="fas fa-gift" style="font-size: 3rem; color: #cca264;"></i>
+                        </div>
+                        <h4 style="color: #101320; font-weight: 600; margin-bottom: 1rem;">GIFT WRAPPING</h4>
+                        <p style="color: #666;">Complimentary luxury gift wrapping service for all purchases.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="service-card text-center p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08); height: 100%;">
+                        <div class="service-icon mb-3">
+                            <i class="fas fa-calendar-alt" style="font-size: 3rem; color: #cca264;"></i>
+                        </div>
+                        <h4 style="color: #101320; font-weight: 600; margin-bottom: 1rem;">APPOINTMENT BOOKING</h4>
+                        <p style="color: #666;">Schedule private shopping sessions for a personalized experience.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="service-card text-center p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08); height: 100%;">
+                        <div class="service-icon mb-3">
+                            <i class="fas fa-truck" style="font-size: 3rem; color: #cca264;"></i>
+                        </div>
+                        <h4 style="color: #101320; font-weight: 600; margin-bottom: 1rem;">SAME-DAY DELIVERY</h4>
+                        <p style="color: #666;">Get your purchases delivered the same day within Lagos metropolitan area.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Store Gallery -->
+    <section class="store-gallery py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title">STORE GALLERY</h2>
+                    <p class="lead" style="color: #666;">Take a virtual tour of our premium retail space</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-6 mb-4">
+                    <div class="gallery-item" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                        <img src="/placeholder.svg?height=400&width=600" alt="Store Interior" class="img-fluid" style="width: 100%; height: 300px; object-fit: cover;">
+                        <div class="gallery-caption p-3" style="background: white;">
+                            <h5 style="color: #101320; font-weight: 600;">Main Showroom</h5>
+                            <p class="mb-0" style="color: #666;">Our spacious main floor featuring the latest collections</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="gallery-item" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                        <img src="/placeholder.svg?height=400&width=600" alt="VIP Section" class="img-fluid" style="width: 100%; height: 300px; object-fit: cover;">
+                        <div class="gallery-caption p-3" style="background: white;">
+                            <h5 style="color: #101320; font-weight: 600;">VIP Lounge</h5>
+                            <p class="mb-0" style="color: #666;">Exclusive area for private shopping experiences</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                    <div class="gallery-item" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                        <img src="/placeholder.svg?height=300&width=400" alt="Fitting Rooms" class="img-fluid" style="width: 100%; height: 250px; object-fit: cover;">
+                        <div class="gallery-caption p-3" style="background: white;">
+                            <h5 style="color: #101320; font-weight: 600;">Fitting Rooms</h5>
+                            <p class="mb-0" style="color: #666;">Luxury fitting rooms with personal assistance</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                    <div class="gallery-item" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                        <img src="/placeholder.svg?height=300&width=400" alt="Accessories Section" class="img-fluid" style="width: 100%; height: 250px; object-fit: cover;">
+                        <div class="gallery-caption p-3" style="background: white;">
+                            <h5 style="color: #101320; font-weight: 600;">Accessories</h5>
+                            <p class="mb-0" style="color: #666;">Complete your look with our premium accessories</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                    <div class="gallery-item" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                        <img src="/placeholder.svg?height=300&width=400" alt="Store Exterior" class="img-fluid" style="width: 100%; height: 250px; object-fit: cover;">
+                        <div class="gallery-caption p-3" style="background: white;">
+                            <h5 style="color: #101320; font-weight: 600;">Store Front</h5>
+                            <p class="mb-0" style="color: #666;">Our flagship store on Victoria Island</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Directions & Map -->
+    <section class="directions py-5" style="background: #f9f9f9;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <h2 class="section-title mb-4">HOW TO FIND US</h2>
+                    
+                    <div class="directions-content">
+                        <div class="direction-item mb-4">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-car me-3 mt-1" style="color: #cca264; font-size: 1.2rem;"></i>
+                                <div>
+                                    <h5 style="color: #101320; font-weight: 600;">BY CAR</h5>
+                                    <p style="color: #666;">
+                                        From Lekki Toll Gate, head towards Victoria Island. Take the third exit at the roundabout onto Admiralty Way. 
+                                        Continue straight for 2km, then turn right onto Victoria Island Boulevard. Our store will be on your left.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="direction-item mb-4">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-bus me-3 mt-1" style="color: #cca264; font-size: 1.2rem;"></i>
+                                <div>
+                                    <h5 style="color: #101320; font-weight: 600;">BY PUBLIC TRANSPORT</h5>
+                                    <p style="color: #666;">
+                                        Take the BRT bus to Lekki Phase 1 terminal. From there, board a taxi or ride-hailing service to 
+                                        Victoria Island Boulevard. The store is a 10-minute ride from the terminal.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="direction-item">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-plane me-3 mt-1" style="color: #cca264; font-size: 1.2rem;"></i>
+                                <div>
+                                    <h5 style="color: #101320; font-weight: 600;">FROM AIRPORT</h5>
+                                    <p style="color: #666;">
+                                        Murtala Muhammed International Airport is approximately 45 minutes away by car. 
+                                        We recommend using our preferred taxi service for a comfortable journey.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="map-container" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08); overflow: hidden; height: 400px;">
+                        <div class="map-placeholder d-flex align-items-center justify-content-center h-100" style="background: #f0f0f0;">
+                            <div class="text-center">
+                                <i class="fas fa-map-marked-alt mb-3" style="font-size: 3rem; color: #cca264;"></i>
+                                <h5 style="color: #101320;">Interactive Map</h5>
+                                <p style="color: #666;">Click to view directions on Google Maps</p>
+                                <button class="btn btn-outline-light" onclick="openMap()">VIEW ON GOOGLE MAPS</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="contact-cta py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <div class="cta-content p-5" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                        <h2 class="section-title mb-4">PLAN YOUR VISIT</h2>
+                        <p class="lead mb-4" style="color: #666;">
+                            Ready to experience BIGGBRODA in person? Contact us to schedule your visit or ask any questions about our store.
+                        </p>
+                        <div class="cta-buttons">
+                            <a href="contact.html" class="btn btn-outline-light me-3 mb-2">CONTACT US</a>
+                            <a href="tel:+2341234567890" class="btn btn-outline-secondary mb-2" style="border-color: #101320; color: #101320;">
+                                <i class="fas fa-phone me-2"></i>CALL NOW
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h3 class="footer-title">BIGGBRODA CLOTHING</h3>
+                    <p>Premium streetwear and athletic apparel for the fashion-forward individual.</p>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h3 class="footer-title">SHOP</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">New Arrivals</a></li>
+                        <li><a href="#">Best Sellers</a></li>
+                        <li><a href="#">Collections</a></li>
+                        <li><a href="#">Sale</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h3 class="footer-title">HELP</h3>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h3 class="footer-title">NEWSLETTER</h3>
+                    <p>Subscribe to receive updates on new arrivals and special promotions.</p>
+                    <form class="newsletter-form">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Your email">
+                            <button class="btn btn-dark" type="submit">SUBSCRIBE</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <p>&copy; 2023 Biggbroda Clothing. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+    <script>
+        // Store status functionality
+        function updateStoreStatus() {
+            const now = new Date();
+            const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const currentTime = currentHour * 60 + currentMinute;
+
+            const statusElement = document.getElementById('storeStatus');
+            const nextChangeElement = document.getElementById('nextChange');
+            const statusContainer = statusElement.parentElement.parentElement;
+
+            let isOpen = false;
+            let nextChange = '';
+
+            // Define store hours (in minutes from midnight)
+            const storeHours = {
+                1: { open: 10 * 60, close: 21 * 60 }, // Monday: 10:00 AM - 9:00 PM
+                2: { open: 10 * 60, close: 21 * 60 }, // Tuesday
+                3: { open: 10 * 60, close: 21 * 60 }, // Wednesday
+                4: { open: 10 * 60, close: 21 * 60 }, // Thursday
+                5: { open: 10 * 60, close: 21 * 60 }, // Friday
+                6: { open: 10 * 60, close: 22 * 60 }, // Saturday: 10:00 AM - 10:00 PM
+                0: { open: 12 * 60, close: 20 * 60 }  // Sunday: 12:00 PM - 8:00 PM
+            };
+
+            if (storeHours[currentDay]) {
+                const todayHours = storeHours[currentDay];
+                isOpen = currentTime >= todayHours.open && currentTime < todayHours.close;
+
+                if (isOpen) {
+                    const closeHour = Math.floor(todayHours.close / 60);
+                    const closeMinute = todayHours.close % 60;
+                    const closeTime = closeMinute === 0 ? `${closeHour}:00` : `${closeHour}:${closeMinute.toString().padStart(2, '0')}`;
+                    nextChange = `Closes at ${closeTime} ${closeHour >= 12 ? 'PM' : 'AM'} today`;
+                } else {
+                    // Find next opening time
+                    let nextOpenDay = currentDay;
+                    let daysChecked = 0;
+                    
+                    while (daysChecked < 7) {
+                        if (currentTime < storeHours[nextOpenDay]?.open && daysChecked === 0) {
+                            // Opens later today
+                            const openHour = Math.floor(storeHours[nextOpenDay].open / 60);
+                            const openMinute = storeHours[nextOpenDay].open % 60;
+                            const openTime = openMinute === 0 ? `${openHour}:00` : `${openHour}:${openMinute.toString().padStart(2, '0')}`;
+                            nextChange = `Opens at ${openTime} ${openHour >= 12 ? 'PM' : 'AM'} today`;
+                            break;
+                        } else {
+                            // Check next day
+                            nextOpenDay = (nextOpenDay + 1) % 7;
+                            daysChecked++;
+                            
+                            if (storeHours[nextOpenDay]) {
+                                const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                                const openHour = Math.floor(storeHours[nextOpenDay].open / 60);
+                                const openMinute = storeHours[nextOpenDay].open % 60;
+                                const openTime = openMinute === 0 ? `${openHour}:00` : `${openHour}:${openMinute.toString().padStart(2, '0')}`;
+                                nextChange = `Opens ${dayNames[nextOpenDay]} at ${openTime} ${openHour >= 12 ? 'PM' : 'AM'}`;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Update UI
+            if (isOpen) {
+                statusElement.textContent = 'Open Now';
+                statusElement.style.color = '#28a745';
+                statusContainer.style.background = '#f0f8f0';
+                statusContainer.style.borderLeftColor = '#28a745';
+                statusElement.previousElementSibling.style.color = '#28a745';
+            } else {
+                statusElement.textContent = 'Closed';
+                statusElement.style.color = '#dc3545';
+                statusContainer.style.background = '#fdf2f2';
+                statusContainer.style.borderLeftColor = '#dc3545';
+                statusElement.previousElementSibling.style.color = '#dc3545';
+            }
+
+            nextChangeElement.textContent = nextChange;
+        }
+
+        // Map functionality
+        function openMap() {
+            const address = "123 Victoria Island Boulevard, Lekki Phase 1, Lagos, Nigeria";
+            const encodedAddress = encodeURIComponent(address);
+            window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`, '_blank');
+        }
+
+        // Initialize store status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStoreStatus();
+            
+            // Update store status every minute
+            setInterval(updateStoreStatus, 60000);
+        });
+
+        // Service card hover effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceCards = document.querySelectorAll('.service-card');
+            
+            serviceCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+
+        // Gallery item hover effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            galleryItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    const img = this.querySelector('img');
+                    img.style.transform = 'scale(1.05)';
+                    img.style.transition = 'transform 0.3s ease';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    const img = this.querySelector('img');
+                    img.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

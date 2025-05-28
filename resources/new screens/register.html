@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biggbroda Clothing</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <div class="search-header">
+                <h2 class="search-title">Search Products</h2>
+                <button class="search-close" id="searchClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-input-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="What are you looking for?" autocomplete="off">
+                <button class="search-submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-suggestions">
+                <div class="suggestion-category">
+                    <h3>Popular Searches</h3>
+                    <div class="suggestion-tags">
+                        <span class="suggestion-tag">Hoodies</span>
+                        <span class="suggestion-tag">Jerseys</span>
+                        <span class="suggestion-tag">Shorts</span>
+                        <span class="suggestion-tag">New Collection</span>
+                        <span class="suggestion-tag">Sale Items</span>
+                    </div>
+                </div>
+                <div class="suggestion-category">
+                    <h3>Categories</h3>
+                    <div class="suggestion-links">
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-tshirt"></i>
+                            <span>Clothing</span>
+                        </a>
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-running"></i>
+                            <span>Sportswear</span>
+                        </a>
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-star"></i>
+                            <span>New Arrivals</span>
+                        </a>
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-fire"></i>
+                            <span>Trending</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <!-- Mobile Layout -->
+            <div class="d-lg-none d-flex justify-content-between align-items-center w-100 mobile-navbar">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <div class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+                
+                <a class="navbar-brand" href="#">
+                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
+                </a>
+                
+                <div class="mobile-icons">
+                    <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-bag"></i></a>
+                </div>
+            </div>
+
+            <!-- Desktop Layout -->
+            <div class="d-none d-lg-flex justify-content-between align-items-center w-100 desktop-navbar">
+                <div class="navbar-nav nav-left">
+                    <a class="nav-link" href="#">SHOP</a>
+                    <a class="nav-link" href="#">ABOUT</a>
+                    <a class="nav-link" href="#">OUR STORE</a>
+                </div>
+                
+                <a class="navbar-brand mx-auto" href="#">
+                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
+                </a>
+                
+                <div class="navbar-nav nav-right">
+                    <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
+                    <a class="nav-link" href="#">NGN</a>
+                    <a class="nav-link" href="#">LOGIN</a>
+                    <a class="nav-link" href="#">WISHLIST</a>
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-bag"></i></a>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Collapse -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mobile-nav">
+                    <li class="nav-item"><a class="nav-link" href="#">SHOP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">OUR STORE</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">LOGIN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">WISHLIST</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">NGN</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Section -->
+    <section class="auth-section py-5" style="margin-top: 100px; min-height: 80vh; display: flex; align-items: center;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="auth-card p-5" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                        <div class="text-center mb-4">
+                            <h2 class="section-title mb-3">CREATE ACCOUNT</h2>
+                            <p style="color: #666;">Join the BIGGBRODA family and enjoy exclusive benefits</p>
+                        </div>
+
+                        <form id="registerForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label" style="color: #101320; font-weight: 500;">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" required style="border-color: #e0e0e0; padding: 0.75rem;">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label" style="color: #101320; font-weight: 500;">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" required style="border-color: #e0e0e0; padding: 0.75rem;">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label" style="color: #101320; font-weight: 500;">Email Address</label>
+                                <input type="email" class="form-control" id="email" required style="border-color: #e0e0e0; padding: 0.75rem;">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phone" class="form-label" style="color: #101320; font-weight: 500;">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" required style="border-color: #e0e0e0; padding: 0.75rem;">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label" style="color: #101320; font-weight: 500;">Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" required style="border-color: #e0e0e0; padding: 0.75rem;">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password')" style="border-color: #e0e0e0;">
+                                        <i class="fas fa-eye" id="passwordToggle"></i>
+                                    </button>
+                                </div>
+                                <div class="form-text">Password must be at least 8 characters long</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label" style="color: #101320; font-weight: 500;">Confirm Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="confirmPassword" required style="border-color: #e0e0e0; padding: 0.75rem;">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('confirmPassword')" style="border-color: #e0e0e0;">
+                                        <i class="fas fa-eye" id="confirmPasswordToggle"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="dateOfBirth" class="form-label" style="color: #101320; font-weight: 500;">Date of Birth (Optional)</label>
+                                <input type="date" class="form-control" id="dateOfBirth" style="border-color: #e0e0e0; padding: 0.75rem;">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="gender" class="form-label" style="color: #101320; font-weight: 500;">Gender (Optional)</label>
+                                <select class="form-select" id="gender" style="border-color: #e0e0e0; padding: 0.75rem;">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                    <option value="prefer-not-to-say">Prefer not to say</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="agreeTerms" required style="border-color: #cca264;">
+                                    <label class="form-check-label" for="agreeTerms" style="color: #666;">
+                                        I agree to the <a href="#" style="color: #cca264;">Terms of Service</a> and <a href="#" style="color: #cca264;">Privacy Policy</a>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="newsletter" style="border-color: #cca264;">
+                                    <label class="form-check-label" for="newsletter" style="color: #666;">
+                                        Subscribe to our newsletter for exclusive offers and updates
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-outline-light w-100 mb-3">CREATE ACCOUNT</button>
+
+                            <div class="text-center">
+                                <span style="color: #666;">Already have an account? </span>
+                                <a href="login.html" class="text-decoration-none" style="color: #cca264; font-weight: 500;">Sign In</a>
+                            </div>
+                        </form>
+
+                        <div class="divider my-4">
+                            <div class="d-flex align-items-center">
+                                <hr class="flex-grow-1" style="border-color: #e0e0e0;">
+                                <span class="px-3 text-muted">OR</span>
+                                <hr class="flex-grow-1" style="border-color: #e0e0e0;">
+                            </div>
+                        </div>
+
+                        <!-- Social Login -->
+                        <div class="social-login">
+                            <button class="btn btn-outline-secondary w-100 mb-2" style="border-color: #e0e0e0; color: #101320;">
+                                <i class="fab fa-google me-2" style="color: #db4437;"></i>Sign up with Google
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2023 Biggbroda Clothing. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+    <script>
+        // Register functionality
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            
+            // Validation
+            if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters long');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+            
+            if (!agreeTerms) {
+                alert('Please agree to the Terms of Service and Privacy Policy');
+                return;
+            }
+            
+            // Show loading state
+            const submitButton = document.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>CREATING ACCOUNT...';
+            submitButton.disabled = true;
+            
+            // Simulate registration process
+            setTimeout(() => {
+                alert('Account created successfully! Welcome to BIGGBRODA.');
+                window.location.href = 'login.html';
+            }, 2000);
+        });
+
+        function togglePassword(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const passwordToggle = document.getElementById(fieldId + 'Toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.classList.remove('fa-eye');
+                passwordToggle.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                passwordToggle.classList.remove('fa-eye-slash');
+                passwordToggle.classList.add('fa-eye');
+            }
+        }
+
+        // Password strength indicator
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthIndicator = document.querySelector('.form-text');
+            
+            if (password.length === 0) {
+                strengthIndicator.textContent = 'Password must be at least 8 characters long';
+                strengthIndicator.className = 'form-text';
+            } else if (password.length < 8) {
+                strengthIndicator.textContent = 'Password too short';
+                strengthIndicator.className = 'form-text text-danger';
+            } else if (password.length >= 8 && password.length < 12) {
+                strengthIndicator.textContent = 'Password strength: Good';
+                strengthIndicator.className = 'form-text text-warning';
+            } else {
+                strengthIndicator.textContent = 'Password strength: Strong';
+                strengthIndicator.className = 'form-text text-success';
+            }
+        });
+
+        // Add focus styling
+        const style = document.createElement('style');
+        style.textContent = `
+            .form-control:focus, .form-select:focus {
+                border-color: #cca264;
+                box-shadow: 0 0 0 0.25rem rgba(204, 162, 100, 0.25);
+            }
+            
+            .form-check-input:checked {
+                background-color: #cca264;
+                border-color: #cca264;
+            }
+            
+            .form-check-input:focus {
+                border-color: #cca264;
+                box-shadow: 0 0 0 0.25rem rgba(204, 162, 100, 0.25);
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

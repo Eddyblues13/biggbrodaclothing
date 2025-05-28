@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Biggbroda Clothing</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand mx-auto" href="index.html">
+                <h1 class="logo">Biggbroda</h1>
+            </a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="#" onclick="logout()">LOGOUT</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <section class="dashboard-section py-5" style="margin-top: 100px;">
+        <div class="container">
+            <!-- Welcome Header -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="welcome-card p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                        <h1 class="section-title mb-2">WELCOME BACK, JOHN</h1>
+                        <p style="color: #666;">Manage your account and track your orders</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-lg-3 mb-4">
+                    <div class="dashboard-sidebar p-3" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                        <div class="sidebar-menu">
+                            <a href="#" class="sidebar-item active" onclick="showSection('overview')">
+                                <i class="fas fa-tachometer-alt me-2"></i>Overview
+                            </a>
+                            <a href="#" class="sidebar-item" onclick="showSection('orders')">
+                                <i class="fas fa-shopping-bag me-2"></i>My Orders
+                            </a>
+                            <a href="#" class="sidebar-item" onclick="showSection('profile')">
+                                <i class="fas fa-user me-2"></i>Profile
+                            </a>
+                            <a href="#" class="sidebar-item" onclick="showSection('addresses')">
+                                <i class="fas fa-map-marker-alt me-2"></i>Addresses
+                            </a>
+                            <a href="#" class="sidebar-item" onclick="showSection('wishlist')">
+                                <i class="fas fa-heart me-2"></i>Wishlist
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-lg-9">
+                    <!-- Overview Section -->
+                    <div id="overview" class="dashboard-content">
+                        <div class="row mb-4">
+                            <div class="col-md-4 mb-3">
+                                <div class="stat-card p-3 text-center" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                                    <i class="fas fa-shopping-bag mb-2" style="font-size: 2rem; color: #cca264;"></i>
+                                    <h3 style="color: #101320; font-weight: 600;">12</h3>
+                                    <p class="mb-0" style="color: #666;">Total Orders</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="stat-card p-3 text-center" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                                    <i class="fas fa-heart mb-2" style="font-size: 2rem; color: #cca264;"></i>
+                                    <h3 style="color: #101320; font-weight: 600;">8</h3>
+                                    <p class="mb-0" style="color: #666;">Wishlist Items</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="stat-card p-3 text-center" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                                    <i class="fas fa-star mb-2" style="font-size: 2rem; color: #cca264;"></i>
+                                    <h3 style="color: #101320; font-weight: 600;">VIP</h3>
+                                    <p class="mb-0" style="color: #666;">Member Status</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Orders -->
+                        <div class="recent-orders mb-4">
+                            <h4 class="section-title mb-3">RECENT ORDERS</h4>
+                            <div class="order-card p-3 mb-3" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 style="color: #101320; font-weight: 600;">#BB2023001234</h6>
+                                        <p class="mb-0" style="color: #666;">December 15, 2023</p>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="mb-0" style="color: #cca264; font-weight: 600;">₦ 1,555,200.00</p>
+                                        <span class="badge" style="background: #28a745; color: white;">Delivered</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="order-card p-3 mb-3" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 style="color: #101320; font-weight: 600;">#BB2023001233</h6>
+                                        <p class="mb-0" style="color: #666;">December 10, 2023</p>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="mb-0" style="color: #cca264; font-weight: 600;">₦ 480,000.00</p>
+                                        <span class="badge" style="background: #ffc107; color: #101320;">Processing</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Orders Section -->
+                    <div id="orders" class="dashboard-content" style="display: none;">
+                        <h4 class="section-title mb-4">MY ORDERS</h4>
+                        
+                        <div class="order-item p-4 mb-3" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <h6 style="color: #101320; font-weight: 600;">#BB2023001234</h6>
+                                    <p class="mb-0" style="color: #666;">December 15, 2023</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="mb-0" style="color: #666;">2 Items</p>
+                                    <p class="mb-0" style="color: #cca264; font-weight: 600;">₦ 1,555,200.00</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="badge" style="background: #28a745; color: white;">Delivered</span>
+                                </div>
+                                <div class="col-md-3 text-end">
+                                    <button class="btn btn-outline-secondary btn-sm" style="border-color: #cca264; color: #101320;">View Details</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-item p-4 mb-3" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <h6 style="color: #101320; font-weight: 600;">#BB2023001233</h6>
+                                    <p class="mb-0" style="color: #666;">December 10, 2023</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="mb-0" style="color: #666;">1 Item</p>
+                                    <p class="mb-0" style="color: #cca264; font-weight: 600;">₦ 480,000.00</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="badge" style="background: #ffc107; color: #101320;">Processing</span>
+                                </div>
+                                <div class="col-md-3 text-end">
+                                    <button class="btn btn-outline-secondary btn-sm" style="border-color: #cca264; color: #101320;">Track Order</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Section -->
+                    <div id="profile" class="dashboard-content" style="display: none;">
+                        <h4 class="section-title mb-4">PROFILE INFORMATION</h4>
+                        
+                        <div class="profile-form p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label" style="color: #101320; font-weight: 500;">First Name</label>
+                                        <input type="text" class="form-control" value="John" style="border-color: #e0e0e0;">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label" style="color: #101320; font-weight: 500;">Last Name</label>
+                                        <input type="text" class="form-control" value="Doe" style="border-color: #e0e0e0;">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" style="color: #101320; font-weight: 500;">Email</label>
+                                    <input type="email" class="form-control" value="john.doe@email.com" style="border-color: #e0e0e0;">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" style="color: #101320; font-weight: 500;">Phone</label>
+                                    <input type="tel" class="form-control" value="+234 123 456 7890" style="border-color: #e0e0e0;">
+                                </div>
+                                <button type="submit" class="btn btn-outline-light">UPDATE PROFILE</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Addresses Section -->
+                    <div id="addresses" class="dashboard-content" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="section-title mb-0">SAVED ADDRESSES</h4>
+                            <button class="btn btn-outline-light btn-sm">ADD NEW ADDRESS</button>
+                        </div>
+                        
+                        <div class="address-card p-4 mb-3" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 style="color: #101320; font-weight: 600;">Home Address</h6>
+                                    <p class="mb-0" style="color: #666;">
+                                        123 Victoria Island<br>
+                                        Lagos, Nigeria<br>
+                                        +234 123 456 7890
+                                    </p>
+                                </div>
+                                <div>
+                                    <span class="badge" style="background: #cca264; color: white;">Default</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="address-card p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 style="color: #101320; font-weight: 600;">Office Address</h6>
+                                    <p class="mb-0" style="color: #666;">
+                                        456 Ikoyi Business District<br>
+                                        Lagos, Nigeria<br>
+                                        +234 123 456 7891
+                                    </p>
+                                </div>
+                                <div>
+                                    <button class="btn btn-outline-secondary btn-sm" style="border-color: #e0e0e0; color: #666;">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wishlist Section -->
+                    <div id="wishlist" class="dashboard-content" style="display: none;">
+                        <h4 class="section-title mb-4">MY WISHLIST</h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="wishlist-item p-3" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                                    <div class="d-flex">
+                                        <img src="/placeholder.svg?height=100&width=80" alt="Product" class="me-3 rounded" style="width: 80px; height: 100px; object-fit: cover;">
+                                        <div class="flex-grow-1">
+                                            <h6 style="color: #101320; font-weight: 600;">BB 101 AVENUE HOODIE SET - BLACK</h6>
+                                            <p style="color: #cca264; font-weight: 600;">₦ 960,000.00</p>
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-outline-light btn-sm">ADD TO CART</button>
+                                                <button class="btn btn-outline-secondary btn-sm" style="border-color: #e0e0e0; color: #666;">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="wishlist-item p-3" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+                                    <div class="d-flex">
+                                        <img src="/placeholder.svg?height=100&width=80" alt="Product" class="me-3 rounded" style="width: 80px; height: 100px; object-fit: cover;">
+                                        <div class="flex-grow-1">
+                                            <h6 style="color: #101320; font-weight: 600;">BB FOOTBALL JERSEY - BLUE</h6>
+                                            <p style="color: #cca264; font-weight: 600;">₦ 240,000.00</p>
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-outline-light btn-sm">ADD TO CART</button>
+                                                <button class="btn btn-outline-secondary btn-sm" style="border-color: #e0e0e0; color: #666;">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2023 Biggbroda Clothing. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+    <script>
+        // Dashboard functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.dashboard-content').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Remove active class from all sidebar items
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+            
+            // Add active class to clicked sidebar item
+            event.target.classList.add('active');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Add custom styles for dashboard
+        const style = document.createElement('style');
+        style.textContent = `
+            .sidebar-item {
+                display: block;
+                padding: 0.75rem 1rem;
+                color: #101320;
+                text-decoration: none;
+                border-radius: 8px;
+                margin-bottom: 0.5rem;
+                transition: all 0.3s ease;
+                font-weight: 500;
+            }
+            
+            .sidebar-item:hover {
+                background: #f8f9fa;
+                color: #cca264;
+            }
+            
+            .sidebar-item.active {
+                background: #cca264;
+                color: white;
+            }
+            
+            .sidebar-item.active:hover {
+                background: #b8956b;
+                color: white;
+            }
+            
+            .stat-card:hover {
+                transform: translateY(-5px);
+                transition: all 0.3s ease;
+            }
+            
+            .order-card:hover,
+            .address-card:hover,
+            .wishlist-item:hover {
+                transform: translateY(-2px);
+                transition: all 0.3s ease;
+                box-shadow: 0 8px 30px rgba(16, 19, 32, 0.15) !important;
+            }
+            
+            .form-control:focus {
+                border-color: #cca264;
+                box-shadow: 0 0 0 0.25rem rgba(204, 162, 100, 0.25);
+            }
+            
+            @media (max-width: 991.98px) {
+                .dashboard-sidebar {
+                    margin-bottom: 2rem;
+                }
+                
+                .sidebar-menu {
+                    display: flex;
+                    overflow-x: auto;
+                    gap: 0.5rem;
+                    padding-bottom: 0.5rem;
+                }
+                
+                .sidebar-item {
+                    white-space: nowrap;
+                    margin-bottom: 0;
+                    min-width: fit-content;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

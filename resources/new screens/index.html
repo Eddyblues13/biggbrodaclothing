@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biggbroda Clothing</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <div class="search-header">
+                <h2 class="search-title">Search Products</h2>
+                <button class="search-close" id="searchClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-input-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="What are you looking for?" autocomplete="off">
+                <button class="search-submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-suggestions">
+                <div class="suggestion-category">
+                    <h3>Popular Searches</h3>
+                    <div class="suggestion-tags">
+                        <span class="suggestion-tag">Hoodies</span>
+                        <span class="suggestion-tag">Jerseys</span>
+                        <span class="suggestion-tag">Shorts</span>
+                        <span class="suggestion-tag">New Collection</span>
+                        <span class="suggestion-tag">Sale Items</span>
+                    </div>
+                </div>
+                <div class="suggestion-category">
+                    <h3>Categories</h3>
+                    <div class="suggestion-links">
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-tshirt"></i>
+                            <span>Clothing</span>
+                        </a>
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-running"></i>
+                            <span>Sportswear</span>
+                        </a>
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-star"></i>
+                            <span>New Arrivals</span>
+                        </a>
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-fire"></i>
+                            <span>Trending</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <!-- Mobile Layout -->
+            <div class="d-lg-none d-flex justify-content-between align-items-center w-100 mobile-navbar">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <div class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+                
+                <a class="navbar-brand" href="#">
+                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
+                </a>
+                
+                <div class="mobile-icons">
+                    <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-bag"></i></a>
+                </div>
+            </div>
+
+            <!-- Desktop Layout -->
+            <div class="d-none d-lg-flex justify-content-between align-items-center w-100 desktop-navbar">
+                <div class="navbar-nav nav-left">
+                    <a class="nav-link" href="#">SHOP</a>
+                    <a class="nav-link" href="#">ABOUT</a>
+                    <a class="nav-link" href="#">OUR STORE</a>
+                </div>
+                
+                <a class="navbar-brand mx-auto" href="#">
+                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
+                </a>
+                
+                <div class="navbar-nav nav-right">
+                    <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
+                    <a class="nav-link" href="#">NGN</a>
+                    <a class="nav-link" href="#">LOGIN</a>
+                    <a class="nav-link" href="#">WISHLIST</a>
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-bag"></i></a>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Collapse -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mobile-nav">
+                    <li class="nav-item"><a class="nav-link" href="#">SHOP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">OUR STORE</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">LOGIN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">WISHLIST</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">NGN</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Carousel Section -->
+    <section class="hero-carousel">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active" style="background-image: url('img/hero-img.jpg')">
+                    <div class="carousel-caption">
+                        <button class="btn btn-outline-light">EXPLORE OUR NEW COLLECTION</button>
+                    </div>
+                </div>
+                <div class="carousel-item" style="background-image: url('img/hero-image.jpg')">
+                    <div class="carousel-caption">
+                        <button class="btn btn-outline-light">SHOP NOW</button>
+                    </div>
+                </div>
+                <div class="carousel-item" style="background-image: url('img/img-3.jpg')">
+                    <div class="carousel-caption">
+                        <button class="btn btn-outline-light">DISCOVER MORE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New In Section -->
+    <section class="new-in py-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title">NEW IN</h2>
+                <a href="#" class="explore-all">EXPLORE ALL</a>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="img/product.jpg" alt="White Hoodie Set" class="img-fluid">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">BB 101 AVENUE HOODIE SET - WHITE</h3>
+                            <p class="product-price">₦ 960,000.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="img/product-2.jpg" alt="Black Hoodie Set" class="img-fluid">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">BB 101 AVENUE HOODIE SET - BLACK</h3>
+                            <p class="product-price">₦ 960,000.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="img/product.jpg" alt="Red Jersey" class="img-fluid">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">BB FOOTBALL JERSEY - RED</h3>
+                            <p class="product-price">₦ 240,000.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="img/product-2.jpg" alt="Green Jersey" class="img-fluid">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">BB FOOTBALL JERSEY - GREEN</h3>
+                            <p class="product-price">₦ 240,000.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products py-5">
+        <div class="container">
+            <h2 class="section-title mb-4">FEATURED PRODUCTS</h2>
+            <div class="row">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="img/product.jpg" alt="Red Shorts" class="img-fluid">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">BB LASGIDI SHORTS - RED</h3>
+                            <p class="product-price">₦ 240,000.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="img/product-2.jpg" alt="Orange Shorts" class="img-fluid">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">BB LASGIDI SHORTS - ORANGE</h3>
+                            <p class="product-price">₦ 240,000.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="img/product.jpg" alt="Red Jersey" class="img-fluid">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">BB LASGIDI JERSEY - RED</h3>
+                            <p class="product-price">₦ 240,000.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="img/product-2.jpg" alt="Orange Jersey" class="img-fluid">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">BB LASGIDI JERSEY - ORANGE</h3>
+                            <p class="product-price">₦ 240,000.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collection Banner -->
+    <section class="collection-banner">
+        <div class="container-fluid p-0">
+            <div class="banner-content">
+                <h2>THE NEW COLLECTION IS THE SYNTHESIS OF THE HARMONIOUS ELEMENTS OF PLAYFUL ELEGANCE</h2>
+                <button class="btn btn-outline-light">EXPLORE OUR NEW COLLECTION</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h3 class="footer-title">BIGGBRODA CLOTHING</h3>
+                    <p>Premium streetwear and athletic apparel for the fashion-forward individual.</p>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h3 class="footer-title">SHOP</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">New Arrivals</a></li>
+                        <li><a href="#">Best Sellers</a></li>
+                        <li><a href="#">Collections</a></li>
+                        <li><a href="#">Sale</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h3 class="footer-title">HELP</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h3 class="footer-title">NEWSLETTER</h3>
+                    <p>Subscribe to receive updates on new arrivals and special promotions.</p>
+                    <form class="newsletter-form">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Your email">
+                            <button class="btn btn-dark" type="submit">SUBSCRIBE</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <p>&copy; <span id="year"></span> Biggbroda Clothing. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>
