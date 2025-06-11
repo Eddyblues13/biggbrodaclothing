@@ -87,6 +87,145 @@ class HomePageController extends Controller
         }
     }
 
+
+    public function shop(Request $request)
+    {
+        try {
+            // Cache categories for 1 hour
+            $categories = Cache::remember('homepage-categories', 3600, function () {
+                return Category::where('is_active', true)
+                    ->with(['products' => function ($query) {
+                        $query->where('status', 'active')
+                            ->with(['galleries' => function ($q) {
+                                $q->where('is_default', true)
+                                    ->orWhere('position', 0);
+                            }]);
+                    }])
+                    ->orderBy('created_at')
+                    ->get();
+            });
+
+            // Get popular products (active, bestseller or featured)
+            $popularProducts = Product::where('status', 'active')
+                ->where(function ($query) {
+                    $query->where('is_bestseller', true)
+                        ->orWhere('is_featured', true);
+                })
+                ->with(['category', 'galleries' => function ($q) {
+                    $q->where('is_default', true)
+                        ->orWhere('position', 0);
+                }])
+                ->orderBy('is_bestseller', 'desc')
+                ->orderBy('is_featured', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->take(8)
+                ->get();
+
+            // Get cart data from session
+            $cartCount = $this->getCartCount();
+            $cartSubtotal = $this->getCartSubtotal();
+
+            // Get favorites count from session
+            $favoritesCount = $this->getFavoritesCount();
+
+            // Get favorites from session
+            $favorites = session('favorites', []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            $query = Product::active()->withMainImage();
+
+            // Filters
+            if ($request->filled('category') && $request->category !== 'all') {
+                $query->whereHas('category', fn($q) => $q->where('slug', $request->category));
+            }
+            if ($request->filled('price')) {
+                foreach ($request->price as $range) {
+                    if ($range === '0-300000') $query->orWhereBetween('price', [0, 300000]);
+                    if ($range === '300000-600000') $query->orWhereBetween('price', [300000, 600000]);
+                    if ($range === '600000-1000000') $query->orWhereBetween('price', [600000, 1000000]);
+                    if ($range === '1000000+') $query->orWhere('price', '>=', 1000000);
+                }
+            }
+            if ($request->filled('size')) {
+                $query->where(function ($q) use ($request) {
+                    foreach ($request->size as $size) {
+                        $q->orWhere('size', 'like', "%{$size}%");
+                    }
+                });
+            }
+
+            // Sorting
+            switch ($request->get('sort')) {
+                case 'price-low':
+                    $query->orderBy('price');
+                    break;
+                case 'price-high':
+                    $query->orderBy('price', 'desc');
+                    break;
+                case 'newest':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                case 'name':
+                    $query->orderBy('name');
+                    break;
+                default:
+                    $query->orderByPopularity();
+            }
+
+            $perPage = 12;
+            $products = $query->paginate($perPage)->withQueryString();
+
+            $categories = Category::orderBy('name')->get();
+            $sizes = Product::getAvailableSizes();
+
+            return view('home.shop', compact(
+                'categories',
+                'popularProducts',
+                'cartCount',
+                'cartSubtotal',
+                'favoritesCount',
+                'favorites',
+                'products',
+                'categories',
+                'sizes'
+            ));
+        } catch (\Exception $e) {
+            Log::error('Homepage loading error: ' . $e->getMessage());
+
+            // Fallback data for error page
+            $fallbackCategories = Category::where('is_active', true)->get();
+            $fallbackCartCount = $this->getCartCount();
+            $fallbackFavoritesCount = $this->getFavoritesCount();
+
+            if (!app()->environment('production')) {
+                return view('errors.development', [
+                    'error' => $e,
+                    'categories' => $fallbackCategories,
+                    'cartCount' => $fallbackCartCount,
+                    'favoritesCount' => $fallbackFavoritesCount
+                ]);
+            }
+
+            return view('errors.homepage', [
+                'categories' => $fallbackCategories,
+                'cartCount' => $fallbackCartCount,
+                'favoritesCount' => $fallbackFavoritesCount
+            ]);
+        }
+    }
+
     protected function getCartCount()
     {
         return count(session('cart', []));

@@ -152,6 +152,20 @@ class Product extends Model
         return $this->color ? explode(',', $this->color) : [];
     }
 
+    public static function getAvailableSizes()
+    {
+        return self::query()
+            ->whereNotNull('size')
+            ->pluck('size')
+            ->flatMap(function ($item) {
+                return array_map('trim', explode(',', $item));
+            })
+            ->unique()
+            ->sort()
+            ->values()
+            ->all();
+    }
+
     // Scopes
     public function scopeActive($query)
     {

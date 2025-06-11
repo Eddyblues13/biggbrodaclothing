@@ -15,9 +15,7 @@ Route::get('/login', function () {
 Route::get('/about', function () {
     return view('home.about');
 });
-Route::get('/shop', function () {
-    return view('home.shop');
-});
+
 Route::get('/cart', function () {
     return view('home.cart');
 });
@@ -26,6 +24,7 @@ Route::get('/cart', function () {
 Route::get('/login', [App\Http\Controllers\HomePageController::class, 'login'])->name('lofin');
 
 Route::get('/', [App\Http\Controllers\HomePageController::class, 'index'])->name('homepage');
+Route::get('/shop', [App\Http\Controllers\HomePageController::class, 'shop'])->name('shop');
 Route::get('/collections', [App\Http\Controllers\HomePageController::class, 'collections'])->name('collections');
 
 

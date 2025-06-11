@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +11,6 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
     <!-- Search Overlay -->
     <div class="search-overlay" id="searchOverlay">
@@ -24,8 +22,7 @@
                 </button>
             </div>
             <div class="search-input-container">
-                <input type="text" class="search-input" id="searchInput" placeholder="What are you looking for?"
-                    autocomplete="off">
+                <input type="text" class="search-input" id="searchInput" placeholder="What are you looking for?" autocomplete="off">
                 <button class="search-submit">
                     <i class="fas fa-search"></i>
                 </button>
@@ -78,11 +75,11 @@
                         <span></span>
                     </div>
                 </button>
-
+                
                 <a class="navbar-brand" href="#">
                     <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
                 </a>
-
+                
                 <div class="mobile-icons">
                     <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
                     <a class="nav-link" href="#"><i class="fas fa-shopping-bag"></i></a>
@@ -96,11 +93,11 @@
                     <a class="nav-link" href="#">ABOUT</a>
                     <a class="nav-link" href="#">OUR STORE</a>
                 </div>
-
+                
                 <a class="navbar-brand mx-auto" href="#">
                     <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
                 </a>
-
+                
                 <div class="navbar-nav nav-right">
                     <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
                     <a class="nav-link" href="#">NGN</a>
@@ -109,7 +106,7 @@
                     <a class="nav-link" href="#"><i class="fas fa-shopping-bag"></i></a>
                 </div>
             </div>
-
+            
             <!-- Mobile Menu Collapse -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mobile-nav">
@@ -152,47 +149,53 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="section-title">NEW IN</h2>
-                <a href="" class="explore-all">EXPLORE ALL</a>
+                <a href="#" class="explore-all">EXPLORE ALL</a>
             </div>
             <div class="row">
-                @php
-                $newProducts = App\Models\Product::active()
-                ->newArrivals()
-                ->orderBy('created_at', 'desc')
-                ->take(4)
-                ->get();
-                @endphp
-
-                @foreach($newProducts as $product)
                 <div class="col-md-3 col-6 mb-4">
-                    <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none">
-                        <div class="product-card">
-                            <div class="product-image position-relative">
-                                <img src="{{ $product->thumbnail_url }}" alt="{{ $product->name }}" class="img-fluid">
-
-                                @if($product->is_on_sale)
-                                <span class="badge bg-danger position-absolute top-0 start-0 m-2">
-                                    -{{ $product->discount_percentage }}%
-                                </span>
-                                @endif
-                            </div>
-                            <div class="product-info mt-2">
-                                <h3 class="product-title fs-6">{{ $product->name }}</h3>
-                                <div class="d-flex align-items-center gap-2">
-                                    <p class="product-price mb-0 @if($product->is_on_sale) text-danger @endif">
-                                        ₦ {{ number_format($product->current_price, 2) }}
-                                    </p>
-                                    @if($product->is_on_sale)
-                                    <p class="product-price text-muted mb-0 text-decoration-line-through">
-                                        ₦ {{ number_format($product->price, 2) }}
-                                    </p>
-                                    @endif
-                                </div>
-                            </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="img/product.jpg" alt="White Hoodie Set" class="img-fluid">
                         </div>
-                    </a>
+                        <div class="product-info">
+                            <h3 class="product-title">BB 101 AVENUE HOODIE SET - WHITE</h3>
+                            <p class="product-price">₦ 960,000.00</p>
+                        </div>
+                    </div>
                 </div>
-                @endforeach
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="img/product-2.jpg" alt="Black Hoodie Set" class="img-fluid">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">BB 101 AVENUE HOODIE SET - BLACK</h3>
+                            <p class="product-price">₦ 960,000.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="img/product.jpg" alt="Red Jersey" class="img-fluid">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">BB FOOTBALL JERSEY - RED</h3>
+                            <p class="product-price">₦ 240,000.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="img/product-2.jpg" alt="Green Jersey" class="img-fluid">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">BB FOOTBALL JERSEY - GREEN</h3>
+                            <p class="product-price">₦ 240,000.00</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -318,5 +321,4 @@
     <!-- Custom JS -->
     <script src="script.js"></script>
 </body>
-
 </html>

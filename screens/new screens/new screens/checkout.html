@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Biggbroda Clothing</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biggbroda Clothing</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <div class="search-header">
+                <h2 class="search-title">Search Products</h2>
+                <button class="search-close" id="searchClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-input-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="What are you looking for?" autocomplete="off">
+                <button class="search-submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-suggestions">
+                <div class="suggestion-category">
+                    <h3>Popular Searches</h3>
+                    <div class="suggestion-tags">
+                        <span class="suggestion-tag">Hoodies</span>
+                        <span class="suggestion-tag">Jerseys</span>
+                        <span class="suggestion-tag">Shorts</span>
+                        <span class="suggestion-tag">New Collection</span>
+                        <span class="suggestion-tag">Sale Items</span>
+                    </div>
+                </div>
+                <div class="suggestion-category">
+                    <h3>Categories</h3>
+                    <div class="suggestion-links">
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-tshirt"></i>
+                            <span>Clothing</span>
+                        </a>
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-running"></i>
+                            <span>Sportswear</span>
+                        </a>
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-star"></i>
+                            <span>New Arrivals</span>
+                        </a>
+                        <a href="#" class="suggestion-link">
+                            <i class="fas fa-fire"></i>
+                            <span>Trending</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <!-- Mobile Layout -->
+            <div class="d-lg-none d-flex justify-content-between align-items-center w-100 mobile-navbar">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <div class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+                
+                <a class="navbar-brand" href="#">
+                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
+                </a>
+                
+                <div class="mobile-icons">
+                    <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-bag"></i></a>
+                </div>
+            </div>
+
+            <!-- Desktop Layout -->
+            <div class="d-none d-lg-flex justify-content-between align-items-center w-100 desktop-navbar">
+                <div class="navbar-nav nav-left">
+                    <a class="nav-link" href="#">SHOP</a>
+                    <a class="nav-link" href="#">ABOUT</a>
+                    <a class="nav-link" href="#">OUR STORE</a>
+                </div>
+                
+                <a class="navbar-brand mx-auto" href="#">
+                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
+                </a>
+                
+                <div class="navbar-nav nav-right">
+                    <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
+                    <a class="nav-link" href="#">NGN</a>
+                    <a class="nav-link" href="#">LOGIN</a>
+                    <a class="nav-link" href="#">WISHLIST</a>
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-bag"></i></a>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Collapse -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mobile-nav">
+                    <li class="nav-item"><a class="nav-link" href="#">SHOP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">OUR STORE</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">LOGIN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">WISHLIST</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">NGN</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Checkout Section -->
+    <section class="checkout-section py-5" style="margin-top: 100px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="section-title mb-4">CHECKOUT</h1>
+                    
+                    <!-- Progress Steps -->
+                    <div class="checkout-progress mb-5">
+                        <div class="row">
+                            <div class="col-4 text-center">
+                                <div class="step active">
+                                    <div class="step-number">1</div>
+                                    <div class="step-label">SHIPPING</div>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div class="step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-label">PAYMENT</div>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div class="step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-label">REVIEW</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Checkout Form -->
+                <div class="col-lg-8">
+                    <form id="checkoutForm">
+                        <!-- Shipping Information -->
+                        <div class="checkout-section-card mb-4">
+                            <h4 class="section-title mb-4">SHIPPING INFORMATION</h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">First Name *</label>
+                                    <input type="text" class="form-control" id="firstName" required style="border-color: #e0e0e0;">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">Last Name *</label>
+                                    <input type="text" class="form-control" id="lastName" required style="border-color: #e0e0e0;">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" required style="border-color: #e0e0e0;">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-control" id="phone" required style="border-color: #e0e0e0;">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Street Address *</label>
+                                <input type="text" class="form-control" id="address" required style="border-color: #e0e0e0;">
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="city" class="form-label">City *</label>
+                                    <input type="text" class="form-control" id="city" required style="border-color: #e0e0e0;">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="state" class="form-label">State *</label>
+                                    <select class="form-select" id="state" required style="border-color: #e0e0e0;">
+                                        <option value="">Select State</option>
+                                        <option value="lagos">Lagos</option>
+                                        <option value="abuja">Abuja</option>
+                                        <option value="kano">Kano</option>
+                                        <option value="rivers">Rivers</option>
+                                        <option value="ogun">Ogun</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="zipCode" class="form-label">Postal Code</label>
+                                    <input type="text" class="form-control" id="zipCode" style="border-color: #e0e0e0;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shipping Method -->
+                        <div class="checkout-section-card mb-4">
+                            <h4 class="section-title mb-4">SHIPPING METHOD</h4>
+                            
+                            <div class="shipping-options">
+                                <div class="form-check mb-3 p-3" style="border: 2px solid #e0e0e0; border-radius: 8px;">
+                                    <input class="form-check-input" type="radio" name="shipping" id="standard" value="standard" checked>
+                                    <label class="form-check-label w-100" for="standard">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <strong>Standard Delivery</strong>
+                                                <div class="text-muted">3-5 business days</div>
+                                            </div>
+                                            <div class="text-success"><strong>Free</strong></div>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check mb-3 p-3" style="border: 2px solid #e0e0e0; border-radius: 8px;">
+                                    <input class="form-check-input" type="radio" name="shipping" id="express" value="express">
+                                    <label class="form-check-label w-100" for="express">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <strong>Express Delivery</strong>
+                                                <div class="text-muted">1-2 business days</div>
+                                            </div>
+                                            <div><strong>₦ 15,000.00</strong></div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="checkout-section-card mb-4">
+                            <h4 class="section-title mb-4">PAYMENT METHOD</h4>
+                            
+                            <div class="payment-options">
+                                <div class="form-check mb-3 p-3" style="border: 2px solid #e0e0e0; border-radius: 8px;">
+                                    <input class="form-check-input" type="radio" name="payment" id="card" value="card" checked>
+                                    <label class="form-check-label w-100" for="card">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-credit-card me-3" style="color: #cca264;"></i>
+                                            <span><strong>Credit/Debit Card</strong></span>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check mb-3 p-3" style="border: 2px solid #e0e0e0; border-radius: 8px;">
+                                    <input class="form-check-input" type="radio" name="payment" id="bank" value="bank">
+                                    <label class="form-check-label w-100" for="bank">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-university me-3" style="color: #cca264;"></i>
+                                            <span><strong>Bank Transfer</strong></span>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <div class="form-check mb-3 p-3" style="border: 2px solid #e0e0e0; border-radius: 8px;">
+                                    <input class="form-check-input" type="radio" name="payment" id="paypal" value="paypal">
+                                    <label class="form-check-label w-100" for="paypal">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fab fa-paypal me-3" style="color: #cca264;"></i>
+                                            <span><strong>PayPal</strong></span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Card Details (shown when card is selected) -->
+                            <div id="cardDetails" class="mt-4">
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <label for="cardNumber" class="form-label">Card Number *</label>
+                                        <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" style="border-color: #e0e0e0;">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="expiryDate" class="form-label">Expiry Date *</label>
+                                        <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" style="border-color: #e0e0e0;">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cvv" class="form-label">CVV *</label>
+                                        <input type="text" class="form-control" id="cvv" placeholder="123" style="border-color: #e0e0e0;">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cardName" class="form-label">Name on Card *</label>
+                                    <input type="text" class="form-control" id="cardName" style="border-color: #e0e0e0;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="checkout-navigation d-flex justify-content-between">
+                            <a href="cart.html" class="btn btn-outline-secondary" style="border-color: #101320; color: #101320;">
+                                <i class="fas fa-arrow-left me-2"></i>BACK TO CART
+                            </a>
+                            <button type="submit" class="btn btn-outline-light">
+                                PLACE ORDER<i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="col-lg-4">
+                    <div class="order-summary p-4" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08); position: sticky; top: 120px;">
+                        <h4 class="section-title mb-4">ORDER SUMMARY</h4>
+                        
+                        <!-- Order Items -->
+                        <div class="order-items mb-4">
+                            <div class="order-item d-flex mb-3">
+                                <img src="img/product.jpg" alt="BB 101 Avenue Hoodie Set" class="me-3 rounded" style="width: 50px; height: 60px; object-fit: cover;">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">BB 101 Avenue Hoodie Set - White</h6>
+                                    <small class="text-muted">Size: M, Qty: 1</small>
+                                    <div class="text-end">₦ 960,000.00</div>
+                                </div>
+                            </div>
+                            
+                            <div class="order-item d-flex mb-3">
+                                <img src="img/product-2.jpg" alt="BB Football Jersey" class="me-3 rounded" style="width: 50px; height: 60px; object-fit: cover;">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">BB Football Jersey - Red</h6>
+                                    <small class="text-muted">Size: L, Qty: 2</small>
+                                    <div class="text-end">₦ 480,000.00</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr style="border-color: #e0e0e0;">
+                        
+                        <div class="summary-row d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span>₦ 1,440,000.00</span>
+                        </div>
+                        
+                        <div class="summary-row d-flex justify-content-between mb-2">
+                            <span>Shipping:</span>
+                            <span class="text-success" id="shippingCost">Free</span>
+                        </div>
+                        
+                        <div class="summary-row d-flex justify-content-between mb-3">
+                            <span>Tax:</span>
+                            <span>₦ 115,200.00</span>
+                        </div>
+                        
+                        <hr style="border-color: #cca264;">
+                        
+                        <div class="summary-row d-flex justify-content-between mb-4">
+                            <strong>Total:</strong>
+                            <strong id="orderTotal" style="color: #cca264; font-size: 1.2rem;">₦ 1,555,200.00</strong>
+                        </div>
+
+                        <!-- Security Badge -->
+                        <div class="security-badge text-center">
+                            <i class="fas fa-lock me-2" style="color: #cca264;"></i>
+                            <small class="text-muted">Your payment information is secure and encrypted</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2023 Biggbroda Clothing. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+    <script>
+        // Checkout functionality (simplified - no dynamic pricing)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle payment method change
+            document.querySelectorAll('input[name="payment"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    toggleCardDetails();
+                });
+            });
+
+            // Handle form submission
+            document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                processOrder();
+            });
+
+            // Initialize
+            toggleCardDetails();
+        });
+
+        // Remove the updateShippingCost function entirely
+
+        function toggleCardDetails() {
+            const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+            const cardDetails = document.getElementById('cardDetails');
+            
+            if (selectedPayment === 'card') {
+                cardDetails.style.display = 'block';
+            } else {
+                cardDetails.style.display = 'none';
+            }
+        }
+
+        function processOrder() {
+            // Validate form
+            const form = document.getElementById('checkoutForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Show loading state
+            const submitButton = document.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>PROCESSING...';
+            submitButton.disabled = true;
+
+            // Here you would submit the form to your Laravel backend
+            // For demo purposes, redirect to confirmation page
+            setTimeout(() => {
+                window.location.href = 'order-confirmation.html';
+            }, 2000);
+        }
+
+        // Add some styling for the checkout sections
+        const style = document.createElement('style');
+        style.textContent = `
+            .checkout-section-card {
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);
+                padding: 2rem;
+            }
+            
+            .checkout-progress .step {
+                position: relative;
+            }
+            
+            .checkout-progress .step-number {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: #e0e0e0;
+                color: #666;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 0.5rem;
+                font-weight: 600;
+            }
+            
+            .checkout-progress .step.active .step-number {
+                background: #cca264;
+                color: white;
+            }
+            
+            .checkout-progress .step-label {
+                font-size: 0.8rem;
+                font-weight: 600;
+                color: #666;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            
+            .checkout-progress .step.active .step-label {
+                color: #cca264;
+            }
+            
+            .form-check-input:checked {
+                background-color: #cca264;
+                border-color: #cca264;
+            }
+            
+            .form-check-input:focus {
+                border-color: #cca264;
+                box-shadow: 0 0 0 0.25rem rgba(204, 162, 100, 0.25);
+            }
+            
+            .form-control:focus, .form-select:focus {
+                border-color: #cca264;
+                box-shadow: 0 0 0 0.25rem rgba(204, 162, 100, 0.25);
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
