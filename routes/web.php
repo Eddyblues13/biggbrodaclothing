@@ -16,9 +16,7 @@ Route::get('/about', function () {
     return view('home.about');
 });
 
-Route::get('/cart', function () {
-    return view('home.cart');
-});
+
 
 
 Route::get('/login', [App\Http\Controllers\HomePageController::class, 'login'])->name('lofin');
@@ -48,7 +46,7 @@ Route::prefix('products')->group(function () {
     Route::get('/category/{category:slug}', [App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
 
     // Route to show a single product
-    Route::get('/product/{product:slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
+    Route::get('/{product:slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
     // API endpoints for components
     Route::get('/featured', [App\Http\Controllers\ProductController::class, 'featured'])->name('products.featured');
     Route::get('/bestsellers', [App\Http\Controllers\ProductController::class, 'bestsellers'])->name('products.bestsellers');
@@ -72,6 +70,16 @@ Route::post('/cart/remove', [App\Http\Controllers\CartController::class, 'remove
 Route::get('/cart/data', [App\Http\Controllers\CartController::class, 'getCartData'])->name('cart.data');
 Route::get('/view-cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
 
+
+// Cart Routes
+Route::prefix('cart')->group(function () {
+    Route::post('/add', [App\Http\Controllers\CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/update', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
+    Route::post('/remove', [App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/clear', [App\Http\Controllers\CartController::class, 'clearCart'])->name('cart.clear');
+    Route::get('/', [App\Http\Controllers\CartController::class, 'index'])->name('cart.view');
+    Route::get('/data', [App\Http\Controllers\CartController::class, 'getCartData'])->name('cart.data');
+});
 // Favorites routes
 Route::post('/favorites/toggle', [App\Http\Controllers\FavoriteController::class, 'toggleFavorite'])->name('favorites.toggle');
 Route::get('/favorites', [App\Http\Controllers\FavoriteController::class, 'listFavorites'])->name('favorites.list');

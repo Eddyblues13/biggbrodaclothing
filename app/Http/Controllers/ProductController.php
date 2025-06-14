@@ -77,18 +77,21 @@ class ProductController extends Controller
     /**
      * Display the specified product.
      */
-    public function show(Product $product)
+    public function show($slug)
     {
-        if ($product->status !== 'active') {
-            abort(404);
-        }
 
-        // Get related products from the same category
-        $relatedProducts = Product::with('category')
-            ->where('category_id', $product->category_id)
+        // Eager load necessary relationships
+        $product = Product::with('category', 'galleries')
+            ->where('slug', $slug)
+            ->active()
+            ->firstOrFail();
+
+        // Get related products (from the same category, excluding current product)
+        $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->active()
-            ->inRandomOrder()
+            ->bestsellerOrFeatured()
+            ->orderByPopularity()
             ->limit(4)
             ->get();
 

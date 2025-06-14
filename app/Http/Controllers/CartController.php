@@ -7,22 +7,17 @@ use App\Models\Product;
 
 class CartController extends Controller
 {
-    /**
-     * Add product to cart with variations
-     */
     public function addToCart(Request $request)
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'nullable|integer|min:1',
+            'quantity' => 'required|integer|min:1',
             'size' => 'nullable|string',
-            'color' => 'nullable|string',
         ]);
 
         $product = Product::findOrFail($request->product_id);
         $quantity = $request->input('quantity', 1);
         $size = $request->input('size', '');
-        $color = $request->input('color', '');
 
         // Check stock availability
         if ($product->stock < $quantity) {
@@ -33,10 +28,9 @@ class CartController extends Controller
         }
 
         $cart = session()->get('cart', []);
-        $cartKey = $this->generateCartKey($product->id, $size, $color);
+        $cartKey = $this->generateCartKey($product->id, $size);
 
         if (isset($cart[$cartKey])) {
-            // Update existing item
             $newQuantity = $cart[$cartKey]['quantity'] + $quantity;
 
             if ($newQuantity > $product->stock) {
@@ -49,36 +43,30 @@ class CartController extends Controller
             $cart[$cartKey]['quantity'] = $newQuantity;
             $message = 'Product quantity updated in cart';
         } else {
-            // Add new item
             $cart[$cartKey] = [
                 "product_id" => $product->id,
                 "name" => $product->name,
                 "quantity" => $quantity,
                 "price" => $product->current_price,
-                "image" => $product->thumbnail_url,
+                "image" => $product->image_url,
                 "slug" => $product->slug,
-                "brand" => $product->brand->name ?? 'Unknown',
                 "size" => $size,
-                "color" => $color,
                 "stock" => $product->stock,
-                "delivery_date" => now()->addDays(rand(3, 7))->format('M d')
             ];
             $message = 'Product added to cart successfully';
         }
 
         session()->put('cart', $cart);
+        $cartCount = $this->getCartCount($cart);
 
         return response()->json([
             'success' => true,
             'message' => $message,
-            'cart_count' => $this->getCartCount(),
-            'cart_subtotal' => $this->getCartSubtotal()
+            'cart_count' => $cartCount,
+            'cart_subtotal' => $this->getCartSubtotal($cart)
         ]);
     }
 
-    /**
-     * Update cart item quantity
-     */
     public function update(Request $request)
     {
         $request->validate([
@@ -118,19 +106,17 @@ class CartController extends Controller
         }
 
         session()->put('cart', $cart);
+        $cartCount = $this->getCartCount($cart);
 
         return response()->json([
             'success' => true,
             'message' => $message,
-            'cart_count' => $this->getCartCount(),
-            'cart_subtotal' => $this->getCartSubtotal(),
+            'cart_count' => $cartCount,
+            'cart_subtotal' => $this->getCartSubtotal($cart),
             'item_removed' => ($newQuantity < 1)
         ]);
     }
 
-    /**
-     * Remove item from cart
-     */
     public function remove(Request $request)
     {
         $request->validate([
@@ -149,23 +135,21 @@ class CartController extends Controller
 
         unset($cart[$cartKey]);
         session()->put('cart', $cart);
+        $cartCount = $this->getCartCount($cart);
 
         return response()->json([
             'success' => true,
             'message' => 'Product removed from cart',
-            'cart_count' => $this->getCartCount(),
-            'cart_subtotal' => $this->getCartSubtotal()
+            'cart_count' => $cartCount,
+            'cart_subtotal' => $this->getCartSubtotal($cart)
         ]);
     }
 
-    /**
-     * Get cart data for AJAX updates
-     */
     public function getCartData()
     {
         $cart = session()->get('cart', []);
-        $subtotal = $this->getCartSubtotal();
-        $shipping = $subtotal > 100 ? 0 : 10;
+        $subtotal = $this->getCartSubtotal($cart);
+        $shipping = $subtotal > 500000 ? 0 : 1000;
         $tax = $subtotal * 0.05;
         $total = $subtotal + $tax + $shipping;
 
@@ -179,13 +163,9 @@ class CartController extends Controller
                 'quantity' => $item['quantity'],
                 'image' => $item['image'],
                 'size' => $item['size'],
-                'color' => $item['color'],
-                'delivery_date' => $item['delivery_date'],
                 'product' => $product ? [
                     'slug' => $product->slug,
                     'stock' => $product->stock,
-                    'price' => $product->price,
-                    'discount_percentage' => $product->discount_percentage
                 ] : null
             ];
         }
@@ -193,7 +173,7 @@ class CartController extends Controller
         return response()->json([
             'success' => true,
             'cart_items' => $formattedCart,
-            'cart_count' => $this->getCartCount(),
+            'cart_count' => $this->getCartCount($cart),
             'subtotal' => $subtotal,
             'shipping' => $shipping,
             'tax' => $tax,
@@ -201,46 +181,65 @@ class CartController extends Controller
         ]);
     }
 
-    // Helper methods
-    private function generateCartKey($productId, $size, $color)
+    public function index()
     {
-        return md5($productId . $size . $color);
+        $cart = session()->get('cart', []);
+        $cart = $this->validateCartItems($cart);
+        session()->put('cart', $cart);
+
+        $cartCount = $this->getCartCount($cart);
+        $subtotal = $this->getCartSubtotal($cart);
+        $shipping = $subtotal > 500000 ? 0 : 1000;
+        $tax = $subtotal * 0.05;
+        $total = $subtotal + $tax + $shipping;
+
+
+
+        return view('home.view_cart', compact('cart', 'cartCount', 'subtotal', 'shipping', 'tax', 'total'));
     }
 
-    private function getCartCount()
+    public function clearCart()
     {
-        return array_reduce(session('cart', []), function ($carry, $item) {
+        session()->forget('cart');
+        $cartCount = $this->getCartCount([]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cart has been cleared',
+            'cart_count' => $cartCount,
+            'cart_subtotal' => 0
+        ]);
+    }
+
+    // Helper methods
+    private function generateCartKey($productId, $size)
+    {
+        return md5($productId . $size);
+    }
+
+    private function getCartCount($cart)
+    {
+        return array_reduce($cart, function ($carry, $item) {
             return $carry + $item['quantity'];
         }, 0);
     }
 
-    private function getCartSubtotal()
+    private function getCartSubtotal($cart)
     {
-        return array_reduce(session('cart', []), function ($carry, $item) {
+        return array_reduce($cart, function ($carry, $item) {
             return $carry + ($item['price'] * $item['quantity']);
         }, 0);
     }
 
-    // Get cleaned cart data
-    public function index()
-    {
-        return view('home.view_cart');
-    }
-
-    // Validate cart items
     private function validateCartItems($cart)
     {
         return collect($cart)->filter(function ($item) {
-            return isset($item['product_id']) &&
-                Product::find($item['product_id']);
+            $product = Product::find($item['product_id']);
+            if (!$product || $product->stock < 1) return false;
+            if ($item['quantity'] > $product->stock) {
+                $item['quantity'] = $product->stock;
+            }
+            return true;
         })->toArray();
-    }
-
-    // Calculate subtotal from validated cart
-    private function calculateSubtotal($cart)
-    {
-        return collect($cart)->sum(function ($item) {
-            return $item['price'] * $item['quantity'];
-        });
     }
 }
