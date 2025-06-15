@@ -1,232 +1,261 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ESSENCE - Create Account</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <!-- Custom CSS -->
-  <style>
-    /* Custom styles for ESSENCE signup page */
+@include("home.header")
+<!-- Register Section -->
+<section class="auth-section py-5" style="margin-top: 100px; min-height: 80vh; display: flex; align-items: center;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8">
+        <div class="auth-card p-5"
+          style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08);">
+          <div class="text-center mb-4">
+            <h2 class="section-title mb-3">CREATE ACCOUNT</h2>
+            <p style="color: #666;">Join the BIGGBRODA family and enjoy exclusive benefits</p>
+          </div>
 
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8f9fa;
-}
-
-/* Form styling */
-.form-control {
-  padding: 0.75rem 1rem;
-  border-radius: 0.25rem;
-}
-
-.form-control:focus {
-  border-color: #dc3545;
-  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  border-color: #dc3545;
-  transition: all 0.3s ease;
-}
-
-.btn-danger:hover {
-  background-color: #c82333;
-  border-color: #bd2130;
-}
-
-/* Image section styling */
-.signup-image-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.3) 100%);
-}
-
-/* Header styling */
-header {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-/* Card styling */
-.card {
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-/* Links styling */
-a {
-  text-decoration: none;
-  color: #dc3545;
-  transition: color 0.3s ease;
-}
-
-a:hover {
-  color: #c82333;
-}
-
-/* Custom button styling */
-.btn-outline-secondary {
-  border-color: #ced4da;
-}
-
-.btn-outline-secondary:hover {
-  background-color: #f8f9fa;
-  color: #212529;
-  border-color: #ced4da;
-}
-
-/* Footer styling */
-footer {
-  background-color: #212529;
-}
-
-footer a:hover {
-  color: #fff !important;
-}
-
-/* Responsive adjustments */
-@media (max-width: 767.98px) {
-  .card-body {
-    padding: 1.5rem;
-  }
-}
-
-  </style>
-</head>
-<body>
-
-  <!-- Main Content -->
-  <main class="py-5">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-10">
-          <div class="card border-0 shadow overflow-hidden">
-            <div class="row g-0">
-              <!-- Form Section -->
-              <div class="col-md-6">
-                <div class="card-body p-4 p-lg-5">
-                  <h2 class="fw-bold mb-4">Create Account</h2>
-                  <p class="text-secondary mb-4">Join ESSENCE to enjoy exclusive offers and a seamless shopping experience.</p>
-                  
-                  <form id="signupForm">
-                    <div class="row mb-3">
-                      <div class="col-md-6 mb-3 mb-md-0">
-                        <label for="firstName" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="firstName" required>
-                      </div>
-                      <div class="col-md-6">
-                        <label for="lastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="lastName" required>
-                      </div>
-                    </div>
-                    
-                    <div class="mb-3">
-                      <label for="email" class="form-label">Email Address</label>
-                      <input type="email" class="form-control" id="email" required>
-                    </div>
-                    
-                    <div class="mb-3">
-                      <label for="password" class="form-label">Password</label>
-                      <div class="input-group">
-                        <input type="password" class="form-control" id="password" required minlength="8">
-                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                          <i class="fas fa-eye" id="toggleIcon"></i>
-                        </button>
-                      </div>
-                      <div class="form-text">Password must be at least 8 characters</div>
-                    </div>
-                    
-                    <div class="mb-4">
-                      <label for="confirmPassword" class="form-label">Confirm Password</label>
-                      <div class="input-group">
-                        <input type="password" class="form-control" id="confirmPassword" required>
-                        <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
-                          <i class="fas fa-eye" id="toggleConfirmIcon"></i>
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <div class="mb-4 form-check">
-                      <input type="checkbox" class="form-check-input" id="terms" required>
-                      <label class="form-check-label" for="terms">
-                        I agree to the <a href="#" class="text-danger">Terms of Service</a> and 
-                        <a href="#" class="text-danger">Privacy Policy</a>
-                      </label>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-danger w-100 py-2 mb-3">CREATE ACCOUNT</button>
-                    
-                    <p class="text-center">
-                      Already have an account? <a href="{{ url('/login') }}" class="text-danger fw-medium">Login</a>
-                    </p>
-                  </form>
-                </div>
+          <form id="registerForm">
+            @csrf
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" name="first_name" required
+                  value="{{ old('first_name') }}">
+                <div class="invalid-feedback" data-field="first_name"></div>
               </div>
-              
-              <!-- Image Section -->
-              <div class="col-md-6 d-none d-md-block bg-light position-relative">
-                <div class="signup-image-overlay"></div>
-                <div class="position-absolute top-50 start-50 translate-middle text-center p-4">
-                  <h3 class="fw-bold mb-3">Join Our Community</h3>
-                  <p class="mb-4">Discover the latest fashion trends and exclusive offers.</p>
-                  <div class="bg-white bg-opacity-75 p-3 rounded shadow-sm">
-                    <p class="mb-0">
-                      Use code <span class="fw-bold text-danger">WELCOME15</span> for 15% off your first order
-                    </p>
-                  </div>
-                </div>
+              <div class="col-md-6 mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastName" name="last_name" required
+                  value="{{ old('last_name') }}">
+                <div class="invalid-feedback" data-field="last_name"></div>
               </div>
             </div>
-          </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="email" name="email" required value="{{ old('email') }}">
+              <div class="invalid-feedback" data-field="email"></div>
+            </div>
+
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="phone" name="phone" required value="{{ old('phone') }}">
+              <div class="invalid-feedback" data-field="phone"></div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="password" name="password" required>
+                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password')">
+                  <i class="fas fa-eye" id="passwordToggle"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" data-field="password"></div>
+              <div class="password-strength" id="passwordStrength">Password must be at least 8 characters long</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="confirmPassword" name="password_confirmation" required>
+                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('confirmPassword')">
+                  <i class="fas fa-eye" id="confirmPasswordToggle"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="agreeTerms" name="agreeTerms" required {{
+                  old('agreeTerms') ? 'checked' : '' }}>
+                <label class="form-check-label" for="agreeTerms" style="color: var(--gray);">
+                  I agree to the <a href="#" style="color: var(--primary-color);">Terms of Service</a> and
+                  <a href="#" style="color: var(--primary-color);">Privacy Policy</a>
+                </label>
+                <div class="invalid-feedback" data-field="agreeTerms"></div>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter" {{ old('newsletter')
+                  ? 'checked' : '' }}>
+                <label class="form-check-label" for="newsletter" style="color: var(--gray);">
+                  Subscribe to our newsletter for exclusive offers and updates
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-outline-light w-100 mb-3" id="submitBtn">
+              <span id="btnText">CREATE ACCOUNT</span>
+              <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+            </button>
+
+            <div class="text-center">
+              <span style="color: var(--gray);">Already have an account? </span>
+              <a href="{{ route('login') }}" class="text-decoration-none"
+                style="color: var(--primary-color); font-weight: 500;">Sign In</a>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-  </main>
+  </div>
+</section>
 
+<script>
+  // Initialize Toastr
+  toastr.options = {
+    "closeButton": true,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "timeOut": 5000
+  };
 
-  <!-- Bootstrap JS Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Custom JavaScript -->
-  <script>
-     // Password visibility toggle functionality
-document.addEventListener("DOMContentLoaded", () => {
-  // For the main password field
-  const passwordField = document.getElementById("password")
-  const togglePassword = document.getElementById("togglePassword")
-  const toggleIcon = document.getElementById("toggleIcon")
+  function togglePassword(fieldId) {
+    const passwordInput = document.getElementById(fieldId);
+    const passwordToggle = document.getElementById(fieldId + 'Toggle');
+    
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      passwordToggle.classList.remove('fa-eye');
+      passwordToggle.classList.add('fa-eye-slash');
+    } else {
+      passwordInput.type = 'password';
+      passwordToggle.classList.remove('fa-eye-slash');
+      passwordToggle.classList.add('fa-eye');
+    }
+  }
 
-  // For the confirm password field
-  const confirmPasswordField = document.getElementById("confirmPassword")
-  const toggleConfirmPassword = document.getElementById("toggleConfirmPassword")
-  const toggleConfirmIcon = document.getElementById("toggleConfirmIcon")
+  // Password strength indicator
+  document.getElementById('password').addEventListener('input', function() {
+    const password = this.value;
+    const strengthIndicator = document.getElementById('passwordStrength');
+    
+    if (password.length === 0) {
+      strengthIndicator.textContent = 'Password must be at least 8 characters long';
+      strengthIndicator.className = 'password-strength';
+    } else if (password.length < 8) {
+      strengthIndicator.textContent = 'Password too short';
+      strengthIndicator.className = 'password-strength short';
+    } else if (password.length >= 8 && password.length < 12) {
+      strengthIndicator.textContent = 'Password strength: Good';
+      strengthIndicator.className = 'password-strength good';
+    } else {
+      strengthIndicator.textContent = 'Password strength: Strong';
+      strengthIndicator.className = 'password-strength strong';
+    }
+  });
 
-  // Toggle password visibility for main password
-  togglePassword.addEventListener("click", () => {
-    const type = passwordField.getAttribute("type") === "password" ? "text" : "password"
-    passwordField.setAttribute("type", type)
+  // AJAX form submission
+  $(document).ready(function() {
+    $('#registerForm').submit(function(e) {
+      e.preventDefault();
+      
+      // Reset validation states
+      $('.invalid-feedback').text('').hide();
+      $('.form-control').removeClass('is-invalid');
+      $('.form-check-input').removeClass('is-invalid');
+      
+      const btn = $('#submitBtn');
+      const spinner = $('#spinner');
+      const btnText = $('#btnText');
+      
+      // Show spinner
+      btn.prop('disabled', true);
+      spinner.removeClass('d-none');
+      btnText.text('Processing...');
+      
+      $.ajax({
+        url: "{{ route('register.submit') }}",
+        method: 'POST',
+        data: $(this).serialize(),
+        success: function(response) {
+          if (response.success) {
+            toastr.success(response.message);
+            // Redirect after a short delay
+            setTimeout(() => {
+              window.location.href = "{{ route('login') }}";
+            }, 2000);
+          }
+        },
+        error: function(xhr) {
+          if (xhr.status === 422) {
+            const errors = xhr.responseJSON.errors;
+            const formData = xhr.responseJSON.formData;
+            
+            // Repopulate form with old values
+            if (formData) {
+              // Text, email, tel inputs
+              $('input[type="text"], input[type="email"], input[type="tel"]').each(function() {
+                const name = $(this).attr('name');
+                if (formData[name] !== undefined) {
+                  $(this).val(formData[name]);
+                }
+              });
+              
+              // Checkboxes
+              $('input[type="checkbox"]').each(function() {
+                const name = $(this).attr('name');
+                if (formData[name] !== undefined) {
+                  $(this).prop('checked', formData[name] === 'on' || formData[name] === true);
+                }
+              });
+            }
+            
+            // Show errors using Toastr and field highlights
+            $.each(errors, function(field, messages) {
+              // Show field-specific error
+              const errorContainer = $(`.invalid-feedback[data-field="${field}"]`);
+              const inputElement = $(`[name="${field}"]`);
+              
+              if (errorContainer.length) {
+                inputElement.addClass('is-invalid');
+                errorContainer.text(messages[0]).show();
+              }
+              
+              // Show first error in Toastr
+              if (messages.length > 0) {
+                toastr.error(messages[0]);
+              }
+            });
+          } else {
+            toastr.error('An unexpected error occurred. Please try again.');
+          }
+        },
+        complete: function() {
+          btn.prop('disabled', false);
+          spinner.addClass('d-none');
+          btnText.text('CREATE ACCOUNT');
+        }
+      });
+    });
+  });
+</script>
 
-    // Toggle the eye icon
-    toggleIcon.classList.toggle("fa-eye")
-    toggleIcon.classList.toggle("fa-eye-slash")
-  })
+<style>
+  .invalid-feedback {
+    display: none;
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+  }
 
-  // Toggle password visibility for confirm password
-  toggleConfirmPassword.addEventListener("click", () => {
-    const type = confirmPasswordField.getAttribute("type") === "password" ? "text" : "password"
-    confirmPasswordField.setAttribute("type", type)
+  .is-invalid {
+    border-color: #dc3545 !important;
+  }
 
-    // Toggle the eye icon
-    toggleConfirmIcon.classList.toggle("fa-eye")
-    toggleConfirmIcon.classList.toggle("fa-eye-slash")
-  })
-})
-  </script>
-</body>
-</html>
+  .password-strength {
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+  }
+
+  .password-strength.short {
+    color: #dc3545;
+  }
+
+  .password-strength.good {
+    color: #ffc107;
+  }
+
+  .password-strength.strong {
+    color: #28a745;
+  }
+</style>
+
+@include("home.footer")

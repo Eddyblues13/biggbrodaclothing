@@ -6,20 +6,31 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home.homepage');
 });
-Route::get('/register', function () {
-    return view('home.register');
-});
-Route::get('/login', function () {
-    return view('home.login')->name('login');
-});
+
 Route::get('/about', function () {
     return view('home.about');
 });
 
 
 
+// Registration Routes
+Route::get('/register', [App\Http\Controllers\RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [App\Http\Controllers\RegisterController::class, 'register'])->name('register.submit');
 
-Route::get('/login', [App\Http\Controllers\HomePageController::class, 'login'])->name('lofin');
+// Login Routes
+Route::get('/login', [App\Http\Controllers\LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [App\Http\Controllers\LoginController::class, 'login'])->name('login.submit');
+Route::post('/logout', [App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
+
+// Password Reset Routes
+Route::get('/forgot-password', [App\Http\Controllers\ForgotPasswordController::class, 'showLinkRequestForm'])
+    ->name('password.request');
+Route::post('/forgot-password', [App\Http\Controllers\ForgotPasswordController::class, 'sendResetLinkEmail'])
+    ->name('password.email');
+Route::get('/reset-password/{token}', [App\Http\Controllers\ResetPasswordController::class, 'showResetForm'])
+    ->name('password.reset');
+Route::post('/reset-password', [App\Http\Controllers\ResetPasswordController::class, 'reset'])
+    ->name('password.update');
 
 Route::get('/', [App\Http\Controllers\HomePageController::class, 'index'])->name('homepage');
 Route::get('/shop', [App\Http\Controllers\HomePageController::class, 'shop'])->name('shop');
@@ -90,9 +101,7 @@ Route::get('/login', [App\Http\Controllers\AuthController::class, 'showLoginForm
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 
-// Registration routes
-Route::get('/register', [App\Http\Controllers\AuthController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [App\Http\Controllers\AuthController::class, 'register'])->name('register.post');
+
 
 // Checkout route with auth middleware
 Route::middleware(['auth'])->group(function () {
