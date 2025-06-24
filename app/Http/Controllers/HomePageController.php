@@ -15,18 +15,24 @@ class HomePageController extends Controller
     {
         try {
             // Cache categories for 1 hour
-            $categories = Cache::remember('homepage-categories', 3600, function () {
-                return Category::where('is_active', true)
-                    ->with(['products' => function ($query) {
-                        $query->where('status', 'active')
-                            ->with(['galleries' => function ($q) {
-                                $q->where('is_default', true)
-                                    ->orWhere('position', 0);
-                            }]);
-                    }])
-                    ->orderBy('created_at')
-                    ->get();
-            });
+            // $categories = Cache::remember('homepage-categories', 3600, function () {
+            //     return Category::where('is_active', true)
+            //         ->withCount(['products' => fn($q) => $q->where('status', 'active')])
+            //         ->with([
+            //             'products' => fn($q) => $q
+            //                 ->where('status', 'active')
+            //                 ->orderBy('created_at', 'desc')
+            //                 ->take(1)
+            //                 ->with('galleries') // Eager load galleries
+            //         ])
+            //         ->orderBy('created_at')
+            //         ->get();
+            // });
+
+            $categories = Category::with(['products.galleries'])->active()->get();
+
+
+
 
             // Get popular products (active, bestseller or featured)
             $popularProducts = Product::where('status', 'active')
@@ -42,6 +48,13 @@ class HomePageController extends Controller
                 ->orderBy('is_featured', 'desc')
                 ->orderBy('created_at', 'desc')
                 ->take(8)
+                ->get();
+
+
+            $featuredProducts = Product::active()
+                ->featured()
+                ->with('category') // Optional: if you need category data
+                ->take(4)
                 ->get();
 
             // Get cart data from session
@@ -60,7 +73,8 @@ class HomePageController extends Controller
                 'cartCount',
                 'cartSubtotal',
                 'favoritesCount',
-                'favorites'
+                'favorites',
+                'featuredProducts'
             ));
         } catch (\Exception $e) {
             Log::error('Homepage loading error: ' . $e->getMessage());

@@ -32,6 +32,16 @@ Route::get('/reset-password/{token}', [App\Http\Controllers\ResetPasswordControl
 Route::post('/reset-password', [App\Http\Controllers\ResetPasswordController::class, 'reset'])
     ->name('password.update');
 
+
+
+
+// Checkout route with auth middleware
+// Route::middleware(['auth'])->group(function () {
+Route::get('/profile', [App\Http\Controllers\DashboardController::class, 'index'])->name('home');
+Route::post('/checkout/process', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
+// });
+
+
 Route::get('/', [App\Http\Controllers\HomePageController::class, 'index'])->name('homepage');
 Route::get('/shop', [App\Http\Controllers\HomePageController::class, 'shop'])->name('shop');
 Route::get('/collections', [App\Http\Controllers\HomePageController::class, 'collections'])->name('collections');
@@ -39,6 +49,11 @@ Route::get('/collections', [App\Http\Controllers\HomePageController::class, 'col
 
 Route::get('/categories/{slug}', [App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
 
+
+Route::prefix('products')->group(function () {
+    Route::get('/categories', [App\Http\Controllers\CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/categories/{category}', [App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');
+});
 
 // Product routes
 Route::prefix('products')->group(function () {
@@ -96,18 +111,11 @@ Route::post('/favorites/toggle', [App\Http\Controllers\FavoriteController::class
 Route::get('/favorites', [App\Http\Controllers\FavoriteController::class, 'listFavorites'])->name('favorites.list');
 Route::get('/favorites/count', [App\Http\Controllers\FavoriteController::class, 'getFavoritesCount'])->name('favorites.count');
 
-// Authentication routes
-Route::get('/login', [App\Http\Controllers\AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login.post');
+
 Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 
 
 
-// Checkout route with auth middleware
-Route::middleware(['auth'])->group(function () {
-    Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
-    Route::post('/checkout/process', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
-});
 
 
 

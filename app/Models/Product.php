@@ -71,6 +71,9 @@ class Product extends Model
         return $this->hasMany(ProductGallery::class)->orderBy('position');
     }
 
+
+
+
     // Helper method to initialize Cloudinary (avoids constructor issues)
     protected function getCloudinaryInstance(): Cloudinary
     {

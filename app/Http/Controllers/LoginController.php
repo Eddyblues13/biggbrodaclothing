@@ -16,21 +16,22 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        // Validate credentials
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
         try {
-            $validator = Validator::make($request->all(), [
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => $validator->errors()
-                ], 422);
-            }
-
             $credentials = $request->only('email', 'password');
-            $remember = $request->has('remember');
+            $remember = $request->boolean('remember');
 
             if (Auth::attempt($credentials, $remember)) {
                 $request->session()->regenerate();

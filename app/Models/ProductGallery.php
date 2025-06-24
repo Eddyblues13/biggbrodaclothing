@@ -29,16 +29,22 @@ class ProductGallery extends Model
         return $this->belongsTo(Product::class);
     }
 
+
     public function getImageUrlAttribute(): string
     {
-        if (!$this->public_id) {
-            return asset('images/default-gallery.jpg');
+        if ($this->public_id) {
+            return $this->getCloudinaryInstance()
+                ->image($this->public_id)
+                ->resize(Resize::fill()->width(800)->height(800))
+                ->toUrl();
         }
 
-        return $this->getCloudinaryInstance()
-            ->image($this->public_id)
-            ->resize(Resize::fill()->width(800)->height(800))
-            ->toUrl();
+        // New fallback to product image if gallery image missing
+        if ($this->product && $this->product->image_public_id) {
+            return $this->product->image_url;
+        }
+
+        return asset('images/default-gallery.jpg');
     }
 
     public function getThumbnailUrlAttribute(): string
@@ -80,4 +86,7 @@ class ProductGallery extends Model
     {
         return $query->where('is_default', true);
     }
+
+    // In ProductGallery model
+
 }

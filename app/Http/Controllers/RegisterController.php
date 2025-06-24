@@ -25,14 +25,8 @@ class RegisterController extends Controller
                 'last_name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'phone' => ['required', 'string', 'max:20'],
-                'password' => [
-                    'required',
-                    'confirmed',
-                    Password::min(8)
-                        ->mixedCase()
-                        ->numbers()
-                        ->symbols()
-                ],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+
 
                 'agreeTerms' => ['accepted'],
             ], [
@@ -99,7 +93,7 @@ class RegisterController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Registration successful! Welcome to BIGGBRODA.',
-                'redirect' => route('dashboard')
+                'redirect' => route('home')
             ]);
         } catch (\Exception $e) {
             Log::error('Registration Error: ' . $e->getMessage(), [
