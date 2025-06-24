@@ -141,91 +141,9 @@
     <!-- Shop Content -->
     <section class="shop-content py-5">
         <div class="container">
-            <div class="row">
-                <!-- Filters Sidebar -->
-                <div class="col-lg-3 mb-4">
-                    <div class="filters-sidebar" style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08); position: sticky; top: 120px;">
-                        <h5 class="mb-4" style="color: #101320; font-weight: 600;">FILTERS</h5>
-                        
-                        <!-- Category Filter -->
-                        <div class="filter-group mb-4">
-                            <h6 class="filter-title mb-3" style="color: #101320; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Category</h6>
-                            <div class="filter-options">
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input category-filter" type="radio" name="category" id="all" value="all" checked>
-                                    <label class="form-check-label" for="all" style="color: #666;">All Products</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input category-filter" type="radio" name="category" id="hoodies" value="hoodies">
-                                    <label class="form-check-label" for="hoodies" style="color: #666;">Hoodies</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input category-filter" type="radio" name="category" id="jerseys" value="jerseys">
-                                    <label class="form-check-label" for="jerseys" style="color: #666;">Jerseys</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input category-filter" type="radio" name="category" id="shorts" value="shorts">
-                                    <label class="form-check-label" for="shorts" style="color: #666;">Shorts</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Price Filter -->
-                        <div class="filter-group mb-4">
-                            <h6 class="filter-title mb-3" style="color: #101320; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Price Range</h6>
-                            <div class="filter-options">
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input price-filter" type="checkbox" id="price1" value="0-300000">
-                                    <label class="form-check-label" for="price1" style="color: #666;">Under ₦300,000</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input price-filter" type="checkbox" id="price2" value="300000-600000">
-                                    <label class="form-check-label" for="price2" style="color: #666;">₦300,000 - ₦600,000</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input price-filter" type="checkbox" id="price3" value="600000-1000000">
-                                    <label class="form-check-label" for="price3" style="color: #666;">₦600,000 - ₦1,000,000</label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input price-filter" type="checkbox" id="price4" value="1000000+">
-                                    <label class="form-check-label" for="price4" style="color: #666;">Over ₦1,000,000</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Size Filter -->
-                        <div class="filter-group mb-4">
-                            <h6 class="filter-title mb-3" style="color: #101320; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Size</h6>
-                            <div class="size-filters d-flex flex-wrap gap-2">
-                                <input type="checkbox" class="btn-check size-filter" id="size-xs" value="XS">
-                                <label class="btn btn-outline-secondary btn-sm" for="size-xs" style="border-color: #cca264; color: #101320;">XS</label>
-                                
-                                <input type="checkbox" class="btn-check size-filter" id="size-s" value="S">
-                                <label class="btn btn-outline-secondary btn-sm" for="size-s" style="border-color: #cca264; color: #101320;">S</label>
-                                
-                                <input type="checkbox" class="btn-check size-filter" id="size-m" value="M">
-                                <label class="btn btn-outline-secondary btn-sm" for="size-m" style="border-color: #cca264; color: #101320;">M</label>
-                                
-                                <input type="checkbox" class="btn-check size-filter" id="size-l" value="L">
-                                <label class="btn btn-outline-secondary btn-sm" for="size-l" style="border-color: #cca264; color: #101320;">L</label>
-                                
-                                <input type="checkbox" class="btn-check size-filter" id="size-xl" value="XL">
-                                <label class="btn btn-outline-secondary btn-sm" for="size-xl" style="border-color: #cca264; color: #101320;">XL</label>
-                                
-                                <input type="checkbox" class="btn-check size-filter" id="size-xxl" value="XXL">
-                                <label class="btn btn-outline-secondary btn-sm" for="size-xxl" style="border-color: #cca264; color: #101320;">XXL</label>
-                            </div>
-                        </div>
-
-                        <!-- Clear Filters -->
-                        <button class="btn btn-outline-secondary w-100" id="clearFilters" style="border-color: #101320; color: #101320;">
-                            <i class="fas fa-times me-2"></i>CLEAR FILTERS
-                        </button>
-                    </div>
-                </div>
-
+            <div class="row d-flex justify-content-center">
                 <!-- Products Grid -->
-                <div class="col-lg-9">
+                <div class="col-lg-12">
                     <!-- Sort Options -->
                     <div class="sort-options mb-4 d-flex justify-content-between align-items-center">
                         <div class="view-options">
@@ -254,7 +172,7 @@
                             <div class="col-lg-4 col-md-6 mb-4 product-item" data-category="hoodies" data-price="960000">
                                 <div class="product-card">
                                     <div class="product-image position-relative">
-                                        <img src="/placeholder.svg?height=400&width=300" alt="BB 101 Avenue Hoodie Set - White" class="img-fluid">
+                                        <img src="img/product-3.jpg" alt="BB 101 Avenue Hoodie Set - White" class="img-fluid">
                                         <div class="product-overlay">
                                             <button class="btn btn-sm btn-outline-light quick-view-btn" data-product="1">
                                                 <i class="fas fa-eye me-1"></i>Quick View
@@ -278,7 +196,7 @@
                             <div class="col-lg-4 col-md-6 mb-4 product-item" data-category="hoodies" data-price="960000">
                                 <div class="product-card">
                                     <div class="product-image position-relative">
-                                        <img src="/placeholder.svg?height=400&width=300" alt="BB 101 Avenue Hoodie Set - Black" class="img-fluid">
+                                        <img src="img/product-4.jpg" alt="BB 101 Avenue Hoodie Set - Black" class="img-fluid">
                                         <div class="product-overlay">
                                             <button class="btn btn-sm btn-outline-light quick-view-btn" data-product="2">
                                                 <i class="fas fa-eye me-1"></i>Quick View
@@ -302,7 +220,7 @@
                             <div class="col-lg-4 col-md-6 mb-4 product-item" data-category="jerseys" data-price="240000">
                                 <div class="product-card">
                                     <div class="product-image position-relative">
-                                        <img src="/placeholder.svg?height=400&width=300" alt="BB Football Jersey - Red" class="img-fluid">
+                                        <img src="img/product-3.jpg" alt="BB Football Jersey - Red" class="img-fluid">
                                         <div class="product-overlay">
                                             <button class="btn btn-sm btn-outline-light quick-view-btn" data-product="3">
                                                 <i class="fas fa-eye me-1"></i>Quick View
@@ -317,150 +235,6 @@
                                         <p class="product-price">₦ 240,000.00</p>
                                         <div class="product-sizes">
                                             <small style="color: #666;">Available in: M, L, XL</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Product 4 -->
-                            <div class="col-lg-4 col-md-6 mb-4 product-item" data-category="jerseys" data-price="240000">
-                                <div class="product-card">
-                                    <div class="product-image position-relative">
-                                        <img src="/placeholder.svg?height=400&width=300" alt="BB Football Jersey - Green" class="img-fluid">
-                                        <div class="product-overlay">
-                                            <button class="btn btn-sm btn-outline-light quick-view-btn" data-product="4">
-                                                <i class="fas fa-eye me-1"></i>Quick View
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-light wishlist-btn">
-                                                <i class="fas fa-heart"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="product-info">
-                                        <h3 class="product-title">BB FOOTBALL JERSEY - GREEN</h3>
-                                        <p class="product-price">₦ 240,000.00</p>
-                                        <div class="product-sizes">
-                                            <small style="color: #666;">Available in: M, L, XL</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Product 5 -->
-                            <div class="col-lg-4 col-md-6 mb-4 product-item" data-category="shorts" data-price="240000">
-                                <div class="product-card">
-                                    <div class="product-image position-relative">
-                                        <img src="/placeholder.svg?height=400&width=300" alt="BB Lasgidi Shorts - Red" class="img-fluid">
-                                        <div class="product-overlay">
-                                            <button class="btn btn-sm btn-outline-light quick-view-btn" data-product="5">
-                                                <i class="fas fa-eye me-1"></i>Quick View
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-light wishlist-btn">
-                                                <i class="fas fa-heart"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="product-info">
-                                        <h3 class="product-title">BB LASGIDI SHORTS - RED</h3>
-                                        <p class="product-price">₦ 240,000.00</p>
-                                        <div class="product-sizes">
-                                            <small style="color: #666;">Available in: S, M, L, XL</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Product 6 -->
-                            <div class="col-lg-4 col-md-6 mb-4 product-item" data-category="shorts" data-price="240000">
-                                <div class="product-card">
-                                    <div class="product-image position-relative">
-                                        <img src="/placeholder.svg?height=400&width=300" alt="BB Lasgidi Shorts - Orange" class="img-fluid">
-                                        <div class="product-overlay">
-                                            <button class="btn btn-sm btn-outline-light quick-view-btn" data-product="6">
-                                                <i class="fas fa-eye me-1"></i>Quick View
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-light wishlist-btn">
-                                                <i class="fas fa-heart"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="product-info">
-                                        <h3 class="product-title">BB LASGIDI SHORTS - ORANGE</h3>
-                                        <p class="product-price">₦ 240,000.00</p>
-                                        <div class="product-sizes">
-                                            <small style="color: #666;">Available in: S, M, L, XL</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Product 7 -->
-                            <div class="col-lg-4 col-md-6 mb-4 product-item" data-category="jerseys" data-price="240000">
-                                <div class="product-card">
-                                    <div class="product-image position-relative">
-                                        <img src="/placeholder.svg?height=400&width=300" alt="BB Lasgidi Jersey - Red" class="img-fluid">
-                                        <div class="product-overlay">
-                                            <button class="btn btn-sm btn-outline-light quick-view-btn" data-product="7">
-                                                <i class="fas fa-eye me-1"></i>Quick View
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-light wishlist-btn">
-                                                <i class="fas fa-heart"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="product-info">
-                                        <h3 class="product-title">BB LASGIDI JERSEY - RED</h3>
-                                        <p class="product-price">₦ 240,000.00</p>
-                                        <div class="product-sizes">
-                                            <small style="color: #666;">Available in: M, L, XL</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Product 8 -->
-                            <div class="col-lg-4 col-md-6 mb-4 product-item" data-category="jerseys" data-price="240000">
-                                <div class="product-card">
-                                    <div class="product-image position-relative">
-                                        <img src="/placeholder.svg?height=400&width=300" alt="BB Lasgidi Jersey - Orange" class="img-fluid">
-                                        <div class="product-overlay">
-                                            <button class="btn btn-sm btn-outline-light quick-view-btn" data-product="8">
-                                                <i class="fas fa-eye me-1"></i>Quick View
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-light wishlist-btn">
-                                                <i class="fas fa-heart"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="product-info">
-                                        <h3 class="product-title">BB LASGIDI JERSEY - ORANGE</h3>
-                                        <p class="product-price">₦ 240,000.00</p>
-                                        <div class="product-sizes">
-                                            <small style="color: #666;">Available in: M, L, XL</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Product 9 -->
-                            <div class="col-lg-4 col-md-6 mb-4 product-item" data-category="hoodies" data-price="1200000">
-                                <div class="product-card">
-                                    <div class="product-image position-relative">
-                                        <img src="/placeholder.svg?height=400&width=300" alt="BB Premium Hoodie Set - Navy" class="img-fluid">
-                                        <div class="product-overlay">
-                                            <button class="btn btn-sm btn-outline-light quick-view-btn" data-product="9">
-                                                <i class="fas fa-eye me-1"></i>Quick View
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-light wishlist-btn">
-                                                <i class="fas fa-heart"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="product-info">
-                                        <h3 class="product-title">BB PREMIUM HOODIE SET - NAVY</h3>
-                                        <p class="product-price">₦ 1,200,000.00</p>
-                                        <div class="product-sizes">
-                                            <small style="color: #666;">Available in: S, M, L, XL, XXL</small>
                                         </div>
                                     </div>
                                 </div>

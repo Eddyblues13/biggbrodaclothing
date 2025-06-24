@@ -127,6 +127,18 @@
                 </div>
             </div>
 
+            <!-- Mobile Menu Collapse -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mobile-nav">
+                    <li class="nav-item"><a class="nav-link" href="#">SHOP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">OUR STORE</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">LOGIN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">WISHLIST</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">NGN</a></li>
+                </ul>
+            </div>
+
             <!-- Mobile Menu Collapse (same as before) -->
         </div>
     </nav>
