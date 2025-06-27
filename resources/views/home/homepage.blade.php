@@ -162,4 +162,190 @@
     </div>
 </section>
 
+<!-- Subscription Modal -->
+<div class="modal fade" id="subscriptionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content subscription-modal-content">
+            <div class="modal-header position-absolute top-0 end-0 border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-5 text-center">
+                <h2 class="modal-title fw-bold mb-3">Hey! let's keep in touch.</h2>
+                <p class="modal-subtitle mb-4">Signup to get exclusive offers and great content before you</p>
+
+                <form id="subscriptionForm" class="subscription-form">
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control py-3" placeholder="Enter email here" aria-label="Email"
+                            name="email" required>
+                    </div>
+                    <button type="submit" class="btn btn-dark w-100 py-3">
+                        Be the first to get offer
+                    </button>
+                </form>
+
+                <p class="brand-notice mt-4 mb-0">
+                    * Not affiliated with or endorsed by any brands unless explicitly stated
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <strong class="me-auto">Success!</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Thank you for subscribing! You'll be the first to receive our exclusive offers.
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Subscription Modal Styles */
+    .subscription-modal-content {
+        border-radius: 0;
+        border: none;
+        background-color: #fff;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .modal-title {
+        font-size: 2.5rem;
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+    }
+
+    .modal-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .subscription-form .form-control {
+        border: 2px solid #000;
+        border-radius: 0;
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .subscription-form .form-control:focus {
+        box-shadow: none;
+        border-color: #000;
+    }
+
+    .subscription-form .btn {
+        border-radius: 0;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+
+    .subscription-form .btn:hover {
+        background-color: #333;
+        transform: translateY(-2px);
+    }
+
+    .brand-notice {
+        font-size: 0.85rem;
+        color: #888;
+        font-style: italic;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .modal-title {
+            font-size: 2rem;
+        }
+
+        .modal-subtitle {
+            font-size: 1rem;
+        }
+
+        .modal-body {
+            padding: 2rem !important;
+        }
+
+        .subscription-form .form-control,
+        .subscription-form .btn {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .modal-title {
+            font-size: 1.75rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem !important;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Bootstrap components
+        const subscriptionModal = new bootstrap.Modal(document.getElementById('subscriptionModal'));
+        const successToast = new bootstrap.Toast(document.getElementById('successToast'));
+        
+        // Show modal after 3 seconds
+        setTimeout(() => {
+            subscriptionModal.show();
+        }, 3000);
+        
+        // Handle form submission
+        const subscriptionForm = document.getElementById('subscriptionForm');
+        
+        subscriptionForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const email = formData.get('email');
+            
+            try {
+                // Show loading state
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Subscribing...';
+                submitBtn.disabled = true;
+                
+                // Simulate API call (replace with actual fetch to your endpoint)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Show success toast
+                successToast.show();
+                
+                // Reset form
+                this.reset();
+                
+                // Close modal after 2 seconds
+                setTimeout(() => {
+                    subscriptionModal.hide();
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Subscription error:', error);
+                alert('An error occurred. Please try again.');
+            } finally {
+                // Reset button
+                const submitBtn = this.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        });
+    });
+</script>
+
 @include("home.footer")

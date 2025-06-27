@@ -36,15 +36,23 @@ Route::post('/reset-password', [App\Http\Controllers\ResetPasswordController::cl
 
 
 // Checkout route with auth middleware
-// Route::middleware(['auth'])->group(function () {
-Route::get('/profile', [App\Http\Controllers\DashboardController::class, 'index'])->name('home');
-Route::post('/checkout/process', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
-// });
+Route::middleware(['user'])->group(function () {
+
+    Route::get('/profile', [App\Http\Controllers\DashboardController::class, 'index'])->name('profile');
+
+    Route::prefix('checkout')->name('checkout.')->group(function () {
+        Route::get('/', [App\Http\Controllers\CheckoutController::class, 'index'])->name('index');
+        Route::post('/process', [App\Http\Controllers\CheckoutController::class, 'process'])->name('process');
+        Route::post('/step/{step}', [App\Http\Controllers\CheckoutController::class, 'saveStep'])->name('save-step');
+    });
+});
+
 
 
 Route::get('/', [App\Http\Controllers\HomePageController::class, 'index'])->name('homepage');
 Route::get('/shop', [App\Http\Controllers\HomePageController::class, 'shop'])->name('shop');
 Route::get('/collections', [App\Http\Controllers\HomePageController::class, 'collections'])->name('collections');
+Route::post('/subscribe', [App\Http\Controllers\HomePageController::class, 'addSubscribers']);
 
 
 Route::get('/categories/{slug}', [App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');

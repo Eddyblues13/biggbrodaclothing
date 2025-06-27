@@ -22,19 +22,9 @@ class CategoryProductSeeder extends Seeder
         ]);
 
         // ======================
-        // 1. Seed Categories
+        // 1. Seed Clothing Categories
         // ======================
         $categories = [
-            [
-                'name' => 'Electronics',
-                'description' => 'Latest gadgets and devices',
-                'slug' => 'electronics',
-                'meta_title' => 'Electronics Store | Bigg Broda',
-                'meta_description' => 'Shop smartphones, laptops, and accessories',
-                'meta_keywords' => 'electronics, gadgets, tech',
-                'is_active' => true,
-                'position' => 1
-            ],
             [
                 'name' => 'Men\'s Clothing',
                 'description' => 'Trendy apparel for men',
@@ -43,15 +33,25 @@ class CategoryProductSeeder extends Seeder
                 'meta_description' => 'Premium shirts, jeans, and streetwear',
                 'meta_keywords' => 'clothing, menswear, fashion',
                 'is_active' => true,
+                'position' => 1
+            ],
+            [
+                'name' => 'Women\'s Clothing',
+                'description' => 'Chic styles for women',
+                'slug' => 'womens-clothing',
+                'meta_title' => 'Women\'s Fashion | Bigg Broda',
+                'meta_description' => 'Dresses, tops, and women\'s accessories',
+                'meta_keywords' => 'womenswear, dresses, fashion',
+                'is_active' => true,
                 'position' => 2
             ],
             [
-                'name' => 'Home & Living',
-                'description' => 'Furniture and decor',
-                'slug' => 'home-living',
-                'meta_title' => 'Home Essentials | Bigg Broda',
-                'meta_description' => 'Stylish furniture and home accessories',
-                'meta_keywords' => 'home, furniture, decor',
+                'name' => 'Kids\' Collection',
+                'description' => 'Adorable outfits for children',
+                'slug' => 'kids-collection',
+                'meta_title' => 'Kids Fashion | Bigg Broda',
+                'meta_description' => 'Cute and comfortable clothing for kids',
+                'meta_keywords' => 'kids, children, clothing',
                 'is_active' => true,
                 'position' => 3
             ]
@@ -62,85 +62,17 @@ class CategoryProductSeeder extends Seeder
         }
 
         // ======================
-        // 2. Seed Products
+        // 2. Seed Clothing Products
         // ======================
         $products = [
-            // Electronics (Category ID: 1)
+            // Men's Clothing (Category ID: 1)
             [
                 'category_id' => 1,
-                'name' => 'Smartphone Pro X',
-                'slug' => 'smartphone-pro-x',
-                'description' => '6.7" AMOLED, 128GB storage, 48MP camera',
-                'short_description' => 'Flagship smartphone with pro camera',
-                'sku' => 'ELEC-SPX-2024',
-                'brand' => 'TechMaster',
-                'price' => 899.99,
-                'discount_price' => 849.99,
-                'size' => null,
-                'color' => 'Midnight Black',
-                'stock' => 150,
-                'min_stock' => 20,
-                'is_featured' => true,
-                'is_bestseller' => true,
-                'is_new' => true,
-                'status' => 'active',
-                'meta_title' => 'Smartphone Pro X | Bigg Broda Electronics',
-                'meta_description' => 'Buy the latest Smartphone Pro X with 48MP camera',
-                'meta_keywords' => 'smartphone, tech, mobile'
-            ],
-            [
-                'category_id' => 1,
-                'name' => 'Wireless Earbuds Pro',
-                'slug' => 'wireless-earbuds-pro',
-                'description' => 'Noise-cancelling, 24hr battery life',
-                'short_description' => 'Premium sound quality',
-                'sku' => 'ELEC-WEB-2024',
-                'brand' => 'AudioPlus',
-                'price' => 199.99,
-                'discount_price' => 179.99,
-                'size' => null,
-                'color' => 'White',
-                'stock' => 200,
-                'min_stock' => 30,
-                'is_featured' => false,
-                'is_bestseller' => true,
-                'is_new' => false,
-                'status' => 'active',
-                'meta_title' => 'Wireless Earbuds Pro | Bigg Broda',
-                'meta_description' => 'Noise-cancelling wireless earbuds',
-                'meta_keywords' => 'earbuds, audio, wireless'
-            ],
-            [
-                'category_id' => 1,
-                'name' => 'Ultra HD Smart TV',
-                'slug' => 'ultra-hd-smart-tv',
-                'description' => '55" 4K HDR with streaming apps',
-                'short_description' => 'Immersive viewing experience',
-                'sku' => 'ELEC-TV-2024',
-                'brand' => 'VisionPlus',
-                'price' => 699.99,
-                'discount_price' => 649.99,
-                'size' => '55-inch',
-                'color' => 'Black',
-                'stock' => 75,
-                'min_stock' => 10,
-                'is_featured' => true,
-                'is_bestseller' => false,
-                'is_new' => true,
-                'status' => 'active',
-                'meta_title' => '4K Smart TV | Bigg Broda',
-                'meta_description' => '55" Ultra HD Smart TV with HDR',
-                'meta_keywords' => 'tv, television, 4k'
-            ],
-
-            // Men's Clothing (Category ID: 2)
-            [
-                'category_id' => 2,
                 'name' => 'Slim Fit Denim Jeans',
                 'slug' => 'slim-fit-denim-jeans',
                 'description' => 'Stretch denim, 5-pocket design',
                 'short_description' => 'Comfortable and stylish',
-                'sku' => 'CLOTH-JEANS-001',
+                'sku' => 'MEN-JEANS-001',
                 'brand' => 'UrbanWear',
                 'price' => 59.99,
                 'discount_price' => 49.99,
@@ -157,12 +89,12 @@ class CategoryProductSeeder extends Seeder
                 'meta_keywords' => 'jeans, denim, menswear'
             ],
             [
-                'category_id' => 2,
+                'category_id' => 1,
                 'name' => 'Classic Cotton T-Shirt',
                 'slug' => 'classic-cotton-tshirt',
                 'description' => '100% cotton, crew neck',
                 'short_description' => 'Essential wardrobe staple',
-                'sku' => 'CLOTH-TS-001',
+                'sku' => 'MEN-TS-001',
                 'brand' => 'BasicWear',
                 'price' => 24.99,
                 'discount_price' => null,
@@ -179,12 +111,12 @@ class CategoryProductSeeder extends Seeder
                 'meta_keywords' => 'tshirt, cotton, basic'
             ],
             [
-                'category_id' => 2,
+                'category_id' => 1,
                 'name' => 'Bomber Jacket',
                 'slug' => 'bomber-jacket',
                 'description' => 'Nylon exterior, quilted lining',
                 'short_description' => 'Trendy streetwear essential',
-                'sku' => 'CLOTH-JACKET-001',
+                'sku' => 'MEN-JACKET-001',
                 'brand' => 'StreetStyle',
                 'price' => 89.99,
                 'discount_price' => 79.99,
@@ -201,72 +133,140 @@ class CategoryProductSeeder extends Seeder
                 'meta_keywords' => 'jacket, bomber, outerwear'
             ],
 
-            // Home & Living (Category ID: 3)
+            // Women's Clothing (Category ID: 2)
             [
-                'category_id' => 3,
-                'name' => 'Ceramic Coffee Mug Set',
-                'slug' => 'ceramic-coffee-mug-set',
-                'description' => 'Set of 4, dishwasher-safe',
-                'short_description' => 'Elegant matte finish',
-                'sku' => 'HOME-MUG-001',
-                'brand' => 'HomeEssentials',
-                'price' => 29.99,
-                'discount_price' => 24.99,
-                'size' => null,
-                'color' => 'White',
+                'category_id' => 2,
+                'name' => 'Floral Summer Dress',
+                'slug' => 'floral-summer-dress',
+                'description' => 'Lightweight chiffon, knee-length',
+                'short_description' => 'Perfect for warm days',
+                'sku' => 'WOM-DRESS-001',
+                'brand' => 'FeminineStyle',
+                'price' => 65.99,
+                'discount_price' => 55.99,
+                'size' => 'XS,S,M,L',
+                'color' => 'Floral Print',
+                'stock' => 90,
+                'min_stock' => 20,
+                'is_featured' => true,
+                'is_bestseller' => true,
+                'is_new' => true,
+                'status' => 'active',
+                'meta_title' => 'Women\'s Summer Dress | Bigg Broda',
+                'meta_description' => 'Lightweight floral chiffon dress',
+                'meta_keywords' => 'dress, summer, floral'
+            ],
+            [
+                'category_id' => 2,
+                'name' => 'High-Waisted Leggings',
+                'slug' => 'high-waisted-leggings',
+                'description' => 'Buttery soft fabric, squat-proof',
+                'short_description' => 'Comfort meets style',
+                'sku' => 'WOM-LEG-001',
+                'brand' => 'YogaComfort',
+                'price' => 39.99,
+                'discount_price' => 34.99,
+                'size' => 'S,M,L,XL',
+                'color' => 'Black,Navy',
                 'stock' => 200,
                 'min_stock' => 40,
                 'is_featured' => false,
                 'is_bestseller' => true,
                 'is_new' => false,
                 'status' => 'active',
-                'meta_title' => 'Coffee Mug Set | Bigg Broda',
-                'meta_description' => 'Set of 4 ceramic coffee mugs',
-                'meta_keywords' => 'mugs, kitchen, home'
+                'meta_title' => 'Women\'s Leggings | Bigg Broda',
+                'meta_description' => 'High-waisted performance leggings',
+                'meta_keywords' => 'leggings, activewear, yoga'
             ],
             [
-                'category_id' => 3,
-                'name' => 'Modern Floor Lamp',
-                'slug' => 'modern-floor-lamp',
-                'description' => 'Adjustable height, LED compatible',
-                'short_description' => 'Sleek contemporary design',
-                'sku' => 'HOME-LAMP-001',
-                'brand' => 'Lumiere',
-                'price' => 129.99,
-                'discount_price' => 109.99,
-                'size' => '60-inch',
-                'color' => 'Brushed Nickel',
-                'stock' => 45,
-                'min_stock' => 10,
+                'category_id' => 2,
+                'name' => 'Knit Cardigan',
+                'slug' => 'knit-cardigan',
+                'description' => 'Oversized fit, soft wool blend',
+                'short_description' => 'Cozy layering piece',
+                'sku' => 'WOM-CARD-001',
+                'brand' => 'CozyKnits',
+                'price' => 75.00,
+                'discount_price' => 65.00,
+                'size' => 'S,M,L',
+                'color' => 'Cream',
+                'stock' => 70,
+                'min_stock' => 15,
                 'is_featured' => true,
                 'is_bestseller' => false,
                 'is_new' => true,
                 'status' => 'active',
-                'meta_title' => 'Modern Floor Lamp | Bigg Broda',
-                'meta_description' => 'Adjustable LED floor lamp',
-                'meta_keywords' => 'lamp, lighting, home'
+                'meta_title' => 'Women\'s Cardigan | Bigg Broda',
+                'meta_description' => 'Oversized knit cardigan',
+                'meta_keywords' => 'cardigan, knit, sweater'
             ],
+
+            // Kids' Collection (Category ID: 3)
             [
                 'category_id' => 3,
-                'name' => 'Decorative Throw Pillow',
-                'slug' => 'decorative-throw-pillow',
-                'description' => '18x18", removable cover',
-                'short_description' => 'Bohemian pattern',
-                'sku' => 'HOME-PILLOW-001',
-                'brand' => 'CozyHome',
-                'price' => 39.99,
-                'discount_price' => 34.99,
-                'size' => '18x18 inches',
-                'color' => 'Terracotta',
+                'name' => 'Kids Graphic Tee',
+                'slug' => 'kids-graphic-tee',
+                'description' => '100% cotton, fun prints',
+                'short_description' => 'Comfortable playwear',
+                'sku' => 'KID-TEE-001',
+                'brand' => 'PlayfulKids',
+                'price' => 19.99,
+                'discount_price' => 16.99,
+                'size' => '4-5,6-7,8-9',
+                'color' => 'Blue,Red,Green',
                 'stock' => 150,
                 'min_stock' => 30,
                 'is_featured' => false,
                 'is_bestseller' => true,
                 'is_new' => false,
                 'status' => 'active',
-                'meta_title' => 'Throw Pillow | Bigg Broda Home',
-                'meta_description' => 'Bohemian decorative pillow',
-                'meta_keywords' => 'pillow, decor, home'
+                'meta_title' => 'Kids T-Shirts | Bigg Broda',
+                'meta_description' => 'Fun graphic tees for children',
+                'meta_keywords' => 'kids, tshirt, children'
+            ],
+            [
+                'category_id' => 3,
+                'name' => 'Denim Overalls',
+                'slug' => 'denim-overalls',
+                'description' => 'Adjustable straps, durable denim',
+                'short_description' => 'Play-ready clothing',
+                'sku' => 'KID-OVER-001',
+                'brand' => 'LittleOnes',
+                'price' => 45.99,
+                'discount_price' => 39.99,
+                'size' => '2T,3T,4T',
+                'color' => 'Denim Blue',
+                'stock' => 85,
+                'min_stock' => 20,
+                'is_featured' => true,
+                'is_bestseller' => false,
+                'is_new' => true,
+                'status' => 'active',
+                'meta_title' => 'Kids Overalls | Bigg Broda',
+                'meta_description' => 'Durable denim overalls for toddlers',
+                'meta_keywords' => 'overalls, kids, denim'
+            ],
+            [
+                'category_id' => 3,
+                'name' => 'Hooded Jacket',
+                'slug' => 'hooded-jacket',
+                'description' => 'Water-resistant, warm fleece lining',
+                'short_description' => 'For chilly days',
+                'sku' => 'KID-JACKET-001',
+                'brand' => 'OutdoorKids',
+                'price' => 55.00,
+                'discount_price' => 49.99,
+                'size' => '5-6,7-8,9-10',
+                'color' => 'Red,Blue',
+                'stock' => 65,
+                'min_stock' => 15,
+                'is_featured' => true,
+                'is_bestseller' => true,
+                'is_new' => false,
+                'status' => 'active',
+                'meta_title' => 'Kids Jacket | Bigg Broda',
+                'meta_description' => 'Warm hooded jacket for children',
+                'meta_keywords' => 'jacket, kids, outerwear'
             ]
         ];
 
@@ -275,9 +275,9 @@ class CategoryProductSeeder extends Seeder
         // ======================
         foreach ($products as $index => $productData) {
             $productNumber = $index + 1;
-            $imagePath = public_path("assets/img/product-img/product-{$productNumber}.jpg");
+            $imagePath = public_path("assets/img/products/f{$productNumber}.jpg");
 
-            // Skip if image doesn't exist (or use a default)
+            // Skip if image doesn't exist
             if (!File::exists($imagePath)) {
                 $this->command->warn("Image not found: {$imagePath}");
                 continue;
@@ -298,7 +298,7 @@ class CategoryProductSeeder extends Seeder
 
             // Upload 3 gallery images per product
             for ($i = 1; $i <= 3; $i++) {
-                $galleryImagePath = public_path("assets/img/product-img/product-{$productNumber}-{$i}.jpg");
+                $galleryImagePath = public_path("assets/img/products/product-{$productNumber}-{$i}.jpg");
 
                 if (File::exists($galleryImagePath)) {
                     $galleryUpload = $cloudinary->uploadApi()->upload($galleryImagePath, [
@@ -310,7 +310,7 @@ class CategoryProductSeeder extends Seeder
                     ProductGallery::create([
                         'product_id' => $product->id,
                         'public_id' => $galleryUpload['public_id'],
-                        'image_url' => $galleryUpload['secure_url'], // Add this
+                        'image_url' => $galleryUpload['secure_url'],
                         'position' => $i,
                         'is_default' => $i === 1
                     ]);
@@ -318,6 +318,6 @@ class CategoryProductSeeder extends Seeder
             }
         }
 
-        $this->command->info('Successfully seeded 3 categories and 9 products with galleries!');
+        $this->command->info('Successfully seeded 3 clothing categories and 9 products with galleries!');
     }
 }

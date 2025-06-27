@@ -83,7 +83,7 @@
                 </button>
 
                 <a class="navbar-brand" href="#">
-                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
+                    <img src="{{ asset('img/logo.png')}}" alt="logo" class="logo" width="150" height="50">
                 </a>
 
                 <div class="mobile-icons">
@@ -102,20 +102,28 @@
             <!-- Desktop Layout -->
             <div class="d-none d-lg-flex justify-content-between align-items-center w-100 desktop-navbar">
                 <div class="navbar-nav nav-left">
+                    <a class="nav-link" href="{{url('/')}}">HOME</a>
                     <a class="nav-link" href="#">SHOP</a>
                     <a class="nav-link" href="#">ABOUT</a>
                     <a class="nav-link" href="#">OUR STORE</a>
                 </div>
 
-                <a class="navbar-brand mx-auto" href="#">
-                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
+                <a class="navbar-brand mx-auto" href="{{url('/')}}">
+                    <img src="{{ asset('img/logo.png')}}" alt="logo" class="logo" width="150" height="50">
                 </a>
 
                 <div class="navbar-nav nav-right">
                     <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
                     <a class="nav-link" href="#">NGN</a>
-                    <a class="nav-link" href="#">LOGIN</a>
-                    <a class="nav-link" href="#">WISHLIST</a>
+                    @guest
+                    <a class="nav-link" href="{{ route('login') }}">LOGIN</a>
+                    @endguest
+
+                    @auth
+                    <a class="nav-link" href="{{ route('profile') }}">PROFILE</a>
+                    @endauth
+
+
                     <a class="nav-link position-relative" href="{{ route('cart.index') }}">
                         <i class="fas fa-shopping-bag fs-5"></i>
                         <span id="cartBadge"

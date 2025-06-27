@@ -1,272 +1,396 @@
 @include("home.header")
 
-<!-- ##### Breadcumb Area Start ##### -->
-<div class="breadcumb_area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
-    <div class="container h-100">
-        <div class="row h-100 align-items-center">
+<section class="checkout-section py-5" style="margin-top: 100px;">
+    <div class="container">
+        @if($cartAdjusted)
+        <div class="alert alert-warning mb-4">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            Some items in your cart are no longer available or the quantity has been adjusted to the available stock.
+        </div>
+        @endif
+
+        <div class="row">
             <div class="col-12">
-                <div class="page-title text-center">
-                    <h2>Checkout</h2>
+                <h1 class="section-title mb-4">CHECKOUT</h1>
+
+                <!-- Progress Steps -->
+                <div class="checkout-progress mb-5">
+                    <div class="row">
+                        <div class="col-4 text-center">
+                            <div class="step active">
+                                <div class="step-number">1</div>
+                                <div class="step-label">SHIPPING</div>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-label">PAYMENT</div>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-label">REVIEW</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<!-- ##### Breadcumb Area End ##### -->
 
-<!-- ##### Checkout Area Start ##### -->
-<div class="checkout_area section-padding-80">
-    <div class="container">
-        @if($cartCount === 0)
-        <div class="alert alert-warning text-center">
-            <h4>Your cart is empty</h4>
-            <p>Please add some items to your cart before proceeding to checkout.</p>
-            <a href="{{ route('products.index') }}" class="btn btn-primary">Continue Shopping</a>
-        </div>
-        @else
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <div class="checkout_details_area mt-50 clearfix">
-                    <div class="cart-page-heading mb-30">
-                        <h5>Billing Address</h5>
-                    </div>
+        <form id="checkoutForm" action="{{ route('checkout.process') }}" method="POST">
+            @csrf
+            <div class="row">
+                <!-- Checkout Form -->
+                <div class="col-lg-8">
+                    <!-- Shipping Information -->
+                    <div class="checkout-section-card mb-4">
+                        <h4 class="section-title mb-4">SHIPPING INFORMATION</h4>
 
-                    <form action="{{ route('checkout.process') }}" method="post" id="checkoutForm">
-                        @csrf
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="first_name">First Name <span>*</span></label>
-                                <input type="text" class="form-control" id="first_name" name="first_name" 
-                                       value="{{ auth()->user() ? auth()->user()->first_name : old('first_name') }}" required>
+                                <label for="first_name" class="form-label">First Name *</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" required
+                                    value="{{ old('first_name') }}" style="border-color: #e0e0e0;">
+                                @error('first_name')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="last_name">Last Name <span>*</span></label>
-                                <input type="text" class="form-control" id="last_name" name="last_name"
-                                       value="{{ auth()->user() ? auth()->user()->last_name : old('last_name') }}" required>
+                                <label for="last_name" class="form-label">Last Name *</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" required
+                                    value="{{ old('last_name') }}" style="border-color: #e0e0e0;">
+                                @error('last_name')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="col-12 mb-3">
-                                <label for="email_address">Email Address <span>*</span></label>
-                                <input type="email" class="form-control" id="email_address" name="email"
-                                       value="{{ auth()->user() ? auth()->user()->email : old('email') }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address *</label>
+                            <input type="email" class="form-control" id="email" name="email" required
+                                value="{{ old('email') }}" style="border-color: #e0e0e0;">
+                            @error('email')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number *</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required
+                                value="{{ old('phone') }}" style="border-color: #e0e0e0;">
+                            @error('phone')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address1" class="form-label">Street Address *</label>
+                            <input type="text" class="form-control" id="address1" name="address1" required
+                                value="{{ old('address1') }}" style="border-color: #e0e0e0;">
+                            @error('address1')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address2" class="form-label">Address Line 2 (Optional)</label>
+                            <input type="text" class="form-control" id="address2" name="address2"
+                                value="{{ old('address2') }}" style="border-color: #e0e0e0;">
+                            @error('address2')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="city" class="form-label">City *</label>
+                                <input type="text" class="form-control" id="city" name="city" required
+                                    value="{{ old('city') }}" style="border-color: #e0e0e0;">
+                                @error('city')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="col-12 mb-3">
-                                <label for="phone_number">Phone No <span>*</span></label>
-                                <input type="text" class="form-control" id="phone_number" name="phone"
-                                       value="{{ auth()->user() ? auth()->user()->phone : old('phone') }}" required>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="country">Country <span>*</span></label>
-                                <select class="w-100" id="country" name="country" required>
-                                    <option value="">Select Country</option>
-                                    <option value="Nigeria" {{ old('country') == 'Nigeria' ? 'selected' : '' }}>Nigeria</option>
-                                    <option value="United States" {{ old('country') == 'United States' ? 'selected' : '' }}>United States</option>
-                                    <option value="United Kingdom" {{ old('country') == 'United Kingdom' ? 'selected' : '' }}>United Kingdom</option>
-                                    <option value="Canada" {{ old('country') == 'Canada' ? 'selected' : '' }}>Canada</option>
+                            <div class="col-md-3 mb-3">
+                                <label for="state" class="form-label">State *</label>
+                                <select class="form-select" id="state" name="state" required
+                                    style="border-color: #e0e0e0;">
+                                    <option value="">Select State</option>
+                                    <option value="lagos" {{ old('state')=='lagos' ? 'selected' : '' }}>Lagos</option>
+                                    <option value="abuja" {{ old('state')=='abuja' ? 'selected' : '' }}>Abuja</option>
+                                    <option value="kano" {{ old('state')=='kano' ? 'selected' : '' }}>Kano</option>
+                                    <option value="rivers" {{ old('state')=='rivers' ? 'selected' : '' }}>Rivers
+                                    </option>
+                                    <option value="ogun" {{ old('state')=='ogun' ? 'selected' : '' }}>Ogun</option>
                                 </select>
+                                @error('state')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="col-12 mb-3">
-                                <label for="street_address">Address <span>*</span></label>
-                                <input type="text" class="form-control mb-3" id="street_address" name="address1"
-                                       value="{{ old('address1') }}" placeholder="Street Address" required>
-                                <input type="text" class="form-control" id="street_address2" name="address2"
-                                       value="{{ old('address2') }}" placeholder="Apartment, suite, etc (optional)">
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="city">Town/City <span>*</span></label>
-                                <input type="text" class="form-control" id="city" name="city" value="{{ old('city') }}" required>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="state">State <span>*</span></label>
-                                <input type="text" class="form-control" id="state" name="state" value="{{ old('state') }}" required>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="postcode">Postcode/ZIP</label>
-                                <input type="text" class="form-control" id="postcode" name="postcode" value="{{ old('postcode') }}">
-                            </div>
-
-                            <div class="col-12">
-                                <div class="custom-control custom-checkbox d-block mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="terms" name="terms" required>
-                                    <label class="custom-control-label" for="terms">I agree to the <a href="#">terms and conditions</a></label>
-                                </div>
-                                @guest
-                                <div class="custom-control custom-checkbox d-block mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="create_account" name="create_account">
-                                    <label class="custom-control-label" for="create_account">Create an account</label>
-                                </div>
-                                <div class="custom-control custom-checkbox d-block">
-                                    <input type="checkbox" class="custom-control-input" id="subscribe" name="subscribe">
-                                    <label class="custom-control-label" for="subscribe">Subscribe to our newsletter</label>
-                                </div>
-                                @endguest
+                            <div class="col-md-3 mb-3">
+                                <label for="postcode" class="form-label">Postal Code</label>
+                                <input type="text" class="form-control" id="postcode" name="postcode"
+                                    value="{{ old('postcode') }}" style="border-color: #e0e0e0;">
+                                @error('postcode')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
 
-            <div class="col-12 col-md-6 col-lg-5 ml-lg-auto">
-                <div class="order-details-confirmation">
-                    <div class="cart-page-heading">
-                        <h5>Your Order</h5>
-                        <p>The Details</p>
+                        <input type="hidden" name="country" value="Nigeria">
                     </div>
 
-                    <ul class="order-details-form mb-4">
-                        <li><span>Product</span> <span>Total</span></li>
-                        @foreach($cart as $item)
-                        <li>
-                            <span>{{ $item['name'] }} × {{ $item['quantity'] }}</span> 
-                            <span>₦{{ number_format($item['price'] * $item['quantity'], 2) }}</span>
-                        </li>
-                        @endforeach
-                        <li><span>Subtotal</span> <span>₦{{ number_format($cartSubtotal, 2) }}</span></li>
-                        <li><span>Shipping</span> <span>{{ $cartShipping === 0 ? 'FREE' : '₦'.number_format($cartShipping, 2) }}</span></li>
-                        <li><span>Tax (5%)</span> <span>₦{{ number_format($cartTax, 2) }}</span></li>
-                        <li><span>Total</span> <span>₦{{ number_format($cartTotal, 2) }}</span></li>
-                    </ul>
+                    <!-- Shipping Method -->
+                    <div class="checkout-section-card mb-4">
+                        <h4 class="section-title mb-4">SHIPPING METHOD</h4>
 
-                    <div id="accordion" role="tablist" class="mb-4">
-                        <div class="card">
-                            <div class="card-header" role="tab" id="headingOne">
-                                <h6 class="mb-0">
-                                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                        <i class="fa fa-credit-card mr-3"></i>Credit/Debit Card
-                                    </a>
-                                </h6>
-                            </div>
-                            <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="card_number">Card Number</label>
-                                        <input type="text" class="form-control" id="card_number" name="card_number" placeholder="1234 5678 9012 3456">
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="card_expiry">Expiry Date</label>
-                                                <input type="text" class="form-control" id="card_expiry" name="card_expiry" placeholder="MM/YY">
-                                            </div>
+                        <div class="shipping-options">
+                            <div class="form-check mb-3 p-3" style="border: 2px solid #e0e0e0; border-radius: 8px;">
+                                <input class="form-check-input" type="radio" name="shipping_method" id="standard"
+                                    value="standard" checked>
+                                <label class="form-check-label w-100" for="standard">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <strong>Standard Delivery</strong>
+                                            <div class="text-muted">3-5 business days</div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="card_cvc">CVC</label>
-                                                <input type="text" class="form-control" id="card_cvc" name="card_cvc" placeholder="123">
-                                            </div>
+                                        <div class="text-success">
+                                            <strong id="standard-shipping-cost">
+                                                @if($shipping == 0)
+                                                Free
+                                                @else
+                                                ₦ {{ number_format($shipping, 2) }}
+                                                @endif
+                                            </strong>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn essence-btn" onclick="processPayment('card')">Pay with Card</button>
-                                </div>
+                                </label>
                             </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" role="tab" id="headingTwo">
-                                <h6 class="mb-0">
-                                    <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        <i class="fa fa-paypal mr-3"></i>PayPal
-                                    </a>
-                                </h6>
-                            </div>
-                            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-                                <div class="card-body">
-                                    <p>You will be redirected to PayPal to complete your payment securely.</p>
-                                    <button type="button" class="btn essence-btn" onclick="processPayment('paypal')">Pay with PayPal</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" role="tab" id="headingThree">
-                                <h6 class="mb-0">
-                                    <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                        <i class="fa fa-money mr-3"></i>Bank Transfer
-                                    </a>
-                                </h6>
-                            </div>
-                            <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                                <div class="card-body">
-                                    <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
-                                    <div class="bank-details">
-                                        <p><strong>Bank Name:</strong> Example Bank</p>
-                                        <p><strong>Account Name:</strong> Your Store Name</p>
-                                        <p><strong>Account Number:</strong> 1234567890</p>
+
+                            <div class="form-check mb-3 p-3" style="border: 2px solid #e0e0e0; border-radius: 8px;">
+                                <input class="form-check-input" type="radio" name="shipping_method" id="express"
+                                    value="express">
+                                <label class="form-check-label w-100" for="express">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <strong>Express Delivery</strong>
+                                            <div class="text-muted">1-2 business days</div>
+                                        </div>
+                                        <div><strong>₦ 15,000.00</strong></div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" role="tab" id="headingFour">
-                                <h6 class="mb-0">
-                                    <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                        <i class="fa fa-truck mr-3"></i>Cash on Delivery
-                                    </a>
-                                </h6>
-                            </div>
-                            <div id="collapseFour" class="collapse show" role="tabpanel" aria-labelledby="headingFour" data-parent="#accordion">
-                                <div class="card-body">
-                                    <p>Pay with cash when your order is delivered. Additional charges may apply.</p>
-                                    <button type="button" class="btn essence-btn" onclick="processPayment('cod')">Place Order</button>
-                                </div>
+                                </label>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Payment Method -->
+                    <div class="checkout-section-card mb-4">
+                        <h4 class="section-title mb-4">PAYMENT METHOD</h4>
+
+                        <div class="payment-options">
+                            <div class="form-check mb-3 p-3" style="border: 2px solid #e0e0e0; border-radius: 8px;">
+                                <input class="form-check-input" type="radio" name="payment_method" id="card"
+                                    value="card" checked>
+                                <label class="form-check-label w-100" for="card">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-credit-card me-3" style="color: #cca264;"></i>
+                                        <span><strong>Credit/Debit Card</strong></span>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-3 p-3" style="border: 2px solid #e0e0e0; border-radius: 8px;">
+                                <input class="form-check-input" type="radio" name="payment_method" id="bank_transfer"
+                                    value="bank_transfer">
+                                <label class="form-check-label w-100" for="bank_transfer">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-university me-3" style="color: #cca264;"></i>
+                                        <span><strong>Bank Transfer</strong></span>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-3 p-3" style="border: 2px solid #e0e0e0; border-radius: 8px;">
+                                <input class="form-check-input" type="radio" name="payment_method" id="paypal"
+                                    value="paypal">
+                                <label class="form-check-label w-100" for="paypal">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fab fa-paypal me-3" style="color: #cca264;"></i>
+                                        <span><strong>PayPal</strong></span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Card Details (shown when card is selected) -->
+                        <div id="cardDetails" class="mt-4">
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="cardNumber" class="form-label">Card Number *</label>
+                                    <input type="text" class="form-control" id="cardNumber" name="card_number"
+                                        placeholder="1234 5678 9012 3456" style="border-color: #e0e0e0;">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="expiryDate" class="form-label">Expiry Date *</label>
+                                    <input type="text" class="form-control" id="expiryDate" name="expiry_date"
+                                        placeholder="MM/YY" style="border-color: #e0e0e0;">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="cvv" class="form-label">CVV *</label>
+                                    <input type="text" class="form-control" id="cvv" name="cvv" placeholder="123"
+                                        style="border-color: #e0e0e0;">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cardName" class="form-label">Name on Card *</label>
+                                <input type="text" class="form-control" id="cardName" name="card_name"
+                                    style="border-color: #e0e0e0;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms & Conditions -->
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" name="terms" id="terms" required>
+                        <label class="form-check-label" for="terms">
+                            I agree to the <a href="" class="text-primary">Terms and Conditions</a>
+                        </label>
+                        @error('terms')
+                        <div class="text-danger small mt-1">You must accept the terms and conditions</div>
+                        @enderror
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="checkout-navigation d-flex justify-content-between">
+                        <a href="{{ route('cart.index') }}" class="btn btn-outline-secondary"
+                            style="border-color: #101320; color: #101320;">
+                            <i class="fas fa-arrow-left me-2"></i>BACK TO CART
+                        </a>
+                        <button type="submit" class="btn btn-outline-light">
+                            PLACE ORDER<i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="col-lg-4">
+                    <div class="order-summary p-4"
+                        style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 19, 32, 0.08); position: sticky; top: 120px;">
+                        <h4 class="section-title mb-4">ORDER SUMMARY</h4>
+
+                        <!-- Order Items -->
+                        <div class="order-items mb-4">
+                            @foreach($cart as $item)
+                            <div class="order-item d-flex mb-3">
+                                <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="me-3 rounded"
+                                    style="width: 50px; height: 60px; object-fit: cover;">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">{{ $item['name'] }}</h6>
+                                    <small class="text-muted">Size: {{ $item['size'] }}, Qty: {{ $item['quantity']
+                                        }}</small>
+                                    <div class="text-end">₦ {{ number_format($item['price'] * $item['quantity'], 2) }}
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <hr style="border-color: #e0e0e0;">
+
+                        <div class="summary-row d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span>₦ {{ number_format($subtotal, 2) }}</span>
+                        </div>
+
+                        <div class="summary-row d-flex justify-content-between mb-2">
+                            <span>Shipping:</span>
+                            <span class="text-success" id="shippingCost">
+                                @if($shipping == 0)
+                                Free
+                                @else
+                                ₦ {{ number_format($shipping, 2) }}
+                                @endif
+                            </span>
+                        </div>
+
+                        <div class="summary-row d-flex justify-content-between mb-3">
+                            <span>Tax (5%):</span>
+                            <span>₦ {{ number_format($tax, 2) }}</span>
+                        </div>
+
+                        <hr style="border-color: #cca264;">
+
+                        <div class="summary-row d-flex justify-content-between mb-4">
+                            <strong>Total:</strong>
+                            <strong id="orderTotal" style="color: #cca264; font-size: 1.2rem;">₦ {{
+                                number_format($total, 2) }}</strong>
+                        </div>
+
+                        <!-- Security Badge -->
+                        <div class="security-badge text-center">
+                            <i class="fas fa-lock me-2" style="color: #cca264;"></i>
+                            <small class="text-muted">Your payment information is secure and encrypted</small>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        @endif
+        </form>
     </div>
-</div>
-<!-- ##### Checkout Area End ##### -->
-
-@include("home.footer")
+</section>
 
 <script>
-    $(document).ready(function() {
-        // Auto-fill country if user has saved address
-        @if(auth()->user() && auth()->user()->addresses()->count())
-            var defaultAddress = @json(auth()->user()->addresses()->first());
-            $('#country').val(defaultAddress.country);
-            $('#street_address').val(defaultAddress.address_line1);
-            $('#street_address2').val(defaultAddress.address_line2);
-            $('#city').val(defaultAddress.city);
-            $('#state').val(defaultAddress.state);
-            $('#postcode').val(defaultAddress.postal_code);
-        @endif
+    document.addEventListener('DOMContentLoaded', function() {
+        // Shipping method change handler
+        const shippingRadios = document.querySelectorAll('input[name="shipping_method"]');
+        const shippingCostEl = document.getElementById('shippingCost');
+        const orderTotalEl = document.getElementById('orderTotal');
+        const standardShippingCost = {{ $shipping }};
+        const expressShippingCost = 15000;
+        const subtotal = {{ $subtotal }};
+        const tax = {{ $tax }};
         
-        // Initialize form validation
-        $('#checkoutForm').validate({
-            rules: {
-                first_name: 'required',
-                last_name: 'required',
-                email: {
-                    required: true,
-                    email: true
-                },
-                phone: 'required',
-                country: 'required',
-                address1: 'required',
-                city: 'required',
-                state: 'required',
-                terms: 'required'
-            },
-            messages: {
-                terms: "Please accept our terms and conditions"
-            }
-        });
-    });
-
-    function processPayment(method) {
-        if ($('#checkoutForm').valid()) {
-            // Add payment method to form
-            $('<input>').attr({
-                type: 'hidden',
-                name: 'payment_method',
-                value: method
-            }).appendTo('#checkoutForm');
+        function updateShippingCost() {
+            const selectedShipping = document.querySelector('input[name="shipping_method"]:checked').value;
+            let shippingCost = 0;
             
-            // Submit the form
-            $('#checkoutForm').submit();
-        } else {
-            toastr.error('Please fill in all required fields correctly');
+            if (selectedShipping === 'standard') {
+                shippingCost = standardShippingCost;
+            } else if (selectedShipping === 'express') {
+                shippingCost = expressShippingCost;
+            }
+            
+            // Update shipping cost display
+            shippingCostEl.textContent = shippingCost === 0 ? 'Free' : '₦ ' + shippingCost.toLocaleString('en-US', {minimumFractionDigits: 2});
+            
+            // Calculate new total
+            const newTotal = subtotal + shippingCost + tax;
+            orderTotalEl.textContent = '₦ ' + newTotal.toLocaleString('en-US', {minimumFractionDigits: 2});
         }
-    }
+        
+        shippingRadios.forEach(radio => {
+            radio.addEventListener('change', updateShippingCost);
+        });
+        
+        // Payment method change handler
+        const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+        const cardDetails = document.getElementById('cardDetails');
+        
+        function toggleCardDetails() {
+            const selectedPayment = document.querySelector('input[name="payment_method"]:checked').value;
+            cardDetails.style.display = selectedPayment === 'card' ? 'block' : 'none';
+        }
+        
+        paymentRadios.forEach(radio => {
+            radio.addEventListener('change', toggleCardDetails);
+        });
+        
+        // Initialize on page load
+        toggleCardDetails();
+    });
 </script>
+
+
+@include("home.footer")

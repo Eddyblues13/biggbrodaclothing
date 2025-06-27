@@ -52,9 +52,7 @@
                             <a href="#" class="sidebar-item" onclick="showSection('addresses')">
                                 <i class="fas fa-map-marker-alt me-2"></i>Addresses
                             </a>
-                            <a href="#" class="sidebar-item" onclick="showSection('wishlist')">
-                                <i class="fas fa-heart me-2"></i>Wishlist
-                            </a>
+
                         </div>
                     </div>
                 </div>
@@ -71,13 +69,7 @@
                                     <p class="mb-0">Total Orders</p>
                                 </div>
                             </div>
-                            <div class="col-md-4 mb-3">
-                                <div class="stat-card p-3 text-center">
-                                    <i class="fas fa-heart mb-2"></i>
-                                    <h3>{{ $wishlistCount }}</h3>
-                                    <p class="mb-0">Wishlist Items</p>
-                                </div>
-                            </div>
+
                             <div class="col-md-4 mb-3">
                                 <div class="stat-card p-3 text-center">
                                     <i class="fas fa-star mb-2"></i>
@@ -142,7 +134,7 @@
                     <div id="profile" class="dashboard-content" style="display: none;">
                         <h4 class="section-title mb-4">PROFILE INFORMATION</h4>
                         <div class="profile-form p-4">
-                            <form action="{{ route('profile.update') }}" method="POST">
+                            <form action="" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
@@ -198,36 +190,7 @@
                         @endforeach
                     </div>
 
-                    <!-- Wishlist Section -->
-                    <div id="wishlist" class="dashboard-content" style="display: none;">
-                        <h4 class="section-title mb-4">MY WISHLIST</h4>
-                        <div class="row">
-                            @foreach($wishlistItems as $item)
-                            <div class="col-md-6 mb-4">
-                                <div class="wishlist-item p-3">
-                                    <div class="d-flex">
-                                        <img src="{{ $item->product->image_url }}" alt="{{ $item->product->name }}"
-                                            class="me-3 rounded" style="width: 80px; height: 100px; object-fit: cover;">
-                                        <div class="flex-grow-1">
-                                            <h6>{{ $item->product->name }}</h6>
-                                            <p>₦ {{ number_format($item->product->price, 2) }}</p>
-                                            <div class="d-flex gap-2">
-                                                <button class="btn btn-outline-light btn-sm">ADD TO CART</button>
-                                                <form action="{{ route('wishlist.remove', $item->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-outline-secondary btn-sm">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

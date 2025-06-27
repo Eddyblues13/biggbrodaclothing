@@ -1,243 +1,164 @@
-<!DOCTYPE html>
-<html lang="en">
+@include("home.header")
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biggbroda Clothing</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Toastr CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('styles.css') }}">
-</head>
+<!-- Breadcrumb -->
+<section class="breadcrumb-section py-3">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{{ url('/') }}" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
+            </ol>
+        </nav>
+    </div>
+</section>
 
-<body>
-    <!-- Search Overlay (same as before) -->
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <!-- Mobile Layout -->
-            <div class="d-lg-none d-flex justify-content-between align-items-center w-100 mobile-navbar">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <div class="hamburger-icon">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+<!-- Product Detail -->
+<section class="product-detail py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Product Images -->
+            <div class="col-lg-6 mb-4">
+                <div class="product-gallery position-relative">
+                    @if($product->is_on_sale)
+                    <div class="sale-badge">
+                        {{ $product->discount_percentage }}% OFF
                     </div>
-                </button>
+                    @endif
 
-                <a class="navbar-brand" href="#">
-                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
-                </a>
-
-                <div class="mobile-icons">
-                    <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
-                    <a class="nav-link position-relative" href="{{ route('cart.index') }}">
-                        <i class="fas fa-shopping-bag fs-5"></i>
-                        <span id="cartMobileBadge"
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count"
-                            style="font-size: 0.65em; min-width: 20px; padding: 3px 5px; {{ $cartCount > 0 ? '' : 'display: none;' }}">
-                            {{ $cartCount > 0 ? $cartCount : '' }}
-                        </span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Desktop Layout -->
-            <div class="d-none d-lg-flex justify-content-between align-items-center w-100 desktop-navbar">
-                <div class="navbar-nav nav-left">
-                    <a class="nav-link" href="#">SHOP</a>
-                    <a class="nav-link" href="#">ABOUT</a>
-                    <a class="nav-link" href="#">OUR STORE</a>
-                </div>
-
-                <a class="navbar-brand mx-auto" href="#">
-                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
-                </a>
-
-                <div class="navbar-nav nav-right">
-                    <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
-                    <a class="nav-link" href="#">NGN</a>
-                    <a class="nav-link" href="#">LOGIN</a>
-                    <a class="nav-link" href="#">WISHLIST</a>
-                    <a class="nav-link position-relative" href="{{ route('cart.index') }}">
-                        <i class="fas fa-shopping-bag fs-5"></i>
-                        <span id="cartBadge"
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count"
-                            style="font-size: 0.65em; min-width: 20px; padding: 3px 5px; {{ $cartCount > 0 ? '' : 'display: none;' }}">
-                            {{ $cartCount > 0 ? $cartCount : '' }}
-                        </span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Mobile Menu Collapse (same as before) -->
-        </div>
-    </nav>
-
-    <!-- Breadcrumb -->
-    <section class="breadcrumb-section py-3">
-        <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}" class="text-decoration-none">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
-                </ol>
-            </nav>
-        </div>
-    </section>
-
-    <!-- Product Detail -->
-    <section class="product-detail py-5">
-        <div class="container">
-            <div class="row">
-                <!-- Product Images -->
-                <div class="col-lg-6 mb-4">
-                    <div class="product-gallery position-relative">
-                        @if($product->is_on_sale)
-                        <div class="sale-badge">
-                            {{ $product->discount_percentage }}% OFF
-                        </div>
-                        @endif
-
-                        <div class="main-image mb-3">
-                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="img-fluid rounded"
-                                id="mainProductImage">
-                        </div>
-                        <div class="thumbnail-images">
-                            <div class="row g-2">
-                                <div class="col-3">
-                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
-                                        class="img-fluid rounded thumbnail-img active" onclick="changeMainImage(this)">
-                                </div>
-                                @if($product->gallery_urls)
-                                @foreach(array_slice($product->gallery_urls, 0, 3) as $imageUrl)
-                                <div class="col-3">
-                                    <img src="{{ $imageUrl }}" alt="{{ $product->name }}"
-                                        class="img-fluid rounded thumbnail-img" onclick="changeMainImage(this)">
-                                </div>
-                                @endforeach
-                                @endif
+                    <div class="main-image mb-3">
+                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="img-fluid rounded"
+                            id="mainProductImage">
+                    </div>
+                    <div class="thumbnail-images">
+                        <div class="row g-2">
+                            <div class="col-3">
+                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                    class="img-fluid rounded thumbnail-img active" onclick="changeMainImage(this)">
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Info -->
-                <div class="col-lg-6">
-                    <input type="hidden" id="productId" value="{{ $product->id }}">
-                    <input type="hidden" id="productStock" value="{{ $product->stock }}">
-
-                    <div class="product-info">
-                        <h1 class="product-title mb-3">
-                            {{ strtoupper($product->name) }}
-                        </h1>
-
-                        <div class="product-price mb-4">
-                            <span class="current-price">₦ {{ number_format($product->current_price, 2) }}</span>
-                            @if($product->is_on_sale)
-                            <span class="original-price">₦ {{ number_format($product->price, 2) }}</span>
+                            @if($product->gallery_urls)
+                            @foreach(array_slice($product->gallery_urls, 0, 3) as $imageUrl)
+                            <div class="col-3">
+                                <img src="{{ $imageUrl }}" alt="{{ $product->name }}"
+                                    class="img-fluid rounded thumbnail-img" onclick="changeMainImage(this)">
+                            </div>
+                            @endforeach
                             @endif
                         </div>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="product-description mb-4">
-                            <p>{{ $product->description }}</p>
-                        </div>
+            <!-- Product Info -->
+            <div class="col-lg-6">
+                <input type="hidden" id="productId" value="{{ $product->id }}">
+                <input type="hidden" id="productStock" value="{{ $product->stock }}">
 
-                        <!-- Size Selection -->
-                        @if($product->available_sizes)
-                        <div class="size-selection mb-4">
-                            <h6 class="mb-3">Size</h6>
-                            <div class="size-options">
-                                @foreach($product->available_sizes as $size)
-                                <input type="radio" class="btn-check" name="size" id="size-{{ $size }}"
-                                    value="{{ $size }}" {{ $loop->first ? 'checked' : '' }}>
-                                <label class="btn btn-outline-secondary me-2 mb-2" for="size-{{ $size }}">{{ $size }}</label>
-                                @endforeach
-                            </div>
-                        </div>
+                <div class="product-info">
+                    <h1 class="product-title mb-3">
+                        {{ strtoupper($product->name) }}
+                    </h1>
+
+                    <div class="product-price mb-4">
+                        <span class="current-price">₦ {{ number_format($product->current_price, 2) }}</span>
+                        @if($product->is_on_sale)
+                        <span class="original-price">₦ {{ number_format($product->price, 2) }}</span>
                         @endif
+                    </div>
 
-                        <!-- Quantity -->
-                        <div class="quantity-selection mb-4">
-                            <h6 class="mb-3">Quantity</h6>
-                            <div class="input-group" style="max-width: 150px;">
-                                <button class="btn btn-outline-secondary" type="button"
-                                    onclick="decreaseQuantity()">-</button>
-                                <input type="text" class="form-control text-center" value="1" id="quantity" readonly>
-                                <button class="btn btn-outline-secondary" type="button"
-                                    onclick="increaseQuantity()">+</button>
-                            </div>
-                            <div class="stock-message mt-2">
-                                @if($product->stock > 10)
-                                <span class="text-success"><i class="fas fa-check-circle me-1"></i> In stock</span>
-                                @elseif($product->stock > 0)
-                                <span class="text-warning"><i class="fas fa-exclamation-circle me-1"></i> Only {{ $product->stock }} left</span>
-                                @else
-                                <span class="text-danger"><i class="fas fa-times-circle me-1"></i> Out of stock</span>
-                                @endif
-                            </div>
+                    <div class="product-description mb-4">
+                        <p>{{ $product->description }}</p>
+                    </div>
+
+                    <!-- Size Selection -->
+                    @if($product->available_sizes)
+                    <div class="size-selection mb-4">
+                        <h6 class="mb-3">Size</h6>
+                        <div class="size-options">
+                            @foreach($product->available_sizes as $size)
+                            <input type="radio" class="btn-check" name="size" id="size-{{ $size }}" value="{{ $size }}"
+                                {{ $loop->first ? 'checked' : '' }}>
+                            <label class="btn btn-outline-secondary me-2 mb-2" for="size-{{ $size }}">{{ $size
+                                }}</label>
+                            @endforeach
                         </div>
+                    </div>
+                    @endif
 
-                        <!-- Action Buttons -->
-                        <div class="action-buttons mb-4">
-                            <button class="btn btn-outline-light me-3 mb-2" id="addToCartBtn" onclick="addToCart()">
-                                <i class="fas fa-shopping-cart me-2"></i>ADD TO CART
-                            </button>
-                            <button class="btn btn-outline-secondary mb-2" onclick="addToWishlist()">
-                                <i class="fas fa-heart me-2"></i>WISHLIST
-                            </button>
+                    <!-- Quantity -->
+                    <div class="quantity-selection mb-4">
+                        <h6 class="mb-3">Quantity</h6>
+                        <div class="input-group" style="max-width: 150px;">
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="decreaseQuantity()">-</button>
+                            <input type="text" class="form-control text-center" value="1" id="quantity" readonly>
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="increaseQuantity()">+</button>
                         </div>
+                        <div class="stock-message mt-2">
+                            @if($product->stock > 10)
+                            <span class="text-success"><i class="fas fa-check-circle me-1"></i> In stock</span>
+                            @elseif($product->stock > 0)
+                            <span class="text-warning"><i class="fas fa-exclamation-circle me-1"></i> Only {{
+                                $product->stock }} left</span>
+                            @else
+                            <span class="text-danger"><i class="fas fa-times-circle me-1"></i> Out of stock</span>
+                            @endif
+                        </div>
+                    </div>
 
-                        <!-- Product Details -->
-                        <div class="product-details">
-                            <div class="accordion" id="productAccordion">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#details">
-                                            PRODUCT DETAILS
-                                        </button>
-                                    </h2>
-                                    <div id="details" class="accordion-collapse collapse"
-                                        data-bs-parent="#productAccordion">
-                                        <div class="accordion-body">
-                                            @if($product->short_description)
-                                            {!! nl2br(e($product->short_description)) !!}
-                                            @else
-                                            <p>No additional details available for this product.</p>
-                                            @endif
+                    <!-- Action Buttons -->
+                    <div class="action-buttons mb-4">
+                        <button class="btn btn-outline-light me-3 mb-2" id="addToCartBtn" onclick="addToCart()">
+                            <i class="fas fa-shopping-cart me-2"></i>ADD TO CART
+                        </button>
+                        <button class="btn btn-outline-secondary mb-2" onclick="addToWishlist()">
+                            <i class="fas fa-heart me-2"></i>WISHLIST
+                        </button>
+                    </div>
 
-                                            @if($product->brand)
-                                            <p class="mt-3"><strong>Brand:</strong> {{ $product->brand }}</p>
-                                            @endif
+                    <!-- Product Details -->
+                    <div class="product-details">
+                        <div class="accordion" id="productAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#details">
+                                        PRODUCT DETAILS
+                                    </button>
+                                </h2>
+                                <div id="details" class="accordion-collapse collapse"
+                                    data-bs-parent="#productAccordion">
+                                    <div class="accordion-body">
+                                        @if($product->short_description)
+                                        {!! nl2br(e($product->short_description)) !!}
+                                        @else
+                                        <p>No additional details available for this product.</p>
+                                        @endif
 
-                                            @if($product->sku)
-                                            <p><strong>SKU:</strong> {{ $product->sku }}</p>
-                                            @endif
-                                        </div>
+                                        @if($product->brand)
+                                        <p class="mt-3"><strong>Brand:</strong> {{ $product->brand }}</p>
+                                        @endif
+
+                                        @if($product->sku)
+                                        <p><strong>SKU:</strong> {{ $product->sku }}</p>
+                                        @endif
                                     </div>
                                 </div>
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#shipping">
-                                            SHIPPING & RETURNS
-                                        </button>
-                                    </h2>
-                                    <div id="shipping" class="accordion-collapse collapse"
-                                        data-bs-parent="#productAccordion">
-                                        <div class="accordion-body">
-                                            <p>Free shipping on orders over ₦500,000. Standard delivery takes 3-5
-                                                business days. Returns accepted within 30 days of purchase.</p>
-                                            <p>For international shipping, please contact customer service for rates and
-                                                delivery times.</p>
-                                        </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#shipping">
+                                        SHIPPING & RETURNS
+                                    </button>
+                                </h2>
+                                <div id="shipping" class="accordion-collapse collapse"
+                                    data-bs-parent="#productAccordion">
+                                    <div class="accordion-body">
+                                        <p>Free shipping on orders over ₦500,000. Standard delivery takes 3-5
+                                            business days. Returns accepted within 30 days of purchase.</p>
+                                        <p>For international shipping, please contact customer service for rates and
+                                            delivery times.</p>
                                     </div>
                                 </div>
                             </div>
@@ -246,54 +167,49 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Related Products -->
-    @if($relatedProducts->count() > 0)
-    <section class="related-products py-5">
-        <div class="container">
-            <h2 class="section-title mb-4">YOU MAY ALSO LIKE</h2>
-            <div class="row">
-                @foreach($relatedProducts as $related)
-                <div class="col-md-3 col-6 mb-4">
-                    <div class="product-card">
-                        <a href="{{ route('product.show', $related->slug) }}" class="text-decoration-none text-dark">
-                            <div class="product-image position-relative">
+<!-- Related Products -->
+@if($relatedProducts->count() > 0)
+<section class="related-products py-5">
+    <div class="container">
+        <h2 class="section-title mb-4">YOU MAY ALSO LIKE</h2>
+        <div class="row">
+            @foreach($relatedProducts as $related)
+            <div class="col-md-3 col-6 mb-4">
+                <div class="product-card">
+                    <a href="{{ route('product.show', $related->slug) }}" class="text-decoration-none text-dark">
+                        <div class="product-image position-relative">
+                            @if($related->is_on_sale)
+                            <div class="discount-badge">
+                                SALE
+                            </div>
+                            @endif
+                            <img src="{{ $related->image_url }}" alt="{{ $related->name }}" class="img-fluid">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">{{ $related->name }}</h3>
+                            <p class="product-price">
+                                ₦ {{ number_format($related->current_price, 2) }}
                                 @if($related->is_on_sale)
-                                <div class="discount-badge">
-                                    SALE
-                                </div>
+                                <span class="original-price">₦ {{ number_format($related->price, 2) }}</span>
                                 @endif
-                                <img src="{{ $related->image_url }}" alt="{{ $related->name }}" class="img-fluid">
-                            </div>
-                            <div class="product-info">
-                                <h3 class="product-title">{{ $related->name }}</h3>
-                                <p class="product-price">
-                                    ₦ {{ number_format($related->current_price, 2) }}
-                                    @if($related->is_on_sale)
-                                    <span class="original-price">₦ {{ number_format($related->price, 2) }}</span>
-                                    @endif
-                                </p>
-                            </div>
-                        </a>
-                    </div>
+                            </p>
+                        </div>
+                    </a>
                 </div>
-                @endforeach
             </div>
+            @endforeach
         </div>
-    </section>
-    @endif
+    </div>
+</section>
+@endif
 
-    <!-- Footer (same as before) -->
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <script>
-        // Initialize Toastr
+<script>
+    // Initialize Toastr
         toastr.options = {
             closeButton: true,
             progressBar: true,
@@ -418,6 +334,5 @@
                 });
             });
         });
-    </script>
-</body>
-</html>
+</script>
+@include("home.footer")

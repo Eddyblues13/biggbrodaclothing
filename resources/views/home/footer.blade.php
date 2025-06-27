@@ -3,8 +3,12 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 mb-3">
-                <h3 class="footer-title">BIGGBRODA CLOTHING</h3>
-                <p>Premium streetwear and athletic apparel for the fashion-forward individual.</p>
+                <h3 class="footer-title">WHO WE ARE</h3>
+                <p>We're urban alchemists transforming fabric into attitude. At BIGGBRODA, we stitch rebellion into
+                    every seam and weave confidence into every thread. Born from concrete dreams and midnight
+                    inspiration, our pieces are armor for the style warriors designed not just to dress bodies, but to
+                    amplify personalities. Where street culture breathes and individuality thrives, we craft the uniform
+                    for the unapologetically bold.</p>
             </div>
             <div class="col-md-2 mb-3">
                 <h3 class="footer-title">SHOP</h3>
@@ -60,4 +64,5 @@
 <!-- Custom JS -->
 <script src="{{asset('script.js')}}"></script>
 </body>
+
 </html>

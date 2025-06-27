@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Subscriber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 
 class HomePageController extends Controller
 {
@@ -425,6 +427,34 @@ class HomePageController extends Controller
             'html' => $html,
             'count' => $products->total(),
             'pagination' => $products->links()->toHtml()
+        ]);
+    }
+
+
+
+    public function addSubscribers(Request $request)
+    {
+        // Validate request
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:subscribers,email'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Create subscriber
+        $subscriber = Subscriber::create([
+            'email' => $request->email,
+            'is_active' => true
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Thank you for subscribing!'
         ]);
     }
 }

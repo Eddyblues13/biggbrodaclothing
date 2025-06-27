@@ -1,326 +1,279 @@
-<!DOCTYPE html>
-<html lang="en">
+@include("home.header")
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biggbroda Clothing</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Toastr CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('styles.css') }}">
-</head>
+<style>
+    /* Checkout Button Styles */
+    .btn-checkout {
+        background: linear-gradient(to right, #4c0bce, #8a2be2);
+        color: white;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: 0.5px;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(140, 43, 226, 0.3);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
 
-<body>
-    <!-- Search Overlay (same as before) -->
+    .btn-checkout:hover {
+        background: linear-gradient(to right, #3a089e, #6a1fc9);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(140, 43, 226, 0.4);
+    }
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <!-- Mobile Layout -->
-            <div class="d-lg-none d-flex justify-content-between align-items-center w-100 mobile-navbar">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <div class="hamburger-icon">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </button>
+    .btn-checkout:active {
+        transform: translateY(0);
+    }
 
-                <a class="navbar-brand" href="#">
-                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
-                </a>
+    /* Existing cart styles */
+    .cart-count-badge {
+        background-color: #8a2be2;
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
 
-                <div class="mobile-icons">
-                    <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
-                    <a class="nav-link position-relative" href="{{ route('cart.index') }}">
-                        <i class="fas fa-shopping-bag fs-5"></i>
-                        <span id="cartMobileBadge"
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count"
-                            style="font-size: 0.65em; min-width: 20px; padding: 3px 5px; {{ $cartCount > 0 ? '' : 'display: none;' }}">
-                            {{ $cartCount > 0 ? $cartCount : '' }}
-                        </span>
-                    </a>
+    .cart-item {
+        padding: 1.5rem 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .product-title {
+        font-weight: 600;
+    }
+
+    .delivery-badge {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        display: inline-block;
+    }
+
+    .quantity-controls .input-group {
+        width: 120px;
+    }
+
+    .cart-summary {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .summary-row.total {
+        font-weight: 700;
+        font-size: 1.2rem;
+        border-bottom: none;
+    }
+</style>
+
+<!-- Cart Section -->
+<section class="cart-section py-5" style="margin-top: 100px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="section-title mb-4">SHOPPING CART</h1>
+                @if($cartCount > 0)
+                <div class="d-flex justify-content-end">
+                    <span class="cart-count-badge">{{ $cartCount }} {{ $cartCount > 1 ? 'items' : 'item' }}</span>
                 </div>
+                @endif
             </div>
-
-            <!-- Desktop Layout -->
-            <div class="d-none d-lg-flex justify-content-between align-items-center w-100 desktop-navbar">
-                <div class="navbar-nav nav-left">
-                    <a class="nav-link" href="#">SHOP</a>
-                    <a class="nav-link" href="#">ABOUT</a>
-                    <a class="nav-link" href="#">OUR STORE</a>
-                </div>
-
-                <a class="navbar-brand mx-auto" href="#">
-                    <img src="img/logo.png" alt="logo" class="logo" width="150" height="50">
-                </a>
-
-                <div class="navbar-nav nav-right">
-                    <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
-                    <a class="nav-link" href="#">NGN</a>
-                    <a class="nav-link" href="#">LOGIN</a>
-                    <a class="nav-link" href="#">WISHLIST</a>
-                    <a class="nav-link position-relative" href="{{ route('cart.index') }}">
-                        <i class="fas fa-shopping-bag fs-5"></i>
-                        <span id="cartBadge"
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count"
-                            style="font-size: 0.65em; min-width: 20px; padding: 3px 5px; {{ $cartCount > 0 ? '' : 'display: none;' }}">
-                            {{ $cartCount > 0 ? $cartCount : '' }}
-                        </span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Mobile Menu Collapse (same as before) -->
         </div>
-    </nav>
 
-    <!-- Cart Section -->
-    <section class="cart-section py-5" style="margin-top: 100px;">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h1 class="section-title mb-4">SHOPPING CART</h1>
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                <div class="cart-items">
                     @if($cartCount > 0)
-                    <div class="d-flex justify-content-end">
-                        <span class="cart-count-badge">{{ $cartCount }} {{ $cartCount > 1 ? 'items' : 'item' }}</span>
+                    @foreach($cart as $key => $item)
+                    <div class="cart-item" data-cart-key="{{ $key }}">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 col-4 mb-3 mb-md-0">
+                                <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="img-fluid rounded"
+                                    style="max-height: 120px;">
+                            </div>
+                            <div class="col-md-4 col-8 mb-3 mb-md-0">
+                                <h5 class="product-title mb-2">{{ $item['name'] }}</h5>
+
+                                @if(isset($item['size']) && $item['size'])
+                                <p class="text-muted mb-1">Size: {{ $item['size'] }}</p>
+                                @endif
+
+                                @if(isset($item['color']) && $item['color'])
+                                <p class="text-muted mb-0">Color: {{ $item['color'] }}</p>
+                                @endif
+
+                                @if(isset($item['delivery_date']))
+                                <p class="delivery-badge mt-2 mb-0">
+                                    <i class="fas fa-truck me-1"></i> Delivery by {{ $item['delivery_date'] }}
+                                </p>
+                                @endif
+                            </div>
+
+                            <div class="col-md-2 col-4 mb-3 mb-md-0">
+                                <div class="quantity-controls">
+                                    <div class="input-group">
+                                        <button class="btn btn-outline-secondary btn-sm" type="button"
+                                            onclick="updateCartItem('{{ $key }}', -1)">
+                                            -
+                                        </button>
+                                        <input type="text"
+                                            class="form-control form-control-sm text-center quantity-input"
+                                            value="{{ $item['quantity'] }}" readonly>
+                                        <button class="btn btn-outline-secondary btn-sm" type="button"
+                                            onclick="updateCartItem('{{ $key }}', 1)">
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-4 mb-3 mb-md-0">
+                                <p class="product-price mb-0">
+                                    <span class="fw-bold">₦ {{ number_format($item['price'] * $item['quantity'], 2)
+                                        }}</span>
+                                </p>
+                                <div class="text-muted small">
+                                    ₦ {{ number_format($item['price'], 2) }} × {{ $item['quantity'] }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-1 col-4">
+                                <button class="btn btn-link text-danger p-0" onclick="removeCartItem('{{ $key }}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    @else
+                    <div class="cart-item text-center">
+                        <div class="py-5">
+                            <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
+                            <h4 class="mb-3">Your cart is empty</h4>
+                            <p class="text-muted mb-4">Looks like you haven't added anything to your cart yet</p>
+                            <a href="" class="btn btn-dark px-5">
+                                <i class="fas fa-shopping-bag me-2"></i> Start Shopping
+                            </a>
+                        </div>
+                    </div>
+                    @endif
+
+
+                    @if($cartCount > 0)
+                    <!-- Continue Shopping -->
+                    <div class="continue-shopping mt-4">
+                        <a href="" class="btn btn-continue">
+                            <i class="fas fa-arrow-left me-2"></i>CONTINUE SHOPPING
+                        </a>
+                        <button class="btn btn-danger ms-2" onclick="clearCart()">
+                            <i class="fas fa-trash-alt me-2"></i> CLEAR CART
+                        </button>
                     </div>
                     @endif
                 </div>
             </div>
 
-            <div class="row">
-                <!-- Cart Items -->
-                <div class="col-lg-8">
-                    <div class="cart-items">
-                        @if($cartCount > 0)
-                        @foreach($cart as $key => $item)
-                        <div class="cart-item" data-cart-key="{{ $key }}">
-                            <div class="row align-items-center">
-                                <div class="col-md-2 col-4 mb-3 mb-md-0">
-                                    <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="img-fluid rounded"
-                                        style="max-height: 120px;">
-                                </div>
-                                <div class="col-md-4 col-8 mb-3 mb-md-0">
-                                    <h5 class="product-title mb-2">{{ $item['name'] }}</h5>
-
-                                    @if(isset($item['size']) && $item['size'])
-                                    <p class="text-muted mb-1">Size: {{ $item['size'] }}</p>
-                                    @endif
-
-                                    @if(isset($item['color']) && $item['color'])
-                                    <p class="text-muted mb-0">Color: {{ $item['color'] }}</p>
-                                    @endif
-
-                                    @if(isset($item['delivery_date']))
-                                    <p class="delivery-badge mt-2 mb-0">
-                                        <i class="fas fa-truck me-1"></i> Delivery by {{ $item['delivery_date'] }}
-                                    </p>
-                                    @endif
-                                </div>
-
-                                <div class="col-md-2 col-4 mb-3 mb-md-0">
-                                    <div class="quantity-controls">
-                                        <div class="input-group">
-                                            <button class="btn btn-outline-secondary btn-sm" type="button"
-                                                onclick="updateCartItem('{{ $key }}', -1)">
-                                                -
-                                            </button>
-                                            <input type="text"
-                                                class="form-control form-control-sm text-center quantity-input"
-                                                value="{{ $item['quantity'] }}" readonly>
-                                            <button class="btn btn-outline-secondary btn-sm" type="button"
-                                                onclick="updateCartItem('{{ $key }}', 1)">
-                                                +
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3 col-4 mb-3 mb-md-0">
-                                    <p class="product-price mb-0">
-                                        <span class="fw-bold">₦ {{ number_format($item['price'] * $item['quantity'], 2)
-                                            }}</span>
-                                    </p>
-                                    <div class="text-muted small">
-                                        ₦ {{ number_format($item['price'], 2) }} × {{ $item['quantity'] }}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-1 col-4">
-                                    <button class="btn btn-link text-danger p-0" onclick="removeCartItem('{{ $key }}')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                        @else
-                        <div class="cart-item text-center">
-                            <div class="py-5">
-                                <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
-                                <h4 class="mb-3">Your cart is empty</h4>
-                                <p class="text-muted mb-4">Looks like you haven't added anything to your cart yet</p>
-                                <a href="" class="btn btn-dark px-5">
-                                    <i class="fas fa-shopping-bag me-2"></i> Start Shopping
-                                </a>
-                            </div>
-                        </div>
-                        @endif
-
-
-                        @if($cartCount > 0)
-                        <!-- Continue Shopping -->
-                        <div class="continue-shopping mt-4">
-                            <a href="" class="btn btn-continue">
-                                <i class="fas fa-arrow-left me-2"></i>CONTINUE SHOPPING
-                            </a>
-                            <button class="btn btn-danger ms-2" onclick="clearCart()">
-                                <i class="fas fa-trash-alt me-2"></i> CLEAR CART
-                            </button>
-                        </div>
-                        @endif
+            @if($cartCount > 0)
+            <!-- Cart Summary -->
+            <div class="col-lg-4">
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>₦{{ number_format($subtotal, 2) }}</span>
                     </div>
-                </div>
 
-                @if($cartCount > 0)
-                <!-- Cart Summary -->
-                <div class="col-lg-4">
-                    <div class="cart-summary">
-                        <div class="summary-row">
-                            <span>Subtotal:</span>
-                            <span>₦{{ number_format($subtotal, 2) }}</span>
-                        </div>
-
-                        <div class="summary-row">
-                            <span>Shipping:</span>
-                            <span>₦{{ number_format($shipping, 2) }}</span>
-                        </div>
-
-                        <div class="summary-row">
-                            <span>Tax (5%):</span>
-                            <span>₦{{ number_format($tax, 2) }}</span>
-                        </div>
-
-                        <div class="summary-row total">
-                            <span>Total:</span>
-                            <span>₦{{ number_format($total, 2) }}</span>
-                        </div>
+                    <div class="summary-row">
+                        <span>Shipping:</span>
+                        <span>₦{{ number_format($shipping, 2) }}</span>
                     </div>
-                </div>
-                @endif
-            </div>
 
-            @if($cartCount > 0 && !empty($relatedProducts))
+                    <div class="summary-row">
+                        <span>Tax (5%):</span>
+                        <span>₦{{ number_format($tax, 2) }}</span>
+                    </div>
 
-            <div class="row mt-5">
-                <div class="col-12">
-                    <h4 class="section-title mb-4">FREQUENTLY BOUGHT TOGETHER</h4>
-                    <div class="row">
-                        @foreach($relatedProducts as $product)
-                        <div class="col-md-3 col-6 mb-4">
-                            <div class="product-card">
-                                <div class="position-relative">
-                                    @if($product->is_on_sale)
-                                    <span class="discount-badge">
-                                        {{ $product->discount_percentage }}% OFF
-                                    </span>
-                                    @endif
-                                    <img src="{{ $product->image_url }}" class="product-image"
-                                        alt="{{ $product->name }}">
-                                </div>
-                                <div class="product-info">
-                                    <h6 class="product-card-title">{{ $product->name }}</h6>
-                                    <div class="d-flex align-items-center">
-                                        <span class="product-card-price">₦ {{ number_format($product->current_price, 2)
-                                            }}</span>
-                                        @if($product->is_on_sale)
-                                        <span class="original-price">₦ {{ number_format($product->price, 2) }}</span>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-white border-0 pt-0">
-                                    <button class="btn btn-sm btn-outline-dark w-100"
-                                        onclick="addToCart({{ $product->id }})">
-                                        <i class="fas fa-plus me-1"></i> Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span>₦{{ number_format($total, 2) }}</span>
+                    </div>
+
+                    <!-- Checkout Button -->
+                    <div class="mt-4 pt-3 border-top">
+                        <a href="{{ route('checkout.index') }}" class="btn btn-checkout w-100 py-3">
+                            <i class="fas fa-lock me-2"></i> SECURE CHECKOUT
+                        </a>
+                        <p class="text-center text-muted mt-2 small">
+                            <i class="fas fa-shield-alt me-1"></i> Safe & Secure Payment
+                        </p>
                     </div>
                 </div>
             </div>
             @endif
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="footer py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <h3 class="footer-title">BIGGBRODA CLOTHING</h3>
-                    <p>Premium streetwear and athletic apparel for the fashion-forward individual.</p>
-                </div>
-                <div class="col-md-2 mb-3">
-                    <h3 class="footer-title">SHOP</h3>
-                    <ul class="footer-links list-unstyled">
-                        <li><a href="#">New Arrivals</a></li>
-                        <li><a href="#">Best Sellers</a></li>
-                        <li><a href="#">Collections</a></li>
-                        <li><a href="#">Sale</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-2 mb-3">
-                    <h3 class="footer-title">HELP</h3>
-                    <ul class="footer-links list-unstyled">
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Shipping</a></li>
-                        <li><a href="#">Returns</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <h3 class="footer-title">NEWSLETTER</h3>
-                    <p>Subscribe to receive updates on new arrivals and special promotions.</p>
-                    <form class="newsletter-form">
-                        <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Your email">
-                            <button class="btn btn-dark" type="submit">SUBSCRIBE</button>
+        @if($cartCount > 0 && !empty($relatedProducts))
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <h4 class="section-title mb-4">FREQUENTLY BOUGHT TOGETHER</h4>
+                <div class="row">
+                    @foreach($relatedProducts as $product)
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="product-card">
+                            <div class="position-relative">
+                                @if($product->is_on_sale)
+                                <span class="discount-badge">
+                                    {{ $product->discount_percentage }}% OFF
+                                </span>
+                                @endif
+                                <img src="{{ $product->image_url }}" class="product-image" alt="{{ $product->name }}">
+                            </div>
+                            <div class="product-info">
+                                <h6 class="product-card-title">{{ $product->name }}</h6>
+                                <div class="d-flex align-items-center">
+                                    <span class="product-card-price">₦ {{ number_format($product->current_price, 2)
+                                        }}</span>
+                                    @if($product->is_on_sale)
+                                    <span class="original-price">₦ {{ number_format($product->price, 2) }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-0 pt-0">
+                                <button class="btn btn-sm btn-outline-dark w-100"
+                                    onclick="addToCart({{ $product->id }})">
+                                    <i class="fas fa-plus me-1"></i> Add to Cart
+                                </button>
+                            </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    <p>&copy; {{ date('Y') }} Biggbroda Clothing. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-tiktok"></i></a>
                     </div>
+                    @endforeach
                 </div>
             </div>
         </div>
-    </footer>
+        @endif
+    </div>
+</section>
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <script>
-        // Initialize Toastr
+<script>
+    // Initialize Toastr
         toastr.options = {
             "closeButton": true,
             "progressBar": true,
@@ -487,7 +440,5 @@
             document.getElementById('tax').textContent = '₦ ' + parseFloat(data.tax).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             document.getElementById('total').textContent = '₦ ' + parseFloat(data.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
         }
-    </script>
-</body>
-
-</html>
+</script>
+@include("home.footer")
