@@ -7,22 +7,35 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    // DashboardController.php
     public function index()
     {
         $user = Auth::user();
+        
         $totalOrders = $user->orders()->count();
-        $recentOrders = $user->orders()->latest()->take(2)->get();
+        $pendingOrders = $user->orders()->whereIn('status', ['pending', 'processing'])->count();
+        $completedOrders = $user->orders()->where('status', 'delivered')->count();
+        
+        $recentOrders = $user->orders()
+            ->with(['orderItems.product'])
+            ->latest()
+            ->take(5)
+            ->get();
+            
         $addresses = $user->addresses()->get();
+        $defaultAddress = $user->addresses()->where('is_default', true)->first();
 
+        // You'll need to implement wishlist count based on your Favorite model
+        $wishlistCount = 0; // Replace with actual wishlist count logic
 
         return view('auth.dashboard', [
             'user' => $user,
             'totalOrders' => $totalOrders,
-
+            'pendingOrders' => $pendingOrders,
+            'completedOrders' => $completedOrders,
             'recentOrders' => $recentOrders,
             'addresses' => $addresses,
-
+            'defaultAddress' => $defaultAddress,
+            'wishlistCount' => $wishlistCount,
         ]);
     }
 }

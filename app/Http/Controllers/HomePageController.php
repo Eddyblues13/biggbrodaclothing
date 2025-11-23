@@ -432,29 +432,44 @@ class HomePageController extends Controller
 
 
 
-    public function addSubscribers(Request $request)
-    {
-        // Validate request
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|unique:subscribers,email'
-        ]);
+ public function addSubscribers(Request $request)
+{
+    // Validate request
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email|unique:subscribers,email'
+    ], [
+        'email.required' => 'Email address is required',
+        'email.email' => 'Please enter a valid email address',
+        'email.unique' => 'This email is already subscribed to our newsletter'
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'errors' => $validator->errors()
+        ], 422);
+    }
 
+    try {
         // Create subscriber
         $subscriber = Subscriber::create([
             'email' => $request->email,
-            'is_active' => true
+            'is_active' => true,
+            'subscribed_at' => now()
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'Thank you for subscribing!'
+            'message' => 'Thank you for subscribing! You\'ll be the first to receive our exclusive offers.'
         ]);
+
+    } catch (\Exception $e) {
+        Log::error('Subscription error: ' . $e->getMessage());
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'An error occurred while processing your subscription. Please try again.'
+        ], 500);
     }
+}
 }

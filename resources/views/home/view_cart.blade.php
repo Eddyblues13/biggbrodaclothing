@@ -80,6 +80,18 @@
         font-size: 1.2rem;
         border-bottom: none;
     }
+
+    .btn-continue {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        color: #495057;
+        transition: all 0.3s ease;
+    }
+
+    .btn-continue:hover {
+        background-color: #e9ecef;
+        border-color: #adb5bd;
+    }
 </style>
 
 <!-- Cart Section -->
@@ -106,7 +118,7 @@
                         <div class="row align-items-center">
                             <div class="col-md-2 col-4 mb-3 mb-md-0">
                                 <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="img-fluid rounded"
-                                    style="max-height: 120px;">
+                                    style="max-height: 120px; object-fit: cover;">
                             </div>
                             <div class="col-md-4 col-8 mb-3 mb-md-0">
                                 <h5 class="product-title mb-2">{{ $item['name'] }}</h5>
@@ -146,8 +158,7 @@
 
                             <div class="col-md-3 col-4 mb-3 mb-md-0">
                                 <p class="product-price mb-0">
-                                    <span class="fw-bold">₦ {{ number_format($item['price'] * $item['quantity'], 2)
-                                        }}</span>
+                                    <span class="fw-bold item-subtotal">₦ {{ number_format($item['price'] * $item['quantity'], 2) }}</span>
                                 </p>
                                 <div class="text-muted small">
                                     ₦ {{ number_format($item['price'], 2) }} × {{ $item['quantity'] }}
@@ -168,18 +179,17 @@
                             <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
                             <h4 class="mb-3">Your cart is empty</h4>
                             <p class="text-muted mb-4">Looks like you haven't added anything to your cart yet</p>
-                            <a href="" class="btn btn-dark px-5">
+                            <a href="{{ route('shop') }}" class="btn btn-dark px-5">
                                 <i class="fas fa-shopping-bag me-2"></i> Start Shopping
                             </a>
                         </div>
                     </div>
                     @endif
 
-
                     @if($cartCount > 0)
                     <!-- Continue Shopping -->
                     <div class="continue-shopping mt-4">
-                        <a href="" class="btn btn-continue">
+                        <a href="{{ route('shop') }}" class="btn btn-continue">
                             <i class="fas fa-arrow-left me-2"></i>CONTINUE SHOPPING
                         </a>
                         <button class="btn btn-danger ms-2" onclick="clearCart()">
@@ -196,22 +206,22 @@
                 <div class="cart-summary">
                     <div class="summary-row">
                         <span>Subtotal:</span>
-                        <span>₦{{ number_format($subtotal, 2) }}</span>
+                        <span id="subtotal">₦{{ number_format($subtotal, 2) }}</span>
                     </div>
 
                     <div class="summary-row">
                         <span>Shipping:</span>
-                        <span>₦{{ number_format($shipping, 2) }}</span>
+                        <span id="shipping">₦{{ number_format($shipping, 2) }}</span>
                     </div>
 
                     <div class="summary-row">
                         <span>Tax (5%):</span>
-                        <span>₦{{ number_format($tax, 2) }}</span>
+                        <span id="tax">₦{{ number_format($tax, 2) }}</span>
                     </div>
 
                     <div class="summary-row total">
                         <span>Total:</span>
-                        <span>₦{{ number_format($total, 2) }}</span>
+                        <span id="total">₦{{ number_format($total, 2) }}</span>
                     </div>
 
                     <!-- Checkout Button -->
@@ -228,8 +238,8 @@
             @endif
         </div>
 
+   
         @if($cartCount > 0 && !empty($relatedProducts))
-
         <div class="row mt-5">
             <div class="col-12">
                 <h4 class="section-title mb-4">FREQUENTLY BOUGHT TOGETHER</h4>
@@ -248,8 +258,7 @@
                             <div class="product-info">
                                 <h6 class="product-card-title">{{ $product->name }}</h6>
                                 <div class="d-flex align-items-center">
-                                    <span class="product-card-price">₦ {{ number_format($product->current_price, 2)
-                                        }}</span>
+                                    <span class="product-card-price">₦ {{ number_format($product->current_price, 2) }}</span>
                                     @if($product->is_on_sale)
                                     <span class="original-price">₦ {{ number_format($product->price, 2) }}</span>
                                     @endif
@@ -268,177 +277,229 @@
             </div>
         </div>
         @endif
+    
     </div>
 </section>
 
-
 <script>
     // Initialize Toastr
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000"
-        };
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000"
+    };
 
-        // Update cart item quantity
-        function updateCartItem(cartKey, change) {
-            axios.post('{{ route("cart.update") }}', {
-                cart_key: cartKey,
-                change: change,
-                _token: '{{ csrf_token() }}'
-            })
-            .then(response => {
-                if (response.data.success) {
+    // Update cart item quantity
+    function updateCartItem(cartKey, change) {
+        axios.post('{{ route("cart.update") }}', {
+            cart_key: cartKey,
+            change: change,
+            _token: '{{ csrf_token() }}'
+        })
+        .then(response => {
+            if (response.data.success) {
+                // Only show success message if not removing item
+                if (!response.data.item_removed) {
                     toastr.success(response.data.message);
-                    
-                    // Update cart count in navigation
-                    document.querySelectorAll('.cart-count').forEach(el => {
-                        el.textContent = response.data.cart_count;
-                        el.style.display = response.data.cart_count > 0 ? 'inline-block' : 'none';
-                    });
-                    
-                    // Update cart count badge
-                    document.querySelector('.cart-count-badge').textContent = 
-                        response.data.cart_count + (response.data.cart_count === 1 ? ' item' : ' items');
-                    
-                    // If item was removed, remove the row
-                    if (response.data.item_removed) {
-                        document.querySelector(`.cart-item[data-cart-key="${cartKey}"]`).remove();
-                        
-                        // If cart is empty, reload page to show empty cart message
-                        if (response.data.cart_count === 0) {
-                            setTimeout(() => location.reload(), 1000);
-                        }
-                    } else {
-                        // Update the quantity input
-                        const input = document.querySelector(`.cart-item[data-cart-key="${cartKey}"] .quantity-input`);
-                        input.value = parseInt(input.value) + change;
-                        
-                        // Update subtotal for this row
-                        const price = parseFloat(response.data.item_price);
-                        const quantity = parseInt(input.value);
-                        const subtotalCell = document.querySelector(`.cart-item[data-cart-key="${cartKey}"] .product-price .fw-bold`);
-                        subtotalCell.textContent = '₦ ' + (price * quantity).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                    }
-                    
-                    // Update order summary
-                    updateOrderSummary(response.data);
                 } else {
-                    toastr.warning(response.data.message);
+                    toastr.success('Item removed from cart');
                 }
-            })
-            .catch(error => {
-                toastr.error(error.response?.data?.message || 'Failed to update cart');
-            });
-        }
-
-        // Remove cart item
-        function removeCartItem(cartKey) {
-            if (!confirm('Are you sure you want to remove this item from your cart?')) return;
-            
-            axios.post('{{ route("cart.remove") }}', {
-                cart_key: cartKey,
-                _token: '{{ csrf_token() }}'
-            })
-            .then(response => {
-                if (response.data.success) {
-                    toastr.success(response.data.message);
-                    
-                    // Update cart count in navigation
-                    document.querySelectorAll('.cart-count').forEach(el => {
-                        el.textContent = response.data.cart_count;
-                        el.style.display = response.data.cart_count > 0 ? 'inline-block' : 'none';
-                    });
-                    
-                    // Update cart count badge
-                    document.querySelector('.cart-count-badge').textContent = 
-                        response.data.cart_count + (response.data.cart_count === 1 ? ' item' : ' items');
-                    
-                    // Remove the row
-                    document.querySelector(`.cart-item[data-cart-key="${cartKey}"]`).remove();
-                    
-                    // Update order summary
-                    updateOrderSummary(response.data);
+                
+                // Update cart count in navigation
+                document.querySelectorAll('.cart-count').forEach(el => {
+                    el.textContent = response.data.cart_count;
+                    el.style.display = response.data.cart_count > 0 ? 'inline-block' : 'none';
+                });
+                
+                // Update cart count badge
+                const cartBadge = document.querySelector('.cart-count-badge');
+                if (cartBadge) {
+                    cartBadge.textContent = response.data.cart_count + (response.data.cart_count === 1 ? ' item' : ' items');
+                }
+                
+                // If item was removed, remove the row
+                if (response.data.item_removed) {
+                    const itemElement = document.querySelector(`.cart-item[data-cart-key="${cartKey}"]`);
+                    if (itemElement) {
+                        itemElement.remove();
+                    }
                     
                     // If cart is empty, reload page to show empty cart message
                     if (response.data.cart_count === 0) {
                         setTimeout(() => location.reload(), 1000);
                     }
                 } else {
-                    toastr.error(response.data.message);
+                    // Update the quantity input
+                    const input = document.querySelector(`.cart-item[data-cart-key="${cartKey}"] .quantity-input`);
+                    if (input) {
+                        input.value = parseInt(input.value) + change;
+                    }
+                    
+                    // Update subtotal for this row
+                    const price = parseFloat(response.data.item_price);
+                    const quantity = parseInt(input?.value || 0);
+                    const subtotalCell = document.querySelector(`.cart-item[data-cart-key="${cartKey}"] .item-subtotal`);
+                    if (subtotalCell) {
+                        subtotalCell.textContent = '₦ ' + (price * quantity).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    }
                 }
-            })
-            .catch(error => {
-                toastr.error(error.response?.data?.message || 'Failed to remove item');
-            });
-        }
+                
+                // Update order summary
+                updateOrderSummary(response.data);
+            } else {
+                toastr.warning(response.data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Cart update error:', error);
+            toastr.error(error.response?.data?.message || 'Failed to update cart');
+        });
+    }
 
-        // Clear entire cart
-        function clearCart() {
-            if (!confirm('Are you sure you want to clear your cart?')) return;
-            
-            axios.post('{{ route("cart.clear") }}', {
-                _token: '{{ csrf_token() }}'
-            })
-            .then(response => {
-                if (response.data.success) {
-                    toastr.success(response.data.message);
-                    setTimeout(() => location.reload(), 1500);
+    // Remove cart item
+    function removeCartItem(cartKey) {
+        if (!confirm('Are you sure you want to remove this item from your cart?')) return;
+        
+        axios.post('{{ route("cart.remove") }}', {
+            cart_key: cartKey,
+            _token: '{{ csrf_token() }}'
+        })
+        .then(response => {
+            if (response.data.success) {
+                toastr.success(response.data.message);
+                
+                // Update cart count in navigation
+                document.querySelectorAll('.cart-count').forEach(el => {
+                    el.textContent = response.data.cart_count;
+                    el.style.display = response.data.cart_count > 0 ? 'inline-block' : 'none';
+                });
+                
+                // Update cart count badge
+                const cartBadge = document.querySelector('.cart-count-badge');
+                if (cartBadge) {
+                    cartBadge.textContent = response.data.cart_count + (response.data.cart_count === 1 ? ' item' : ' items');
                 }
-            })
-            .catch(error => {
-                toastr.error('Failed to clear cart');
-            });
-        }
-
-        // Add product to cart from related products
-        function addToCart(productId) {
-            axios.post('{{ route("cart.add") }}', {
-                product_id: productId,
-                quantity: 1,
-                _token: '{{ csrf_token() }}'
-            })
-            .then(response => {
-                if (response.data.success) {
-                    toastr.success(response.data.message);
-                    
-                    // Update cart count in navigation
-                    document.querySelectorAll('.cart-count').forEach(el => {
-                        el.textContent = response.data.cart_count;
-                        el.style.display = response.data.cart_count > 0 ? 'inline-block' : 'none';
-                    });
-                    
-                    // Update cart count badge
-                    document.querySelector('.cart-count-badge').textContent = 
-                        response.data.cart_count + (response.data.cart_count === 1 ? ' item' : ' items');
-                    
-                    // Refresh the cart page to show new item
+                
+                // Remove the row
+                const itemElement = document.querySelector(`.cart-item[data-cart-key="${cartKey}"]`);
+                if (itemElement) {
+                    itemElement.remove();
+                }
+                
+                // Update order summary
+                updateOrderSummary(response.data);
+                
+                // If cart is empty, reload page to show empty cart message
+                if (response.data.cart_count === 0) {
                     setTimeout(() => location.reload(), 1000);
-                } else {
-                    toastr.error(response.data.message);
                 }
-            })
-            .catch(error => {
-                toastr.error(error.response?.data?.message || 'Failed to add to cart');
-            });
-        }
+            } else {
+                toastr.error(response.data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Remove cart item error:', error);
+            toastr.error(error.response?.data?.message || 'Failed to remove item');
+        });
+    }
 
-        // Update order summary values
-        function updateOrderSummary(data) {
-            document.getElementById('subtotal').textContent = '₦ ' + parseFloat(data.subtotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            
-            // Update shipping display
-            const shippingEl = document.querySelector('.summary-row:nth-child(2) span:nth-child(2)');
-            shippingEl.textContent = data.shipping == 0 ? 'FREE' : '₦ ' + parseFloat(data.shipping).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            shippingEl.className = data.shipping == 0 ? 'text-success' : '';
-            
-            document.getElementById('tax').textContent = '₦ ' + parseFloat(data.tax).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            document.getElementById('total').textContent = '₦ ' + parseFloat(data.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    // Clear entire cart
+    function clearCart() {
+        if (!confirm('Are you sure you want to clear your cart?')) return;
+        
+        axios.post('{{ route("cart.clear") }}', {
+            _token: '{{ csrf_token() }}'
+        })
+        .then(response => {
+            if (response.data.success) {
+                toastr.success(response.data.message);
+                setTimeout(() => location.reload(), 1500);
+            }
+        })
+        .catch(error => {
+            console.error('Clear cart error:', error);
+            toastr.error('Failed to clear cart');
+        });
+    }
+
+    // Add product to cart from related products
+    function addToCart(productId) {
+        axios.post('{{ route("cart.add") }}', {
+            product_id: productId,
+            quantity: 1,
+            _token: '{{ csrf_token() }}'
+        })
+        .then(response => {
+            if (response.data.success) {
+                toastr.success(response.data.message);
+                
+                // Update cart count in navigation
+                document.querySelectorAll('.cart-count').forEach(el => {
+                    el.textContent = response.data.cart_count;
+                    el.style.display = response.data.cart_count > 0 ? 'inline-block' : 'none';
+                });
+                
+                // Update cart count badge
+                const cartBadge = document.querySelector('.cart-count-badge');
+                if (cartBadge) {
+                    cartBadge.textContent = response.data.cart_count + (response.data.cart_count === 1 ? ' item' : ' items');
+                }
+                
+                // Refresh the cart page to show new item
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                toastr.error(response.data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Add to cart error:', error);
+            toastr.error(error.response?.data?.message || 'Failed to add to cart');
+        });
+    }
+
+    // Update order summary values
+    function updateOrderSummary(data) {
+        // Update the summary elements with proper IDs
+        const subtotalEl = document.getElementById('subtotal');
+        const shippingEl = document.getElementById('shipping');
+        const taxEl = document.getElementById('tax');
+        const totalEl = document.getElementById('total');
+        
+        if (subtotalEl) {
+            const subtotal = data.cart_subtotal || data.subtotal;
+            subtotalEl.textContent = '₦ ' + parseFloat(subtotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
         }
+        
+        if (shippingEl) {
+            const shippingCost = data.shipping || 0;
+            if (shippingCost == 0) {
+                shippingEl.textContent = 'FREE';
+                shippingEl.className = 'text-success';
+            } else {
+                shippingEl.textContent = '₦ ' + parseFloat(shippingCost).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                shippingEl.className = '';
+            }
+        }
+        
+        if (taxEl) {
+            const subtotal = data.cart_subtotal || data.subtotal;
+            const taxAmount = data.tax || (subtotal * 0.05);
+            taxEl.textContent = '₦ ' + parseFloat(taxAmount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+        
+        if (totalEl) {
+            const subtotal = data.cart_subtotal || data.subtotal;
+            const shipping = data.shipping || 0;
+            const tax = data.tax || (subtotal * 0.05);
+            const totalAmount = subtotal + shipping + tax;
+            totalEl.textContent = '₦ ' + parseFloat(totalAmount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+    }
 </script>
+
 @include("home.footer")

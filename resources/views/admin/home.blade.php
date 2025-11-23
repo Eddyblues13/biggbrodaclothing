@@ -29,6 +29,22 @@
         text-align: center;
     }
 
+    .stats-card {
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stats-icon {
+        font-size: 2.5rem;
+        opacity: 0.8;
+    }
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .square-btn {
@@ -46,6 +62,7 @@
         }
     }
 </style>
+
 <div class="main-panel">
     <div class="content bg-light">
         <div class="page-inner">
@@ -57,18 +74,19 @@
             <div class="row">
                 <!-- New Users Card -->
                 <div class="col-sm-6 col-md-3">
-                    <div class="card card-stats card-primary card-round">
+                    <div class="card card-stats card-primary card-round stats-card">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-5">
                                     <div class="icon-big text-center">
-                                        <i class="fas fa-users"></i>
+                                        <i class="fas fa-users stats-icon"></i>
                                     </div>
                                 </div>
                                 <div class="col-7 col-stats">
                                     <div class="numbers">
                                         <p class="card-category">New Users</p>
                                         <h4 class="card-title">{{ $newUsersCount }}</h4>
+                                        <small>Last 7 days</small>
                                     </div>
                                 </div>
                             </div>
@@ -76,20 +94,21 @@
                     </div>
                 </div>
 
-                <!-- New Exhibitions Card -->
+                <!-- Total Categories Card -->
                 <div class="col-sm-6 col-md-3">
-                    <div class="card card-stats card-info card-round">
+                    <div class="card card-stats card-info card-round stats-card">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-5">
                                     <div class="icon-big text-center">
-                                        <i class="fas fa-paint-brush"></i>
+                                        <i class="fas fa-tags stats-icon"></i>
                                     </div>
                                 </div>
                                 <div class="col-7 col-stats">
                                     <div class="numbers">
                                         <p class="card-category">Total Categories</p>
-                                        <h4 class="card-title">7</h4>
+                                        <h4 class="card-title">{{ $totalCategoriesCount }}</h4>
+                                        <small>Active: {{ $totalCategoriesCount }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -97,20 +116,21 @@
                     </div>
                 </div>
 
-                <!-- Total Exhibitions Card -->
+                <!-- Total Products Card -->
                 <div class="col-sm-6 col-md-3">
-                    <div class="card card-stats card-success card-round">
+                    <div class="card card-stats card-success card-round stats-card">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-5">
                                     <div class="icon-big text-center">
-                                        <i class="fas fa-images"></i>
+                                        <i class="fas fa-cube stats-icon"></i>
                                     </div>
                                 </div>
                                 <div class="col-7 col-stats">
                                     <div class="numbers">
                                         <p class="card-category">Total Products</p>
-                                        <h4 class="card-title">5</h4>
+                                        <h4 class="card-title">{{ $totalProductsCount }}</h4>
+                                        <small>Active products</small>
                                     </div>
                                 </div>
                             </div>
@@ -118,20 +138,21 @@
                     </div>
                 </div>
 
-                <!-- Total Users Card -->
+                <!-- Total Orders Card -->
                 <div class="col-sm-6 col-md-3">
-                    <div class="card card-stats card-secondary card-round">
+                    <div class="card card-stats card-warning card-round stats-card">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-5">
                                     <div class="icon-big text-center">
-                                        <i class="fas fa-user-friends"></i>
+                                        <i class="fas fa-shopping-cart stats-icon"></i>
                                     </div>
                                 </div>
                                 <div class="col-7 col-stats">
                                     <div class="numbers">
-                                        <p class="card-category">Total Users</p>
-                                        <h4 class="card-title">{{ $totalUsersCount }}</h4>
+                                        <p class="card-category">Total Orders</p>
+                                        <h4 class="card-title">{{ $totalOrdersCount }}</h4>
+                                        <small>All time orders</small>
                                     </div>
                                 </div>
                             </div>
@@ -139,19 +160,18 @@
                     </div>
                 </div>
             </div>
+
             <!-- Quick Actions Row -->
             <div class="row">
                 <div class="col-md-12 mb-3">
-
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title text-dark">Quick Actions</h4>
                         </div>
-                        <div class="card">
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-6 col-md-3 mb-3">
-                                    <a href="{{ route('admin.users.index') }}"
-                                        class="btn btn-primary btn-block square-btn">
+                                    <a href="{{ route('admin.users.index') }}" class="btn btn-primary btn-block square-btn">
                                         <div class="d-flex flex-column align-items-center">
                                             <i class="fas fa-users fa-2x mb-2"></i>
                                             <span class="btn-label">Manage Users</span>
@@ -159,29 +179,26 @@
                                     </a>
                                 </div>
                                 <div class="col-sm-6 col-md-3 mb-3">
-                                    <a href=""
-                                        class="btn btn-info btn-block square-btn">
+                                    <a href="{{ route('admin.products') }}" class="btn btn-info btn-block square-btn">
                                         <div class="d-flex flex-column align-items-center">
-                                            <i class="fas fa-paint-brush fa-2x mb-2"></i>
+                                            <i class="fas fa-cube fa-2x mb-2"></i>
                                             <span class="btn-label">Manage Products</span>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-sm-6 col-md-3 mb-3">
-                                    <a href=""
-                                        class="btn btn-warning btn-block square-btn">
+                                    <a href="{{ route('admin.categories.index') }}" class="btn btn-success btn-block square-btn">
                                         <div class="d-flex flex-column align-items-center">
-                                            <i class="fas fa-money-bill-wave fa-2x mb-2"></i>
+                                            <i class="fas fa-tags fa-2x mb-2"></i>
                                             <span class="btn-label">Manage Categories</span>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-sm-6 col-md-3 mb-3">
-                                    <a href="{{ route('admin.settings') }}"
-                                        class="btn btn-secondary btn-block square-btn">
+                                    <a href="{{ route('admin.orders.index') }}" class="btn btn-warning btn-block square-btn">
                                         <div class="d-flex flex-column align-items-center">
-                                            <i class="fas fa-cog fa-2x mb-2"></i>
-                                            <span class="btn-label">System Settings</span>
+                                            <i class="fas fa-shopping-cart fa-2x mb-2"></i>
+                                            <span class="btn-label">Manage Orders</span>
                                         </div>
                                     </a>
                                 </div>
@@ -190,8 +207,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <!-- Charts Row -->
             <div class="row">
@@ -219,18 +234,16 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title text-dark">Exhibition Status</h4>
+                            <h4 class="card-title text-dark">Order Status Distribution</h4>
                         </div>
                         <div class="card-body">
                             <div class="chart-container">
-                                <canvas id="exhibitionStatusChart" height="300"></canvas>
+                                <canvas id="orderStatusChart" height="300"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
 
             <!-- Recent Activity Row -->
             <div class="row">
@@ -240,8 +253,7 @@
                             <div class="card-head-row">
                                 <h4 class="card-title text-dark">Recent Users</h4>
                                 <div class="card-tools">
-                                    <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-primary">View
-                                        All</a>
+                                    <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-primary">View All</a>
                                 </div>
                             </div>
                         </div>
@@ -252,6 +264,7 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>Email</th>
+                                            <th>Joined</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
@@ -261,17 +274,18 @@
                                             <td>
                                                 <div class="avatar-sm float-left mr-3">
                                                     <span class="avatar-title rounded-circle bg-primary text-white">
-                                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                                        {{ strtoupper(substr($user->first_name, 0, 1)) }}{{ strtoupper(substr($user->last_name, 0, 1)) }}
                                                     </span>
                                                 </div>
-                                                {{ $user->name }}
+                                                {{ $user->first_name }} {{ $user->last_name }}
                                             </td>
                                             <td>{{ $user->email }}</td>
+                                            <td>{{ $user->created_at->format('M d, Y') }}</td>
                                             <td>
-                                                @if($user->user_status)
-                                                <span class="badge badge-success">Active</span>
+                                                @if($user->email_verified_at)
+                                                <span class="badge badge-success">Verified</span>
                                                 @else
-                                                <span class="badge badge-danger">Inactive</span>
+                                                <span class="badge badge-warning">Pending</span>
                                                 @endif
                                             </td>
                                         </tr>
@@ -287,35 +301,44 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="card-head-row">
-                                <h4 class="card-title text-dark">Recent Withdrawals</h4>
+                                <h4 class="card-title text-dark">Recent Orders</h4>
                                 <div class="card-tools">
-                                    <a href="" class="btn btn-sm btn-warning">View
-                                        All</a>
+                                    <a href="{{ route('admin.orders.index') }}" class="btn btn-sm btn-warning">View All</a>
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="card-body">
+                        <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>User</th>
+                                            <th>Order #</th>
+                                            <th>Customer</th>
                                             <th>Amount</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($recentWithdrawals as $withdrawal)
+                                        @foreach($recentOrders as $order)
                                         <tr>
-                                            <td>{{ $withdrawal->user->name ?? 'N/A' }}</td>
-                                            <td>${{ number_format($withdrawal->amount, 2) }}</td>
                                             <td>
-                                                @if($withdrawal->status == 'completed')
-                                                <span class="badge badge-success">Completed</span>
-                                                @elseif($withdrawal->status == 'pending')
+                                                <a href="{{ route('admin.orders.show', $order->id) }}" class="text-primary">
+                                                    #{{ $order->order_number }}
+                                                </a>
+                                            </td>
+                                            <td>{{ $order->user->first_name ?? 'N/A' }}</td>
+                                            <td>${{ number_format($order->total_amount, 2) }}</td>
+                                            <td>
+                                                @if($order->status == 'delivered')
+                                                <span class="badge badge-success">Delivered</span>
+                                                @elseif($order->status == 'shipped')
+                                                <span class="badge badge-info">Shipped</span>
+                                                @elseif($order->status == 'processing')
+                                                <span class="badge badge-primary">Processing</span>
+                                                @elseif($order->status == 'pending')
                                                 <span class="badge badge-warning">Pending</span>
                                                 @else
-                                                <span class="badge badge-danger">Rejected</span>
+                                                <span class="badge badge-danger">Cancelled</span>
                                                 @endif
                                             </td>
                                         </tr>
@@ -328,11 +351,11 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 </div>
 
-{{-- <script>
-    $(document).ready(function() {
+<script>
+$(document).ready(function() {
     // User Analytics Chart
     const userCtx = document.getElementById('userAnalyticsChart').getContext('2d');
     const userChart = new Chart(userCtx, {
@@ -371,18 +394,20 @@
         }
     });
 
-    // Exhibition Status Chart
-    const exhibitionCtx = document.getElementById('exhibitionStatusChart').getContext('2d');
-    const exhibitionChart = new Chart(exhibitionCtx, {
+    // Order Status Chart
+    const orderCtx = document.getElementById('orderStatusChart').getContext('2d');
+    const orderChart = new Chart(orderCtx, {
         type: 'doughnut',
         data: {
-            labels: ['Available', 'Sold', 'Reserved'],
+            labels: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
             datasets: [{
-                data: @json($exhibitionStatusData),
+                data: [12, 19, 3, 5, 2],
                 backgroundColor: [
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
                     'rgba(75, 192, 192, 0.7)',
-                    'rgba(255, 99, 132, 0.7)',
-                    'rgba(255, 206, 86, 0.7)'
+                    'rgba(75, 192, 117, 0.7)',
+                    'rgba(255, 99, 132, 0.7)'
                 ],
                 borderWidth: 1
             }]
@@ -409,10 +434,13 @@
                 userChart.data.labels = response.labels;
                 userChart.data.datasets[0].data = response.data;
                 userChart.update();
+            },
+            error: function(xhr) {
+                console.log('Error fetching analytics data');
             }
         });
     });
 });
-</script> --}}
+</script>
 
 @include('admin.footer')

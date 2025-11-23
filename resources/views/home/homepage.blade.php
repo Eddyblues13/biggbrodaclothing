@@ -6,17 +6,18 @@
         <div class="carousel-inner">
             <div class="carousel-item active" style="background-image: url('img/hero-img.jpg')">
                 <div class="carousel-caption">
-                    <button class="btn btn-outline-light">EXPLORE OUR NEW COLLECTION</button>
+                    
+                   <a href="{{ route('shop') }}" class="btn btn-outline-light">EXPLORE OUR NEW COLLECTION</a>
                 </div>
             </div>
             <div class="carousel-item" style="background-image: url('img/hero-image.jpg')">
                 <div class="carousel-caption">
-                    <button class="btn btn-outline-light">SHOP NOW</button>
+                    <a href="{{ route('shop') }}" class="btn btn-outline-light">SHOP NOW</a>
                 </div>
             </div>
             <div class="carousel-item" style="background-image: url('img/img-3.jpg')">
                 <div class="carousel-caption">
-                    <button class="btn btn-outline-light">DISCOVER MORE</button>
+                    <a href="{{ route('shop') }}" class="btn btn-outline-light">DISCOVER MORE</a>
                 </div>
             </div>
         </div>
@@ -73,8 +74,6 @@
     </div>
 </section>
 
-
-
 <!-- Categories Section -->
 <section class="categories-section py-5">
     <div class="container">
@@ -110,7 +109,6 @@
         </div>
     </div>
 </section>
-
 
 <!-- Featured Products -->
 <section class="featured-products py-5">
@@ -174,11 +172,13 @@
                 <p class="modal-subtitle mb-4">Signup to get exclusive offers and great content before you</p>
 
                 <form id="subscriptionForm" class="subscription-form">
+                    @csrf
                     <div class="input-group mb-3">
                         <input type="email" class="form-control py-3" placeholder="Enter email here" aria-label="Email"
-                            name="email" required>
+                            name="email" id="subscriptionEmail" required>
                     </div>
-                    <button type="submit" class="btn btn-dark w-100 py-3">
+                    <div id="subscriptionErrors" class="alert alert-danger d-none mb-3"></div>
+                    <button type="submit" class="btn btn-dark w-100 py-3" id="subscribeBtn">
                         Be the first to get offer
                     </button>
                 </form>
@@ -198,7 +198,7 @@
             <strong class="me-auto">Success!</strong>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        <div class="toast-body">
+        <div class="toast-body" id="toastMessage">
             Thank you for subscribing! You'll be the first to receive our exclusive offers.
         </div>
     </div>
@@ -241,6 +241,11 @@
         border-color: #000;
     }
 
+    .subscription-form .form-control.is-invalid {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+
     .subscription-form .btn {
         border-radius: 0;
         font-weight: 600;
@@ -255,12 +260,28 @@
         transform: translateY(-2px);
     }
 
+    .subscription-form .btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
     .brand-notice {
         font-size: 0.85rem;
         color: #888;
         font-style: italic;
         max-width: 400px;
         margin: 0 auto;
+    }
+
+    .subscription-form .alert-danger {
+        border-radius: 8px;
+        border: 1px solid #dc3545;
+        background-color: #f8d7da;
+        color: #721c24;
+        font-size: 0.9rem;
+        text-align: left;
+        padding: 0.75rem 1rem;
     }
 
     /* Responsive adjustments */
@@ -302,48 +323,135 @@
         
         // Show modal after 3 seconds
         setTimeout(() => {
-            subscriptionModal.show();
+            // Only show modal if it hasn't been shown recently (optional)
+            const lastShown = localStorage.getItem('subscriptionModalLastShown');
+            const now = new Date().getTime();
+            const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+            
+            if (!lastShown || (now - parseInt(lastShown)) > oneDay) {
+                subscriptionModal.show();
+                localStorage.setItem('subscriptionModalLastShown', now.toString());
+            }
         }, 3000);
         
         // Handle form submission
         const subscriptionForm = document.getElementById('subscriptionForm');
+        const subscribeBtn = document.getElementById('subscribeBtn');
+        const subscriptionErrors = document.getElementById('subscriptionErrors');
+        const subscriptionEmail = document.getElementById('subscriptionEmail');
         
         subscriptionForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const formData = new FormData(this);
-            const email = formData.get('email');
+            const email = subscriptionEmail.value.trim();
+            
+            // Basic client-side validation
+            if (!email) {
+                showError('Please enter your email address');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
             
             try {
                 // Show loading state
-                const submitBtn = this.querySelector('button[type="submit"]');
-                const originalBtnText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Subscribing...';
-                submitBtn.disabled = true;
+                const originalBtnText = subscribeBtn.innerHTML;
+                subscribeBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Subscribing...';
+                subscribeBtn.disabled = true;
                 
-                // Simulate API call (replace with actual fetch to your endpoint)
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                // Hide any previous errors
+                hideErrors();
                 
-                // Show success toast
-                successToast.show();
+                // Make API call to subscribe
+                const response = await fetch('{{ route("subscribe.add") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        email: email
+                    })
+                });
                 
-                // Reset form
-                this.reset();
+                const data = await response.json();
                 
-                // Close modal after 2 seconds
-                setTimeout(() => {
-                    subscriptionModal.hide();
-                }, 2000);
+                if (data.success) {
+                    // Show success toast with custom message
+                    const toastMessage = document.getElementById('toastMessage');
+                    if (data.message) {
+                        toastMessage.textContent = data.message;
+                    }
+                    successToast.show();
+                    
+                    // Reset form
+                    this.reset();
+                    
+                    // Close modal after 2 seconds
+                    setTimeout(() => {
+                        subscriptionModal.hide();
+                    }, 2000);
+                } else {
+                    // Show validation errors
+                    if (data.errors && data.errors.email) {
+                        showError(data.errors.email.join(', '));
+                    } else if (data.message) {
+                        showError(data.message);
+                    } else {
+                        showError('An error occurred. Please try again.');
+                    }
+                }
                 
             } catch (error) {
                 console.error('Subscription error:', error);
-                alert('An error occurred. Please try again.');
+                showError('An error occurred. Please try again.');
             } finally {
                 // Reset button
-                const submitBtn = this.querySelector('button[type="submit"]');
-                submitBtn.innerHTML = originalBtnText;
-                submitBtn.disabled = false;
+                subscribeBtn.innerHTML = 'Be the first to get offer';
+                subscribeBtn.disabled = false;
             }
+        });
+        
+        // Email validation function
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        // Error handling functions
+        function showError(message) {
+            subscriptionErrors.textContent = message;
+            subscriptionErrors.classList.remove('d-none');
+            subscriptionEmail.classList.add('is-invalid');
+        }
+        
+        function hideErrors() {
+            subscriptionErrors.classList.add('d-none');
+            subscriptionErrors.textContent = '';
+            subscriptionEmail.classList.remove('is-invalid');
+        }
+        
+        // Clear errors when user starts typing
+        subscriptionEmail.addEventListener('input', hideErrors);
+        
+        // Close modal when clicking outside
+        document.getElementById('subscriptionModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                subscriptionModal.hide();
+            }
+        });
+        
+        // Reset form when modal is hidden
+        document.getElementById('subscriptionModal').addEventListener('hidden.bs.modal', function() {
+            subscriptionForm.reset();
+            hideErrors();
+            subscribeBtn.innerHTML = 'Be the first to get offer';
+            subscribeBtn.disabled = false;
         });
     });
 </script>

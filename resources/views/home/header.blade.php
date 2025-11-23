@@ -103,9 +103,9 @@
             <div class="d-none d-lg-flex justify-content-between align-items-center w-100 desktop-navbar">
                 <div class="navbar-nav nav-left">
                     <a class="nav-link" href="{{url('/')}}">HOME</a>
-                    <a class="nav-link" href="#">SHOP</a>
-                    <a class="nav-link" href="#">ABOUT</a>
-                    <a class="nav-link" href="#">OUR STORE</a>
+                    <a class="nav-link" href="{{ route('shop') }}">SHOP</a>
+                    <a class="nav-link" href="{{url('/about')}}">ABOUT</a>
+                    <a class="nav-link" href="{{url('/our-store')}}">OUR STORE</a>
                 </div>
 
                 <a class="navbar-brand mx-auto" href="{{url('/')}}">
@@ -114,7 +114,6 @@
 
                 <div class="navbar-nav nav-right">
                     <a class="nav-link search-trigger" href="#"><i class="fas fa-search"></i></a>
-                    <a class="nav-link" href="#">NGN</a>
                     @guest
                     <a class="nav-link" href="{{ route('login') }}">LOGIN</a>
                     @endguest
@@ -138,12 +137,18 @@
             <!-- Mobile Menu Collapse -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mobile-nav">
-                    <li class="nav-item"><a class="nav-link" href="#">SHOP</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">OUR STORE</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">LOGIN</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">WISHLIST</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">NGN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{url('/')}}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('shop') }} ">SHOP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{url('/about')}}">ABOUT</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{url('/our-store')}}">OUR STORE</a></li>
+                      @guest
+                    <li class="nav-item"></li><a class="nav-link" href="{{ route('login') }}">LOGIN</a></li>
+                    @endguest
+
+                    @auth
+                    <li class="nav-item"></li><a class="nav-link" href="{{ route('profile') }}">PROFILE</a></li>
+                    @endauth
+                    
                 </ul>
             </div>
 

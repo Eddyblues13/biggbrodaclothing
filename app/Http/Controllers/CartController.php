@@ -67,55 +67,65 @@ class CartController extends Controller
         ]);
     }
 
-    public function update(Request $request)
-    {
-        $request->validate([
-            'cart_key' => 'required|string',
-            'change' => 'required|integer'
-        ]);
+public function update(Request $request)
+{
+    $request->validate([
+        'cart_key' => 'required|string',
+        'change' => 'required|integer'
+    ]);
 
-        $cartKey = $request->cart_key;
-        $change = $request->change;
-        $cart = session()->get('cart', []);
+    $cartKey = $request->cart_key;
+    $change = $request->change;
+    $cart = session()->get('cart', []);
 
-        if (!isset($cart[$cartKey])) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Item not found in cart'
-            ], 404);
-        }
-
-        $item = $cart[$cartKey];
-        $product = Product::find($item['product_id']);
-        $newQuantity = $item['quantity'] + $change;
-
-        // Validate stock
-        if ($product && $newQuantity > $product->stock) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cannot exceed available stock'
-            ], 400);
-        }
-
-        if ($newQuantity < 1) {
-            unset($cart[$cartKey]);
-            $message = 'Product removed from cart';
-        } else {
-            $cart[$cartKey]['quantity'] = $newQuantity;
-            $message = 'Cart quantity updated successfully';
-        }
-
-        session()->put('cart', $cart);
-        $cartCount = $this->getCartCount($cart);
-
+    if (!isset($cart[$cartKey])) {
         return response()->json([
-            'success' => true,
-            'message' => $message,
-            'cart_count' => $cartCount,
-            'cart_subtotal' => $this->getCartSubtotal($cart),
-            'item_removed' => ($newQuantity < 1)
-        ]);
+            'success' => false,
+            'message' => 'Item not found in cart'
+        ], 404);
     }
+
+    $item = $cart[$cartKey];
+    $product = Product::find($item['product_id']);
+    $newQuantity = $item['quantity'] + $change;
+
+    // Validate stock
+    if ($product && $newQuantity > $product->stock) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Cannot exceed available stock'
+        ], 400);
+    }
+
+    if ($newQuantity < 1) {
+        unset($cart[$cartKey]);
+        $message = 'Product removed from cart';
+    } else {
+        $cart[$cartKey]['quantity'] = $newQuantity;
+        $message = 'Cart quantity updated successfully';
+    }
+
+    session()->put('cart', $cart);
+    
+    // Get updated cart data
+    $cartCount = $this->getCartCount($cart);
+    $cartSubtotal = $this->getCartSubtotal($cart);
+    $shipping = $cartSubtotal > 500000 ? 0 : 1000;
+    $tax = $cartSubtotal * 0.05;
+    $total = $cartSubtotal + $tax + $shipping;
+
+    return response()->json([
+        'success' => true,
+        'message' => $message,
+        'cart_count' => $cartCount,
+        'cart_subtotal' => $cartSubtotal,
+        'shipping' => $shipping,
+        'tax' => $tax,
+        'total' => $total,
+        'item_removed' => ($newQuantity < 1),
+        'item_price' => $item['price'] // Return item price for row calculation
+    ]);
+}
 
     public function remove(Request $request)
     {

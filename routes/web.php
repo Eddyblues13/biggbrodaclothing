@@ -1,8 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ManageUserController;
+use App\Http\Controllers\Admin\ManageProductController;
+use App\Http\Controllers\Admin\ManageCategoryController;
+use App\Http\Controllers\Admin\ManageOrderController;
+use App\Http\Controllers\Auth\AdminLoginController;
 
 
+
+// Public Routes
 Route::get('/', function () {
     return view('home.homepage');
 });
@@ -11,13 +19,14 @@ Route::get('/about', function () {
     return view('home.about');
 });
 
+Route::get('/our-store', function () {
+    return view('home.our-store');
+});
 
-
-// Registration Routes
+// Authentication Routes
 Route::get('/register', [App\Http\Controllers\RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [App\Http\Controllers\RegisterController::class, 'register'])->name('register.submit');
 
-// Login Routes
 Route::get('/login', [App\Http\Controllers\LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [App\Http\Controllers\LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
@@ -32,78 +41,55 @@ Route::get('/reset-password/{token}', [App\Http\Controllers\ResetPasswordControl
 Route::post('/reset-password', [App\Http\Controllers\ResetPasswordController::class, 'reset'])
     ->name('password.update');
 
-
-
-
-// Checkout route with auth middleware
+// User Dashboard Routes
 Route::middleware(['user'])->group(function () {
-
     Route::get('/profile', [App\Http\Controllers\DashboardController::class, 'index'])->name('profile');
-
-    Route::prefix('checkout')->name('checkout.')->group(function () {
-        Route::get('/', [App\Http\Controllers\CheckoutController::class, 'index'])->name('index');
-        Route::post('/process', [App\Http\Controllers\CheckoutController::class, 'process'])->name('process');
-        Route::post('/step/{step}', [App\Http\Controllers\CheckoutController::class, 'saveStep'])->name('save-step');
-    });
+    Route::get('/orders', [App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [App\Http\Controllers\OrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{order}/cancel', [App\Http\Controllers\OrderController::class, 'cancel'])->name('orders.cancel');
+    
+    Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    
+    Route::get('/addresses', [App\Http\Controllers\AddressController::class, 'index'])->name('addresses.index');
+    Route::post('/addresses', [App\Http\Controllers\AddressController::class, 'store'])->name('addresses.store');
+    Route::put('/addresses/{address}', [App\Http\Controllers\AddressController::class, 'update'])->name('addresses.update');
+    Route::delete('/addresses/{address}', [App\Http\Controllers\AddressController::class, 'destroy'])->name('addresses.destroy');
+    Route::post('/addresses/{address}/set-default', [App\Http\Controllers\AddressController::class, 'setDefault'])->name('addresses.set-default');
+    
+    Route::get('/wishlist', [App\Http\Controllers\FavoriteController::class, 'listFavorites'])->name('wishlist.index');
 });
 
-
-
+// Frontend Routes
 Route::get('/', [App\Http\Controllers\HomePageController::class, 'index'])->name('homepage');
 Route::get('/shop', [App\Http\Controllers\HomePageController::class, 'shop'])->name('shop');
 Route::get('/collections', [App\Http\Controllers\HomePageController::class, 'collections'])->name('collections');
-Route::post('/subscribe', [App\Http\Controllers\HomePageController::class, 'addSubscribers']);
+Route::post('/subscribe', [App\Http\Controllers\HomePageController::class, 'addSubscribers'])->name('subscribe.add');
 
-
+// Category Routes
 Route::get('/categories/{slug}', [App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
-
-
 Route::prefix('products')->group(function () {
     Route::get('/categories', [App\Http\Controllers\CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categories/{category}', [App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');
 });
 
-// Product routes
+// Product Routes
 Route::prefix('products')->group(function () {
-    // Product listings with filters
     Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
     Route::get('/products/color/{color}', [App\Http\Controllers\ProductController::class, 'filterByColor'])->name('products.byColor');
     Route::get('/brand/{brand}', [App\Http\Controllers\ProductController::class, 'filterByBrand'])->name('shop.brand');
-    // routes/web.php
     Route::get('/products/filter', [App\Http\Controllers\ProductController::class, 'filter']);
-
-
-
-    // Individual product page
     Route::get('/{product}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
-    // Route to show all products in a category
     Route::get('/category/{category:slug}', [App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
-
-    // Route to show a single product
     Route::get('/{product:slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
-    // API endpoints for components
     Route::get('/featured', [App\Http\Controllers\ProductController::class, 'featured'])->name('products.featured');
     Route::get('/bestsellers', [App\Http\Controllers\ProductController::class, 'bestsellers'])->name('products.bestsellers');
 });
 
-// Category routes
+// Category redirect
 Route::get('/categories/{category}', function (App\Models\Category $category) {
     return redirect()->route('products.index', ['category' => $category->slug]);
 })->name('categories.show');
-
-// Fallback for 404 pages
-Route::fallback(function () {
-    return view('errors.404');
-});
-
-
-// Cart routes
-Route::post('/cart/add', [App\Http\Controllers\CartController::class, 'addToCart'])->name('cart.add');
-Route::post('/cart/update', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
-Route::post('/cart/remove', [App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
-Route::get('/cart/data', [App\Http\Controllers\CartController::class, 'getCartData'])->name('cart.data');
-Route::get('/view-cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
-
 
 // Cart Routes
 Route::prefix('cart')->group(function () {
@@ -114,99 +100,119 @@ Route::prefix('cart')->group(function () {
     Route::get('/', [App\Http\Controllers\CartController::class, 'index'])->name('cart.view');
     Route::get('/data', [App\Http\Controllers\CartController::class, 'getCartData'])->name('cart.data');
 });
-// Favorites routes
+
+// Favorites Routes
 Route::post('/favorites/toggle', [App\Http\Controllers\FavoriteController::class, 'toggleFavorite'])->name('favorites.toggle');
 Route::get('/favorites', [App\Http\Controllers\FavoriteController::class, 'listFavorites'])->name('favorites.list');
 Route::get('/favorites/count', [App\Http\Controllers\FavoriteController::class, 'getFavoritesCount'])->name('favorites.count');
 
+// Checkout Routes
+Route::middleware(['user'])->group(function () {
+    Route::prefix('checkout')->name('checkout.')->group(function () {
+        Route::get('/', [App\Http\Controllers\CheckoutController::class, 'index'])->name('index');
+        Route::post('/process', [App\Http\Controllers\CheckoutController::class, 'process'])->name('process');
+        Route::post('/step/{step}', [App\Http\Controllers\CheckoutController::class, 'saveStep'])->name('save-step');
+    });
 
-Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+    Route::get('/payment/callback', [App\Http\Controllers\CheckoutController::class, 'handleCallback'])->name('payment.callback');
+    Route::get('/order/receipt/{orderNumber}', [App\Http\Controllers\CheckoutController::class, 'orderReceipt'])->name('order.receipt');
+});
 
-
-
-
-
-
-
-
-Route::get('admin/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'adminLoginForm'])->name('admin.login');
-Route::post('admin/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'login'])->name('login.submit');
-
-
+// Admin Authentication Routes
+Route::get('admin/login', [AdminLoginController::class, 'showAdminLoginForm'])->name('admin.login');
+Route::post('admin/login', [AdminLoginController::class, 'adminLogin'])->name('admin.login.submit');
 
 // Admin Routes
-Route::prefix('admin')->group(function () {
-    Route::post('logout', [App\Http\Controllers\Auth\AdminLoginController::class, 'logout'])->name('logout');
+// Admin Routes
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
 
     // Protecting admin routes using the 'admin' middleware
-    Route::middleware(['admin'])->group(function () { // Admin Profile Routes
-        Route::get('/home', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.home');
+    Route::middleware(['admin'])->group(function () {
+        
         // Dashboard Routes
-
-        Route::get('/dashboard/analytics', [App\Http\Controllers\Admin\AdminController::class, 'getAnalytics'])->name('admin.dashboard.analytics');
-
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('home');
+        Route::get('/home', [AdminController::class, 'index'])->name('home');
+        Route::get('/dashboard/analytics', [AdminController::class, 'getAnalytics'])->name('dashboard.analytics');
 
         // User Management Routes
-        Route::get('/users', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.users.index');
-        // ... other user routes
+        Route::prefix('users')->name('users.')->group(function () {
+            Route::get('/', [ManageUserController::class, 'index'])->name('index');
+            Route::get('/create', [ManageUserController::class, 'create'])->name('create');
+            Route::post('/', [ManageUserController::class, 'store'])->name('store');
+            Route::get('/{user}', [ManageUserController::class, 'show'])->name('show');
+            Route::get('/{user}/edit', [ManageUserController::class, 'edit'])->name('edit');
+            Route::put('/{user}', [ManageUserController::class, 'update'])->name('update');
+            Route::delete('/{user}', [ManageUserController::class, 'destroy'])->name('destroy');
+            Route::post('/{user}/toggle-status', [ManageUserController::class, 'toggleStatus'])->name('toggle-status');
+            
+            // AJAX Routes
+            Route::get('/getusers', [ManageUserController::class, 'getUsers'])->name('getusers');
+            Route::post('/toggle-email-status', [ManageUserController::class, 'toggleEmailStatus'])->name('toggle-email-status');
+            Route::post('/send-mass-email', [ManageUserController::class, 'sendMassEmail'])->name('send-mass-email');
+        });
 
+        // Product Management Routes
+        Route::prefix('products')->name('products.')->group(function () {
+            Route::get('/', [ManageProductController::class, 'index'])->name('index');
+            Route::get('/create', [ManageProductController::class, 'create'])->name('create');
+            Route::post('/', [ManageProductController::class, 'store'])->name('store');
+            Route::get('/{product}/edit', [ManageProductController::class, 'edit'])->name('edit');
+            Route::put('/{product}', [ManageProductController::class, 'update'])->name('update');
+            Route::delete('/{product}', [ManageProductController::class, 'destroy'])->name('destroy');
+            Route::post('/{product}/toggle-status', [ManageProductController::class, 'toggleStatus'])->name('toggle-status');
+        });
 
+        // Category Management Routes
+        Route::prefix('categories')->name('categories.')->group(function () {
+            Route::get('/', [ManageCategoryController::class, 'index'])->name('index');
+            Route::get('/create', [ManageCategoryController::class, 'create'])->name('create');
+            Route::post('/', [ManageCategoryController::class, 'store'])->name('store');
+            Route::get('/{category}/edit', [ManageCategoryController::class, 'edit'])->name('edit');
+            Route::put('/{category}', [ManageCategoryController::class, 'update'])->name('update');
+            Route::delete('/{category}', [ManageCategoryController::class, 'destroy'])->name('destroy');
+            Route::post('/{category}/toggle-status', [ManageCategoryController::class, 'toggleStatus'])->name('toggle-status');
+        });
+
+        // Order Management Routes
+        Route::prefix('orders')->name('orders.')->group(function () {
+            Route::get('/', [ManageOrderController::class, 'index'])->name('index');
+            Route::get('/{order}', [ManageOrderController::class, 'show'])->name('show');
+            Route::put('/{order}/status', [ManageOrderController::class, 'updateStatus'])->name('update-status');
+            Route::put('/order-items/{orderItem}', [ManageOrderController::class, 'updateOrderItem'])->name('update-item');
+            Route::delete('/{order}', [ManageOrderController::class, 'destroy'])->name('destroy');
+        });
 
         // Settings Route
         Route::get('/settings', function () {
             return view('admin.settings');
-        })->name('admin.settings');
+        })->name('settings');
 
+        // Additional Admin Routes (Legacy - for backward compatibility)
+        Route::get('/users', [ManageUserController::class, 'index'])->name('users.index'); // Legacy route
+        Route::get('/products', [ManageProductController::class, 'index'])->name('products'); // Legacy route
+        
+        // FIXED: Add the missing category legacy route
+        Route::get('/category', [ManageCategoryController::class, 'index'])->name('category'); // Legacy route
+        
+        Route::get('/create-products', [ManageProductController::class, 'create'])->name('create.products'); // Legacy route
+        Route::get('/create-category', [ManageCategoryController::class, 'create'])->name('create.category'); // Legacy route
 
-        // Admin User Routes
-        Route::prefix('users')->group(function () {
-            // manage user CRUD routes
-            Route::get('/', [App\Http\Controllers\Admin\ManageUserController::class, 'index'])->name('admin.users.index');
-            Route::get('/users/create', [App\Http\Controllers\Admin\ManageUserController::class, 'create'])->name('admin.users.create');
-            Route::post('/users', [App\Http\Controllers\Admin\ManageUserController::class, 'store'])->name('admin.users.store');
-            Route::get('/users/{user}', [App\Http\Controllers\Admin\ManageUserController::class, 'show'])->name('admin.user.view');
+        // Password Management Routes
+        Route::get('/change/user/password/page/{id}', [AdminController::class, 'showResetPasswordForm'])->name('change.user.password.page');
+        Route::post('/user-password-reset', [AdminController::class, 'resetPassword'])->name('user.password_reset');
+        Route::post('/update-user', [AdminController::class, 'adminUpdateUser'])->name('updateUser');
+        Route::get('/reset-password/{user}', [AdminController::class, 'resetUserPassword'])->name('reset.password');
 
-            // AJAX Routes
-            Route::get('/getusers', [App\Http\Controllers\Admin\ManageUserController::class, 'getUsers'])->name('admin.getusers');
-            Route::post('/users/toggle-status', [App\Http\Controllers\Admin\ManageUserController::class, 'toggleUserStatus'])->name('admin.user.toggleUserStatus');
-            Route::post('/users/toggle-email-status', [App\Http\Controllers\Admin\ManageUserController::class, 'toggleEmailStatus'])->name('admin.user.toggleEmailStatus');
-            Route::post('/users/send-mass-email', [App\Http\Controllers\Admin\ManageUserController::class, 'sendMassEmail'])->name('admin.users.sendMassEmail');
-        });
-
-
-
-        Route::prefix('products')->group(function () {
-            // manage user CRUD routes
-            Route::get('/', [App\Http\Controllers\Admin\ManageProductController::class, 'index'])->name('admin.products');
-            Route::get('/users/create', [App\Http\Controllers\Admin\ManageProductController::class, 'create'])->name('admin.users.create');
-            Route::post('/users', [App\Http\Controllers\Admin\ManageProductController::class, 'store'])->name('admin.users.store');
-            Route::get('/users/{user}', [App\Http\Controllers\Admin\ManageProductController::class, 'show'])->name('admin.user.view');
-            Route::get('/create-products', [App\Http\Controllers\Admin\ManageProductController::class, 'CreateProducts'])->name('create.products');
-            Route::delete('/products/{product}', [App\Http\Controllers\Admin\ManageProductController::class, 'destroy'])->name('products.destroy');
-        });
-
-
-        Route::prefix('category')->group(function () {
-            // manage user CRUD routes
-            Route::get('/', [App\Http\Controllers\Admin\ManageCategoryController::class, 'index'])->name('admin.category');
-            Route::get('/users/create', [App\Http\Controllers\Admin\ManageCategoryController::class, 'create'])->name('admin.users.create');
-            Route::post('/users', [App\Http\Controllers\Admin\ManageCategoryController::class, 'store'])->name('admin.users.store');
-            Route::get('/users/{user}', [App\Http\Controllers\Admin\ManageCategoryController::class, 'show'])->name('admin.user.view');
-            Route::get('/create-category', [App\Http\Controllers\Admin\ManageCategoryController::class, 'CreateCategory'])->name('create.category');
-        });
-
-
-
-
-
-        Route::get('/change/user/password/page/{id}', [App\Http\Controllers\Admin\AdminController::class, 'showResetPasswordForm'])->name('admin.change.user.password.page');
-        Route::post('/user-password-reset', [App\Http\Controllers\Admin\AdminController::class, 'resetPassword'])->name('admin.user.password_reset');
-
-        Route::post('/admin/update-user', [App\Http\Controllers\Admin\AdminController::class, 'adminUpdateUser'])->name('admin.updateUser');
-        Route::get('/reset-password/{user}', [App\Http\Controllers\Admin\AdminController::class, 'resetUserPassword'])->name('reset.password');
-        Route::match(['get', 'post'], '/send-mail', [App\Http\Controllers\Admin\AdminController::class, 'sendMail'])->name('admin.send.mail');
-        Route::get('/{user}/impersonate',  [App\Http\Controllers\Admin\AdminController::class, 'impersonate'])->name('users.impersonate');
-        Route::get('/leave-impersonate',  [App\Http\Controllers\Admin\AdminController::class, 'leaveImpersonate'])->name('users.leave-impersonate');
-        Route::get('/delete-user/{user}',  [App\Http\Controllers\Admin\AdminController::class, 'deleteUser'])->name('delete.user');
+        // Email & Impersonation Routes
+        Route::match(['get', 'post'], '/send-mail', [AdminController::class, 'sendMail'])->name('send.mail');
+        Route::get('/{user}/impersonate', [AdminController::class, 'impersonate'])->name('users.impersonate');
+        Route::get('/leave-impersonate', [AdminController::class, 'leaveImpersonate'])->name('users.leave-impersonate');
+        Route::get('/delete-user/{user}', [AdminController::class, 'deleteUser'])->name('delete.user');
     });
+});
+
+// Fallback for 404 pages
+Route::fallback(function () {
+    return view('errors.404');
 });
