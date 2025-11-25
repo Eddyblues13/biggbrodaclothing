@@ -1,26 +1,11 @@
 @include('admin.header')
 <style>
-    .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: #007bff;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 0.9rem;
-    }
-    .user-status-badge {
+    .subscriber-status-badge {
         font-size: 0.75rem;
     }
-    .user-actions .btn {
+    .subscriber-actions .btn {
         margin: 2px;
         font-size: 0.75rem;
-    }
-    .table-hover tbody tr:hover {
-        background-color: rgba(0, 123, 255, 0.05);
     }
     .bulk-actions {
         background: #f8f9fa;
@@ -52,8 +37,8 @@
             @endif
 
             <div class="mt-2 mb-4">
-                <h1 class="title1 text-dark">Manage Users</h1>
-                <p class="text-muted">Manage registered users and their accounts</p>
+                <h1 class="title1 text-dark">Manage Subscribers</h1>
+                <p class="text-muted">Manage newsletter subscribers and email lists</p>
             </div>
 
             <!-- Bulk Actions -->
@@ -71,8 +56,8 @@
                         <div class="input-group">
                             <select class="form-control" id="bulkAction">
                                 <option value="">Bulk Actions</option>
-                                <option value="verify">Verify Selected</option>
-                                <option value="unverify">Unverify Selected</option>
+                                <option value="activate">Activate Selected</option>
+                                <option value="deactivate">Deactivate Selected</option>
                                 <option value="delete">Delete Selected</option>
                             </select>
                             <div class="input-group-append">
@@ -83,20 +68,20 @@
                 </div>
             </div>
 
-            <!-- User Filters -->
+            <!-- Subscriber Filters -->
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <label class="form-label">Search Users</label>
-                            <input type="text" class="form-control" placeholder="Search by name, email, or phone..." id="searchUsers" value="{{ request('search') }}">
+                            <label class="form-label">Search Subscribers</label>
+                            <input type="text" class="form-control" placeholder="Search by email or name..." id="searchSubscribers" value="{{ request('search') }}">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Verification Status</label>
+                            <label class="form-label">Status</label>
                             <select class="form-control" id="statusFilter">
-                                <option value="">All Users</option>
-                                <option value="verified" {{ request('status') == 'verified' ? 'selected' : '' }}>Verified</option>
-                                <option value="unverified" {{ request('status') == 'unverified' ? 'selected' : '' }}>Unverified</option>
+                                <option value="">All Subscribers</option>
+                                <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
                             </select>
                         </div>
                         <div class="col-md-4 text-right" style="margin-top: 30px;">
@@ -106,8 +91,11 @@
                             <button class="btn btn-secondary" id="resetFilters">
                                 <i class="fas fa-redo"></i> Reset
                             </button>
-                            <a href="{{ route('admin.users.create') }}" class="btn btn-success">
-                                <i class="fas fa-plus"></i> Add User
+                            <a href="{{ route('admin.subscribers.create') }}" class="btn btn-success">
+                                <i class="fas fa-plus"></i> Add Subscriber
+                            </a>
+                            <a href="{{ route('admin.subscribers.export') }}" class="btn btn-info">
+                                <i class="fas fa-download"></i> Export
                             </a>
                         </div>
                     </div>
@@ -117,82 +105,67 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover align-middle" id="usersTable">
+                        <table class="table table-bordered table-hover align-middle" id="subscribersTable">
                             <thead class="table-light">
                                 <tr>
                                     <th width="30">
                                         <input type="checkbox" id="selectAllHeader">
                                     </th>
-                                    <th>User</th>
-                                    <th>Contact</th>
-                                    <th>Orders</th>
+                                    <th>Email</th>
+                                    <th>Name</th>
                                     <th>Status</th>
-                                    <th>Registered</th>
+                                    <th>Subscribed</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
+                                @foreach ($subscribers as $subscriber)
                                 <tr>
                                     <td>
-                                        <input type="checkbox" class="user-checkbox" value="{{ $user->id }}">
+                                        <input type="checkbox" class="subscriber-checkbox" value="{{ $subscriber->id }}">
                                     </td>
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="user-avatar mr-3">
-                                                {{ strtoupper(substr($user->first_name, 0, 1)) }}{{ strtoupper(substr($user->last_name, 0, 1)) }}
-                                            </div>
-                                            <div>
-                                                <div class="font-weight-bold">
-                                                    {{ $user->first_name }} {{ $user->last_name }}
-                                                </div>
-                                                <small class="text-muted">ID: {{ $user->id }}</small>
-                                            </div>
-                                        </div>
+                                        <div class="font-weight-bold">{{ $subscriber->email }}</div>
+                                        <small class="text-muted">ID: {{ $subscriber->id }}</small>
                                     </td>
                                     <td>
-                                        <div><strong>Email:</strong> {{ $user->email }}</div>
-                                        <div><strong>Phone:</strong> {{ $user->phone ?? 'N/A' }}</div>
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-info">{{ $user->orders_count }} orders</span>
-                                    </td>
-                                    <td>
-                                        @if($user->email_verified_at)
-                                        <span class="user-status-badge badge badge-success">Verified</span>
+                                        @if($subscriber->first_name || $subscriber->last_name)
+                                            {{ $subscriber->first_name }} {{ $subscriber->last_name }}
                                         @else
-                                        <span class="user-status-badge badge badge-warning">Unverified</span>
+                                            <span class="text-muted">Not provided</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <div class="font-weight-bold">{{ $user->created_at->format('M d, Y') }}</div>
-                                        <small class="text-muted">{{ $user->created_at->diffForHumans() }}</small>
+                                        @if($subscriber->is_active)
+                                        <span class="subscriber-status-badge badge badge-success">Active</span>
+                                        @else
+                                        <span class="subscriber-status-badge badge badge-secondary">Inactive</span>
+                                        @endif
                                     </td>
                                     <td>
-                                        <div class="user-actions">
-                                            <a href="{{ route('admin.users.show', $user->id) }}" 
-                                               class="btn btn-sm btn-outline-primary" title="View Details">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            
-                                            <a href="{{ route('admin.users.edit', $user->id) }}" 
-                                               class="btn btn-sm btn-outline-info" title="Edit User">
+                                        <div class="font-weight-bold">{{ $subscriber->created_at->format('M d, Y') }}</div>
+                                        <small class="text-muted">{{ $subscriber->created_at->diffForHumans() }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="subscriber-actions">
+                                            <a href="{{ route('admin.subscribers.edit', $subscriber->id) }}" 
+                                               class="btn btn-sm btn-outline-info" title="Edit Subscriber">
                                                 <i class="fas fa-edit"></i>
                                             </a>
 
-                                            <form action="{{ route('admin.users.toggle-verification', $user->id) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('admin.subscribers.toggle-status', $subscriber->id) }}" method="POST" class="d-inline">
                                                 @csrf
-                                                <button type="submit" class="btn btn-sm btn-outline-{{ $user->email_verified_at ? 'warning' : 'success' }}" 
-                                                        title="{{ $user->email_verified_at ? 'Unverify User' : 'Verify User' }}">
-                                                    <i class="fas fa-{{ $user->email_verified_at ? 'times' : 'check' }}"></i>
+                                                <button type="submit" class="btn btn-sm btn-outline-{{ $subscriber->is_active ? 'warning' : 'success' }}" 
+                                                        title="{{ $subscriber->is_active ? 'Deactivate' : 'Activate' }}">
+                                                    <i class="fas fa-{{ $subscriber->is_active ? 'pause' : 'play' }}"></i>
                                                 </button>
                                             </form>
 
-                                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" 
-                                                  class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user? This action cannot be undone.');">
+                                            <form action="{{ route('admin.subscribers.destroy', $subscriber->id) }}" method="POST" 
+                                                  class="d-inline" onsubmit="return confirm('Are you sure you want to delete this subscriber?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete User">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Subscriber">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
@@ -207,10 +180,10 @@
                     <!-- Pagination -->
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <div class="text-muted">
-                            Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} users
+                            Showing {{ $subscribers->firstItem() }} to {{ $subscribers->lastItem() }} of {{ $subscribers->total() }} subscribers
                         </div>
                         <nav>
-                            {{ $users->links() }}
+                            {{ $subscribers->links() }}
                         </nav>
                     </div>
                 </div>
@@ -224,38 +197,38 @@ document.addEventListener('DOMContentLoaded', function() {
     // Bulk selection
     const selectAllHeader = document.getElementById('selectAllHeader');
     const selectAll = document.getElementById('selectAll');
-    const userCheckboxes = document.querySelectorAll('.user-checkbox');
+    const subscriberCheckboxes = document.querySelectorAll('.subscriber-checkbox');
 
     function updateSelectAll() {
-        const allChecked = Array.from(userCheckboxes).every(cb => cb.checked);
+        const allChecked = Array.from(subscriberCheckboxes).every(cb => cb.checked);
         selectAllHeader.checked = allChecked;
         selectAll.checked = allChecked;
     }
 
     selectAllHeader.addEventListener('change', function() {
-        userCheckboxes.forEach(cb => cb.checked = this.checked);
+        subscriberCheckboxes.forEach(cb => cb.checked = this.checked);
         selectAll.checked = this.checked;
     });
 
     selectAll.addEventListener('change', function() {
-        userCheckboxes.forEach(cb => cb.checked = this.checked);
+        subscriberCheckboxes.forEach(cb => cb.checked = this.checked);
         selectAllHeader.checked = this.checked;
     });
 
-    userCheckboxes.forEach(cb => {
+    subscriberCheckboxes.forEach(cb => {
         cb.addEventListener('change', updateSelectAll);
     });
 
     // Bulk actions
     document.getElementById('applyBulkAction').addEventListener('click', function() {
-        const selectedUsers = Array.from(userCheckboxes)
+        const selectedSubscribers = Array.from(subscriberCheckboxes)
             .filter(cb => cb.checked)
             .map(cb => cb.value);
 
         const action = document.getElementById('bulkAction').value;
 
-        if (selectedUsers.length === 0) {
-            alert('Please select at least one user.');
+        if (selectedSubscribers.length === 0) {
+            alert('Please select at least one subscriber.');
             return;
         }
 
@@ -264,10 +237,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        if (confirm(`Are you sure you want to ${action} ${selectedUsers.length} user(s)?`)) {
+        if (confirm(`Are you sure you want to ${action} ${selectedSubscribers.length} subscriber(s)?`)) {
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '{{ route("admin.users.bulk-action") }}';
+            form.action = '{{ route("admin.subscribers.bulk-action") }}';
 
             const csrfToken = document.createElement('input');
             csrfToken.type = 'hidden';
@@ -275,11 +248,11 @@ document.addEventListener('DOMContentLoaded', function() {
             csrfToken.value = '{{ csrf_token() }}';
             form.appendChild(csrfToken);
 
-            selectedUsers.forEach(userId => {
+            selectedSubscribers.forEach(subscriberId => {
                 const input = document.createElement('input');
                 input.type = 'hidden';
-                input.name = 'user_ids[]';
-                input.value = userId;
+                input.name = 'subscriber_ids[]';
+                input.value = subscriberId;
                 form.appendChild(input);
             });
 
@@ -298,11 +271,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const applyFilters = document.getElementById('applyFilters');
     const resetFilters = document.getElementById('resetFilters');
     
-    function applyUserFilters() {
+    function applySubscriberFilters() {
         const status = document.getElementById('statusFilter').value;
-        const search = document.getElementById('searchUsers').value;
+        const search = document.getElementById('searchSubscribers').value;
         
-        let url = '{{ route("admin.users.index") }}?';
+        let url = '{{ route("admin.subscribers.index") }}?';
         const params = [];
         
         if (status) params.push('status=' + status);
@@ -311,17 +284,17 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = url + params.join('&');
     }
     
-    function resetUserFilters() {
-        window.location.href = '{{ route("admin.users.index") }}';
+    function resetSubscriberFilters() {
+        window.location.href = '{{ route("admin.subscribers.index") }}';
     }
     
-    applyFilters.addEventListener('click', applyUserFilters);
-    resetFilters.addEventListener('click', resetUserFilters);
+    applyFilters.addEventListener('click', applySubscriberFilters);
+    resetFilters.addEventListener('click', resetSubscriberFilters);
     
     // Enter key search
-    document.getElementById('searchUsers').addEventListener('keypress', function(e) {
+    document.getElementById('searchSubscribers').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
-            applyUserFilters();
+            applySubscriberFilters();
         }
     });
 });

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ManageUserController;
 use App\Http\Controllers\Admin\ManageProductController;
 use App\Http\Controllers\Admin\ManageCategoryController;
 use App\Http\Controllers\Admin\ManageOrderController;
+use App\Http\Controllers\Admin\ManageSubscriberController;
 use App\Http\Controllers\Auth\AdminLoginController;
 
 
@@ -99,6 +100,12 @@ Route::prefix('cart')->group(function () {
     Route::post('/clear', [App\Http\Controllers\CartController::class, 'clearCart'])->name('cart.clear');
     Route::get('/', [App\Http\Controllers\CartController::class, 'index'])->name('cart.view');
     Route::get('/data', [App\Http\Controllers\CartController::class, 'getCartData'])->name('cart.data');
+    // Cart routes
+Route::post('/add', [App\Http\Controllers\CartController::class, 'addToCart'])->name('cart.add');
+Route::post('/update', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
+Route::post('/remove', [App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
+Route::get('/data', [App\Http\Controllers\CartController::class, 'getCartData'])->name('cart.data');
+Route::get('/view-cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
 });
 
 // Favorites Routes
@@ -119,8 +126,8 @@ Route::middleware(['user'])->group(function () {
 });
 
 // Admin Authentication Routes
-Route::get('admin/login', [AdminLoginController::class, 'showAdminLoginForm'])->name('admin.login');
-Route::post('admin/login', [AdminLoginController::class, 'adminLogin'])->name('admin.login.submit');
+Route::get('admin/login', [AdminLoginController::class, 'adminLoginForm'])->name('admin.login');
+Route::post('admin/login', [AdminLoginController::class, 'login'])->name('admin.login.submit');
 
 // Admin Routes
 // Admin Routes
@@ -135,22 +142,55 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/home', [AdminController::class, 'index'])->name('home');
         Route::get('/dashboard/analytics', [AdminController::class, 'getAnalytics'])->name('dashboard.analytics');
 
-        // User Management Routes
-        Route::prefix('users')->name('users.')->group(function () {
-            Route::get('/', [ManageUserController::class, 'index'])->name('index');
-            Route::get('/create', [ManageUserController::class, 'create'])->name('create');
-            Route::post('/', [ManageUserController::class, 'store'])->name('store');
-            Route::get('/{user}', [ManageUserController::class, 'show'])->name('show');
-            Route::get('/{user}/edit', [ManageUserController::class, 'edit'])->name('edit');
-            Route::put('/{user}', [ManageUserController::class, 'update'])->name('update');
-            Route::delete('/{user}', [ManageUserController::class, 'destroy'])->name('destroy');
-            Route::post('/{user}/toggle-status', [ManageUserController::class, 'toggleStatus'])->name('toggle-status');
-            
-            // AJAX Routes
-            Route::get('/getusers', [ManageUserController::class, 'getUsers'])->name('getusers');
-            Route::post('/toggle-email-status', [ManageUserController::class, 'toggleEmailStatus'])->name('toggle-email-status');
-            Route::post('/send-mass-email', [ManageUserController::class, 'sendMassEmail'])->name('send-mass-email');
-        });
+ // User Management Routes
+Route::prefix('users')->name('users.')->group(function () {
+    Route::get('/', [ManageUserController::class, 'index'])->name('index');
+    Route::get('/create', [ManageUserController::class, 'create'])->name('create');
+    Route::post('/', [ManageUserController::class, 'store'])->name('store');
+    Route::get('/{user}', [ManageUserController::class, 'show'])->name('show');
+    Route::get('/{user}/edit', [ManageUserController::class, 'edit'])->name('edit');
+    Route::put('/{user}', [ManageUserController::class, 'update'])->name('update');
+    Route::delete('/{user}', [ManageUserController::class, 'destroy'])->name('destroy');
+    Route::post('/{user}/toggle-verification', [ManageUserController::class, 'toggleVerification'])->name('toggle-verification');
+    Route::post('/bulk-action', [ManageUserController::class, 'bulkAction'])->name('bulk-action');
+});
+
+// Subscriber Management Routes
+Route::prefix('subscribers')->name('subscribers.')->group(function () {
+    Route::get('/', [ManageSubscriberController::class, 'index'])->name('index');
+    Route::get('/create', [ManageSubscriberController::class, 'create'])->name('create');
+    Route::post('/', [ManageSubscriberController::class, 'store'])->name('store');
+    Route::get('/{subscriber}/edit', [ManageSubscriberController::class, 'edit'])->name('edit');
+    Route::put('/{subscriber}', [ManageSubscriberController::class, 'update'])->name('update');
+    Route::delete('/{subscriber}', [ManageSubscriberController::class, 'destroy'])->name('destroy');
+    Route::post('/{subscriber}/toggle-status', [ManageSubscriberController::class, 'toggleStatus'])->name('toggle-status');
+    Route::post('/bulk-action', [ManageSubscriberController::class, 'bulkAction'])->name('bulk-action');
+    Route::get('/export', [ManageSubscriberController::class, 'export'])->name('export');
+    // Subscriber Email Routes
+Route::get('/email', [ManageSubscriberController::class, 'showEmailForm'])->name('email-form');
+Route::post('/send-bulk-email', [ManageSubscriberController::class, 'sendBulkEmail'])->name('send-bulk-email');
+Route::get('/{subscriber}/email', [ManageSubscriberController::class, 'showIndividualEmailForm'])->name('individual-email-form');
+Route::post('/{subscriber}/send-email', [ManageSubscriberController::class, 'sendIndividualEmail'])->name('send-individual-email');
+});
+
+
+
+// Category Management Routes
+Route::prefix('categories')->name('categories.')->group(function () {
+    Route::get('/', [ManageCategoryController::class, 'index'])->name('index');
+    Route::get('/create', [ManageCategoryController::class, 'create'])->name('create');
+    Route::post('/', [ManageCategoryController::class, 'store'])->name('store');
+    Route::get('/{category}', [ManageCategoryController::class, 'show'])->name('show');
+    Route::get('/{category}/edit', [ManageCategoryController::class, 'edit'])->name('edit');
+    Route::put('/{category}', [ManageCategoryController::class, 'update'])->name('update');
+    Route::delete('/{category}', [ManageCategoryController::class, 'destroy'])->name('destroy');
+    Route::post('/{category}/toggle-status', [ManageCategoryController::class, 'toggleStatus'])->name('toggle-status');
+    Route::post('/bulk-action', [ManageCategoryController::class, 'bulkAction'])->name('bulk-action');
+});
+
+// Legacy route for backward compatibility
+Route::get('/category', [ManageCategoryController::class, 'index'])->name('category');
+Route::get('/create-category', [ManageCategoryController::class, 'create'])->name('create.category');
 
         // Product Management Routes
         Route::prefix('products')->name('products.')->group(function () {
@@ -163,25 +203,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/{product}/toggle-status', [ManageProductController::class, 'toggleStatus'])->name('toggle-status');
         });
 
-        // Category Management Routes
-        Route::prefix('categories')->name('categories.')->group(function () {
-            Route::get('/', [ManageCategoryController::class, 'index'])->name('index');
-            Route::get('/create', [ManageCategoryController::class, 'create'])->name('create');
-            Route::post('/', [ManageCategoryController::class, 'store'])->name('store');
-            Route::get('/{category}/edit', [ManageCategoryController::class, 'edit'])->name('edit');
-            Route::put('/{category}', [ManageCategoryController::class, 'update'])->name('update');
-            Route::delete('/{category}', [ManageCategoryController::class, 'destroy'])->name('destroy');
-            Route::post('/{category}/toggle-status', [ManageCategoryController::class, 'toggleStatus'])->name('toggle-status');
-        });
+ 
 
-        // Order Management Routes
-        Route::prefix('orders')->name('orders.')->group(function () {
-            Route::get('/', [ManageOrderController::class, 'index'])->name('index');
-            Route::get('/{order}', [ManageOrderController::class, 'show'])->name('show');
-            Route::put('/{order}/status', [ManageOrderController::class, 'updateStatus'])->name('update-status');
-            Route::put('/order-items/{orderItem}', [ManageOrderController::class, 'updateOrderItem'])->name('update-item');
-            Route::delete('/{order}', [ManageOrderController::class, 'destroy'])->name('destroy');
-        });
+// Order Management Routes
+Route::prefix('orders')->name('orders.')->group(function () {
+    Route::get('/', [ManageOrderController::class, 'index'])->name('index');
+    Route::get('/{order}', [ManageOrderController::class, 'show'])->name('show');
+    Route::put('/{order}/status', [ManageOrderController::class, 'updateStatus'])->name('update-status');
+    Route::post('/{order}/approve', [ManageOrderController::class, 'approve'])->name('approve');
+    Route::post('/{order}/decline', [ManageOrderController::class, 'decline'])->name('decline');
+    Route::put('/order-items/{orderItem}', [ManageOrderController::class, 'updateOrderItem'])->name('update-item');
+    Route::delete('/{order}', [ManageOrderController::class, 'destroy'])->name('destroy');
+    Route::post('/bulk-action', [ManageOrderController::class, 'bulkAction'])->name('bulk-action');
+});
 
         // Settings Route
         Route::get('/settings', function () {
@@ -192,12 +226,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/users', [ManageUserController::class, 'index'])->name('users.index'); // Legacy route
         Route::get('/products', [ManageProductController::class, 'index'])->name('products'); // Legacy route
         
-        // FIXED: Add the missing category legacy route
-        Route::get('/category', [ManageCategoryController::class, 'index'])->name('category'); // Legacy route
-        
+    
         Route::get('/create-products', [ManageProductController::class, 'create'])->name('create.products'); // Legacy route
-        Route::get('/create-category', [ManageCategoryController::class, 'create'])->name('create.category'); // Legacy route
-
+       
         // Password Management Routes
         Route::get('/change/user/password/page/{id}', [AdminController::class, 'showResetPasswordForm'])->name('change.user.password.page');
         Route::post('/user-password-reset', [AdminController::class, 'resetPassword'])->name('user.password_reset');
@@ -211,6 +242,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/delete-user/{user}', [AdminController::class, 'deleteUser'])->name('delete.user');
     });
 });
+
+
+
+
 
 // Fallback for 404 pages
 Route::fallback(function () {

@@ -229,13 +229,25 @@
                                 </a>
                             </li>
                            
+<li class="nav-item">
+    <a href="{{ route('admin.users.index') }}">
+        <i class="fas fa-users"></i>
+        <p>Manage Users</p>
+    </a>
+</li>
+<li class="nav-item">
+    <a href="{{ route('admin.subscribers.index') }}">
+        <i class="fas fa-envelope"></i>
+        <p>Manage Subscribers</p>
+    </a>
+</li>
 
-                            <li class="nav-item">
-                                <a href="{{route('admin.users.index')}}">
-                                    <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                    <p>Manage Users</p>
-                                </a>
-                            </li>
+<li class="nav-item">
+    <a href="{{ route('admin.subscribers.email-form') }}">
+        <i class="fas fa-paper-plane"></i>
+        <p>Email Subscribers</p>
+    </a>
+</li>
 
 
                             <li class="nav-item">
@@ -245,12 +257,19 @@
                                 </a>
                             </li>
 
+           <li class="nav-item">
+          <a href="{{ route('admin.categories.index') }}">
+          <i class="fas fa-tags"></i>
+           <p>Manage Categories</p>
+           </a>
+          </li>
+
                             <li class="nav-item">
-                                <a href="{{route('admin.category')}}">
-                                    <i class="fa fa-download" aria-hidden="true"></i>
-                                    <p>Manage Categories</p>
-                                </a>
-                            </li>
+    <a href="{{ route('admin.orders.index') }}">
+        <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+        <p>Manage Orders</p>
+    </a>
+</li>
                             <li class="nav-item ">
                                 <a href="{{route('admin.home')}}">
                                     <i class="fas fa-cubes " aria-hidden="true"></i>
