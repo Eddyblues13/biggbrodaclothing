@@ -4,7 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biggbroda Clothing</title>
+    <title>Biggbroda Clothing - Premium Streetwear & Fashion</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Discover Biggbroda Clothing - premium streetwear, sportswear and fashion collections. Shop the latest hoodies, jerseys, shorts and exclusive new arrivals.">
+    <meta name="keywords" content="biggbroda clothing, streetwear, fashion, hoodies, jerseys, sportswear, new collection, premium clothing">
+    <meta name="author" content="Biggbroda Clothing">
+    
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="Biggbroda Clothing - Premium Streetwear & Fashion">
+    <meta property="og:description" content="Discover Biggbroda Clothing - premium streetwear, sportswear and fashion collections.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:image" content="{{ asset('img/logo.png') }}">
+    <meta property="og:site_name" content="Biggbroda Clothing">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Biggbroda Clothing - Premium Streetwear & Fashion">
+    <meta name="twitter:description" content="Discover Biggbroda Clothing - premium streetwear, sportswear and fashion collections.">
+    <meta name="twitter:image" content="{{ asset('img/logo.png') }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ url('/') }}">
+    
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
