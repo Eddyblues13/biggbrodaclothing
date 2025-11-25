@@ -7,22 +7,28 @@
     <title>Biggbroda Clothing - Premium Streetwear & Fashion</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Discover Biggbroda Clothing - premium streetwear, sportswear and fashion collections. Shop the latest hoodies, jerseys, shorts and exclusive new arrivals.">
+    <meta name="description" content="Biggbroda is a luxury fashion retailer. We don't sew. We don't design. We source premium clothing and deliver it to bold individuals who know style is power. Every piece is handpicked to elevate your look and match your energy. Nationwide delivery. No stress. Just premium drip. Biggbroda — Stay bold, stay stylish.">
     <meta name="keywords" content="biggbroda clothing, streetwear, fashion, hoodies, jerseys, sportswear, new collection, premium clothing">
     <meta name="author" content="Biggbroda Clothing">
     
     <!-- Open Graph Meta Tags for Social Media -->
     <meta property="og:title" content="Biggbroda Clothing - Premium Streetwear & Fashion">
-    <meta property="og:description" content="Discover Biggbroda Clothing - premium streetwear, sportswear and fashion collections.">
+    <meta property="og:description" content="Biggbroda is a luxury fashion retailer. We source premium clothing and deliver it to bold individuals who know style is power. Every piece is handpicked to elevate your look. Nationwide delivery.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('/') }}">
     <meta property="og:image" content="{{ asset('img/logo.png') }}">
     <meta property="og:site_name" content="Biggbroda Clothing">
     
     <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:image" content="{{ asset('img/logo.png') }}">
+    <meta property="og:site_name" content="Biggbroda Clothing">
+    
+    <!-- Twitter Card Meta Tags -->
+   <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Biggbroda Clothing - Premium Streetwear & Fashion">
-    <meta name="twitter:description" content="Discover Biggbroda Clothing - premium streetwear, sportswear and fashion collections.">
+    <meta name="twitter:description" content="Biggbroda is a luxury fashion retailer. We source premium clothing for bold individuals who know style is power. Nationwide delivery. No stress. Just premium drip.">
     <meta name="twitter:image" content="{{ asset('img/logo.png') }}">
     
     <!-- Favicon -->
